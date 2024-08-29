@@ -1,5 +1,4 @@
 // src/components/CreatePostButton.jsx
-import React from "react";
 import { Button } from "@mui/material";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import useMediaQuery from "@mui/material/useMediaQuery";

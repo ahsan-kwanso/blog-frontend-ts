@@ -3,8 +3,8 @@ import { Box, Tabs, Tab } from "@mui/material";
 import { Home } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Person } from "@mui/icons-material";
-import SignOutButton from "../components/SignOutButton";
-import LoginButton from "../components/LoginButton";
+import SignOutButton from "./SignOutButton";
+import LoginButton from "./LoginButton";
 import SignUpButton from "./SignUpButton";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { useSearchParams } from "react-router-dom";
@@ -90,8 +90,8 @@ const Sidebar = () => {
         {user && isUserLoggedIn ? (
           <SignOutButton isSmallScreen={isSmallScreen} />
         ) : (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <LoginButton isSmallScreen={isSmallScreen} sx={{ mr: 2 }} />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mr: 2 }}>
+            <LoginButton  isSmallScreen={isSmallScreen} />
             <SignUpButton isSmallScreen={isSmallScreen} />
           </Box>
         )}

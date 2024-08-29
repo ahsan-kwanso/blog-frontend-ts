@@ -3,7 +3,7 @@ import { ThemeProvider as MuiThemeProvider, CssBaseline } from "@mui/material";
 import lightTheme from "../themes/lightTheme";
 import darkTheme from "../themes/darkTheme";
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(null);
 
 export const useTheme = () => useContext(ThemeContext);
 

@@ -82,8 +82,8 @@ const SearchField = () => {
       }
 
       // Keep the other parameters like filter, page, and limit
-      newSearchParams.set("page", defaultPage);
-      newSearchParams.set("limit", defaultLimit);
+      newSearchParams.set("page", defaultPage.toString());
+      newSearchParams.set("limit", defaultLimit.toString());
 
       // Construct the new URL with updated search parameters
       const url = `${location.pathname}?${newSearchParams.toString()}`;

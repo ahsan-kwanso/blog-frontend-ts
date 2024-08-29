@@ -1,29 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import IconButton from "@mui/material/IconButton";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import { AuthContext } from "../contexts/AuthContext";
 import useCustomNavigation from "../routes/useCustomNavigation";
-import { Tooltip, Typography } from "@mui/material";
+import { Typography, Tooltip } from "@mui/material";
 
-const SignUpButton = ({ isSmallScreen }) => {
-  const { signupPage } = useCustomNavigation();
+const SignOutButton = ({ isSmallScreen }) => {
+  const { loginPage } = useCustomNavigation();
+  const { signout } = useContext(AuthContext);
 
-  const handleSignUp = () => {
-    signupPage();
+  const handleSignOut = () => {
+    signout();
+    loginPage(); // Redirect to sign-in page after signing out
   };
 
   return (
     <IconButton
       size="large"
       aria-label="sign out"
-      onClick={handleSignUp}
+      onClick={handleSignOut}
       color="inherit"
       sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "none", // Default background color
-        borderRadius: "8px", // Rounded corners
-        padding: "8px", // Padding inside the button
         backgroundColor: (theme) =>
           theme.palette.mode === "dark"
             ? theme.palette.grey[800]
@@ -36,23 +36,23 @@ const SignUpButton = ({ isSmallScreen }) => {
               ? theme.palette.grey[700]
               : theme.palette.grey[400],
           "& .MuiTypography-root": {
-            color: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.secondary.main,
           },
           "& svg": {
-            color: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.secondary.main,
           },
         },
       }}
     >
       {isSmallScreen ? (
-        <Tooltip title={"Sign up"}>
-          <HowToRegIcon />
+        <Tooltip title={"Sign out"}>
+          <ExitToApp />
         </Tooltip>
       ) : (
-        <Typography sx={{ ml: 1.5, mr: 2 }}>Sign up</Typography>
+        <Typography sx={{ ml: 2, mr: 2 }}>Sign Out</Typography>
       )}
     </IconButton>
   );
 };
 
-export default SignUpButton;
+export default SignOutButton;

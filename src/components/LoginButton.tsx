@@ -1,16 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import IconButton from "@mui/material/IconButton";
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import { AuthContext } from "../contexts/AuthContext";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import useCustomNavigation from "../routes/useCustomNavigation";
-import { Typography, Tooltip } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 
-const SignOutButton = ({ isSmallScreen }) => {
+const LoginButton = ({ isSmallScreen }) => {
   const { loginPage } = useCustomNavigation();
-  const { signout } = useContext(AuthContext);
 
-  const handleSignOut = () => {
-    signout();
+  const handleLogin = () => {
     loginPage(); // Redirect to sign-in page after signing out
   };
 
@@ -18,44 +15,41 @@ const SignOutButton = ({ isSmallScreen }) => {
     <IconButton
       size="large"
       aria-label="sign out"
-      onClick={handleSignOut}
+      onClick={handleLogin}
       color="inherit"
       sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "none", // Default background color
-        borderRadius: "8px", // Rounded corners
         padding: "8px", // Padding inside the button
         backgroundColor: (theme) =>
           theme.palette.mode === "dark"
             ? theme.palette.grey[800]
             : theme.palette.grey[300],
         borderRadius: "8px",
-        padding: "8px",
         "&:hover": {
           backgroundColor: (theme) =>
             theme.palette.mode === "dark"
               ? theme.palette.grey[700]
               : theme.palette.grey[400],
           "& .MuiTypography-root": {
-            color: (theme) => theme.palette.secondary.main,
+            color: (theme) => theme.palette.primary.main,
           },
           "& svg": {
-            color: (theme) => theme.palette.secondary.main,
+            color: (theme) => theme.palette.primary.main,
           },
         },
       }}
     >
       {isSmallScreen ? (
-        <Tooltip title={"Sign out"}>
-          <ExitToApp />
+        <Tooltip title={"Log in"}>
+          <VpnKeyIcon />
         </Tooltip>
       ) : (
-        <Typography sx={{ ml: 2, mr: 2 }}>Sign Out</Typography>
+        <Typography sx={{ ml: 2, mr: 2 }}>Log in</Typography>
       )}
     </IconButton>
   );
 };
 
-export default SignOutButton;
+export default LoginButton;

@@ -2,15 +2,38 @@ import React, { createContext, useState, useEffect } from "react";
 import { getToken, setToken, removeToken } from "../utils/authUtils";
 import axiosInstance from "../axiosInstance";
 import { API_URL } from "../utils/settings";
+import { AxiosResponse } from "axios";
 
-const initialAuthContext = {
+// Define TypeScript interfaces for the context
+interface User {
+  // Define the user properties according to your application's requirements
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface AuthContextType {
+  user: User | null;
+  signup: (name: string, email: string, password: string) => Promise<AxiosResponse<any>>;
+  signin: (email: string, password: string) => Promise<AxiosResponse<any>>;
+  signout: () => void;
+}
+
+const initialAuthContext: AuthContextType = {
   user: null,
-  signup: async () => {},
-  signin: async () => {},
-  signout: () => {},
+  signup: async () => {
+    throw new Error("signup function not implemented");
+  },
+  signin: async () => {
+    throw new Error("signin function not implemented");
+  },
+  signout: () => {
+    throw new Error("signout function not implemented");
+  },
 };
 
-const AuthContext = createContext(initialAuthContext);
+// Create the context with initial values
+const AuthContext = createContext<AuthContextType>(initialAuthContext);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

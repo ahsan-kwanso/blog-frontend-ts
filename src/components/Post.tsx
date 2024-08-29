@@ -79,7 +79,8 @@ const Post = ({
 
   return (
     <PostCard>
-      <PostImage component="img" image={getRandomImage()} alt={title} />
+      {/* <PostImage component="img" image={getRandomImage()} alt={title} /> */}
+      <PostImage image={getRandomImage()}/>
       <CardContent>
         <Typography variant="subtitle1" color="text.secondary">
           {author}

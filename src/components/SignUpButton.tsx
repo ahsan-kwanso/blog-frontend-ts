@@ -1,29 +1,26 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { Tooltip, Typography } from "@mui/material";
 
-const LoginButton = ({ isSmallScreen }) => {
-  const { loginPage } = useCustomNavigation();
+const SignUpButton = ({ isSmallScreen }) => {
+  const { signupPage } = useCustomNavigation();
 
-  const handleLogin = () => {
-    loginPage(); // Redirect to sign-in page after signing out
+  const handleSignUp = () => {
+    signupPage();
   };
 
   return (
     <IconButton
       size="large"
       aria-label="sign out"
-      onClick={handleLogin}
+      onClick={handleSignUp}
       color="inherit"
       sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "none", // Default background color
-        borderRadius: "8px", // Rounded corners
-        padding: "8px", // Padding inside the button
         backgroundColor: (theme) =>
           theme.palette.mode === "dark"
             ? theme.palette.grey[800]
@@ -45,14 +42,14 @@ const LoginButton = ({ isSmallScreen }) => {
       }}
     >
       {isSmallScreen ? (
-        <Tooltip title={"Log in"}>
-          <VpnKeyIcon />
+        <Tooltip title={"Sign up"}>
+          <HowToRegIcon />
         </Tooltip>
       ) : (
-        <Typography sx={{ ml: 2, mr: 2 }}>Log in</Typography>
+        <Typography sx={{ ml: 1.5, mr: 2 }}>Sign up</Typography>
       )}
     </IconButton>
   );
 };
 
-export default LoginButton;
+export default SignUpButton;

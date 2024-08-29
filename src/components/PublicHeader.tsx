@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import ThemeToggleButton from "./ThemeToggleButton";
-import ProfileButton from "./ProfileButton";
 import { useTheme } from "../contexts/ThemeContext";
 
 // Custom Typography component for "Dribble"
@@ -25,12 +24,12 @@ const PrivateHeader = () => {
       <AppBar position="fixed" sx={{ top: 0 }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
-            <CustomTypography variant="h6" noWrap component="div">
+            {/* <CustomTypography variant="h6" noWrap component="div"> */}
+            <CustomTypography variant="h6" noWrap> 
               𝔇𝔯𝔦𝔟𝔟𝔩𝔢
             </CustomTypography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ProfileButton />
+          <Box>
             <ThemeToggleButton toggleTheme={toggleTheme} />
           </Box>
         </Toolbar>

@@ -21,6 +21,7 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
   width: "100%",
   height: "100%",
   maxHeight: 300,
+  minHeight: 300,
 }));
 
 const PostDetails = ({ post, onReplySubmit }) => {
@@ -42,7 +43,8 @@ const PostDetails = ({ post, onReplySubmit }) => {
 
   return (
     <PostCard>
-      <PostImage component="img" image={getRandomImage()} alt={post?.title} />
+      {/* <PostImage component="img" image={getRandomImage()} alt={title} /> */}
+      <PostImage image={getRandomImage()}/>
       <Typography
         variant="h4"
         gutterBottom
