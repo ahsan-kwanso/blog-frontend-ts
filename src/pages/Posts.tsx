@@ -47,32 +47,39 @@ const Posts = () => {
   const error = searchQuery ? errorSearch : errorDefault;
 
   const handlePageChange = (event, value) => {
-    const newParams = { page: value, limit: rowsPerPage };
-
+    // Define the type for newParams
+    const newParams: Record<string, string> = {
+      page: value.toString(),
+      limit: rowsPerPage.toString()
+    };
+  
     if (searchQuery) {
       newParams.search = searchQuery;
     }
     if (isMyPosts) {
       newParams.filter = "my-posts";
     }
-
+  
     setSearchParams(newParams);
   };
-
-  const handleRowsPerPageChange = (event) => {
-    const newLimit = event.target.value;
-    setRowsPerPage(newLimit);
-
-    // Update search params and fetch new data
-    const newParams = { page: 1, limit: newLimit };
-
+  
+  const handleRowsPerPageChange = (event, value) => {
+    const newLimit = event.target.value as string;
+    setRowsPerPage(Number(newLimit)); // Ensure rowsPerPage is a number
+  
+    // Define the type for newParams
+    const newParams: Record<string, string> = {
+      page: "1", // Set page to 1 when changing rows per page
+      limit: newLimit
+    };
+  
     if (searchQuery) {
       newParams.search = searchQuery;
     }
     if (isMyPosts) {
       newParams.filter = "my-posts";
     }
-
+  
     setSearchParams(newParams);
   };
 

@@ -14,6 +14,10 @@ const Profile = () => {
     postsPage();
   };
 
+  if (!user) {
+    return <Typography>No user data available</Typography>;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
