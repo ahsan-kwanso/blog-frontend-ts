@@ -3,7 +3,14 @@ import { ThemeProvider as MuiThemeProvider, CssBaseline } from "@mui/material";
 import lightTheme from "../themes/lightTheme";
 import darkTheme from "../themes/darkTheme";
 
-const ThemeContext = createContext(null);
+// Define the shape of the context value
+interface ThemeContextType {
+  themeMode: string;
+  toggleTheme: () => void;
+}
+
+// Create the context with the correct type
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const useTheme = () => useContext(ThemeContext);
 

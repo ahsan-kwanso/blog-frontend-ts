@@ -1,1 +1,5 @@
 later make that line 77 in tsconfig to true and 78 to true as well, then further resolve the errors
+
+
+
+modify contexts and then strict set to false and test app, then header siderbars, then each hook and its test

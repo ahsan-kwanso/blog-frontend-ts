@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { getToken, setToken, removeToken } from "../utils/authUtils";
 import axiosInstance from "../axiosInstance";
 import { API_URL } from "../utils/settings";
@@ -6,7 +6,6 @@ import { AxiosResponse } from "axios";
 
 // Define TypeScript interfaces for the context
 interface User {
-  // Define the user properties according to your application's requirements
   id: string;
   name: string;
   email: string;
@@ -36,8 +35,12 @@ const initialAuthContext: AuthContextType = {
 // Create the context with initial values
 const AuthContext = createContext<AuthContextType>(initialAuthContext);
 
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async () => {
     const token = getToken();
@@ -45,7 +48,7 @@ const AuthProvider = ({ children }) => {
       try {
         const response = await axiosInstance.get(API_URL.me);
         setUser(response.data.user);
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to fetch user:", error);
         setUser(null);
       }
@@ -56,7 +59,7 @@ const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  const signup = async (name, email, password) => {
+  const signup = async (name: string, email: string, password: string) => {
     try {
       const response = await axiosInstance.post(API_URL.signup, {
         name,
@@ -66,17 +69,17 @@ const AuthProvider = ({ children }) => {
       setToken(response.data.token);
       await fetchUser();
       return response;
-    } catch (error) {
+    } catch (error: unknown) {
       let errorMessage = "Something went wrong!";
-      if (error.response) {
-        errorMessage = error.response.data.message;
-        if (!error.response.data.message) errorMessage = "Invalid format";
+      if (error instanceof Error) {
+        const axiosError = error as { response?: { data?: { message?: string } } };
+        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
       }
       throw new Error(errorMessage);
     }
   };
 
-  const signin = async (email, password) => {
+  const signin = async (email: string, password: string) => {
     try {
       const response = await axiosInstance.post(API_URL.signin, {
         email,
@@ -85,11 +88,11 @@ const AuthProvider = ({ children }) => {
       setToken(response.data.token);
       await fetchUser();
       return response;
-    } catch (error) {
+    } catch (error: unknown) {
       let errorMessage = "Something went wrong!";
-      if (error.response) {
-        errorMessage = error.response.data.message;
-        if (!error.response.data.message) errorMessage = "Invalid format";
+      if (error instanceof Error) {
+        const axiosError = error as { response?: { data?: { message?: string } } };
+        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
       }
       throw new Error(errorMessage);
     }

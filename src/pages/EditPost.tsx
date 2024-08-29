@@ -79,7 +79,7 @@ const EditPost = () => {
         {isLoading ? (
           <Typography>Loading...</Typography>
         ) : fetchError ? (
-          <Typography color="error">{fetchError.message}</Typography>
+          <Typography color="error">{fetchError}</Typography>
         ) : (
           <form
             onSubmit={handleSubmit(onSubmit)}
