@@ -28,7 +28,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   marginTop: theme.spacing(8),
-  boxShadow: theme.shadows[5],
 }));
 
 const Form = styled("form")(({ theme }) => ({
@@ -68,7 +67,7 @@ const Login = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     try {
       const { status } = await signin(data.email, data.password);
       if (status === 200) {
@@ -76,8 +75,12 @@ const Login = () => {
       } else {
         setError("An unexpected error occurred. Try Again Later");
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 

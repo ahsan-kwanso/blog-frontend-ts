@@ -20,8 +20,8 @@ import NoPostsMessage from "../components/NoPostsMessage";
 
 const Posts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page")) || defaultPage;
-  const limit = parseInt(searchParams.get("limit")) || defaultLimit;
+  const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
+  const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
   const searchQuery = searchParams.get("search") || "";
   const isMyPosts = searchParams.get("filter") === "my-posts";
 

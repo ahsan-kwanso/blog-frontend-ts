@@ -70,7 +70,6 @@ const CreatePost = () => {
             fullWidth
             id="title"
             label="Title"
-            name="title"
             autoComplete="title"
             autoFocus
             {...register("title")}
@@ -83,7 +82,6 @@ const CreatePost = () => {
             fullWidth
             id="content"
             label="Content"
-            name="content"
             multiline
             rows={6} // Increased height for content box
             {...register("content")}

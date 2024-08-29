@@ -17,10 +17,18 @@ import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomNavigation from "../routes/useCustomNavigation";
 
+// Define the Post type
+interface Post {
+  id: string;
+  title: string;
+  content: string;
+  updatedAt: string; // or Date if you prefer
+}
+
 const EditPost = () => {
-  const { postId } = useParams(); // Get post ID from URL
+  const { postId } = useParams<{ postId: string }>(); // Ensure postId is a string
   const { myPostsPage, postsPage } = useCustomNavigation();
-  const { post, isLoading, error: fetchError } = useFetchPostById(postId);
+  const { post, isLoading, error: fetchError } = useFetchPostById(postId); // Pass the Post type to the hook
   const { editPost, error, success } = useEditPost();
 
   const {
@@ -38,22 +46,19 @@ const EditPost = () => {
 
   useEffect(() => {
     if (post) {
-      setValue("title", post.title);
-      setValue("content", post.content);
+      setValue("title", (post as any).title);
+      setValue("content", (post as any).content);
     }
   }, [post, setValue]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: { title: string; content: string }) => {
     try {
-      // Await the editPost function and check for success
       await editPost(postId, data);
 
-      // Only navigate if there is no error
       if (!error) {
         myPostsPage();
       }
     } catch (e) {
-      // Handle any unexpected errors (optional)
       console.error("Unexpected error:", e);
     }
   };
@@ -91,7 +96,6 @@ const EditPost = () => {
               fullWidth
               id="title"
               label="Title"
-              name="title"
               autoComplete="title"
               autoFocus
               {...register("title")}
@@ -104,7 +108,6 @@ const EditPost = () => {
               fullWidth
               id="content"
               label="Content"
-              name="content"
               multiline
               rows={5}
               {...register("content")}
@@ -124,7 +127,7 @@ const EditPost = () => {
                 mt: 2,
                 width: "100%",
                 "@media (max-width: 280px)": {
-                  flexDirection: "column", // Switch to column at 350px or below
+                  flexDirection: "column",
                 },
               }}
             >

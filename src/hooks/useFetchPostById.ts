@@ -5,7 +5,7 @@ import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 
 const useFetchPost = (postId) => {
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useError();
 

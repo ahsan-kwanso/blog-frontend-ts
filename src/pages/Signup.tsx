@@ -28,7 +28,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   marginTop: theme.spacing(8),
-  boxShadow: theme.shadows[3],
 }));
 
 const Form = styled("form")(({ theme }) => ({
@@ -77,8 +76,12 @@ const Signup = () => {
       } else {
         setError("An unexpected error occurred. Try Again Later");
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 
