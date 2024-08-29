@@ -12,7 +12,13 @@ interface ThemeContextType {
 // Create the context with the correct type
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+};
 
 const ThemeProvider = ({ children }) => {
   const [themeMode, setThemeMode] = useState(

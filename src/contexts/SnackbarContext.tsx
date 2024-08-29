@@ -12,6 +12,7 @@ const MySwal = withReactContent(Swal);
 /// Create SnackbarContext with a default value
 const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
 
+
 // Styled Snackbar Component
 const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
   "& .MuiSnackbarContent-root": {
@@ -87,7 +88,13 @@ export const SnackbarProvider = ({ children }) => {
 };
 
 // Custom Hook to use Snackbar Context
-export const useSnackbar = () => useContext(SnackbarContext);
+export const useSnackbar = () => {
+  const context = useContext(SnackbarContext);
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+};
 
 // import React, { createContext, useContext } from "react";
 // import { ToastContainer, toast } from "react-toastify";

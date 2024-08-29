@@ -4,12 +4,16 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 
+interface ErrorResponse {
+  message: string;
+}
+
 const useCreatePost = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useError();
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const createPost = async (data) => {
+  const createPost = async (data  : any) => {
     setIsCreating(true);
     setError(null); // Reset error state
     setSuccess(null); // Reset success state
@@ -17,15 +21,19 @@ const useCreatePost = () => {
       const response = await axiosInstance.post(API_URL.post, data);
       setSuccess("Post created successfully!");
       return response.data;
-    } catch (err) {
-      // Handle error based on response
-      if (err.response && err.response.data) {
-        setError(err.response.data.message || "Failed to create post.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        const axiosError = err as { response?: { data?: ErrorResponse } };
+
+        // Use optional chaining and nullish coalescing to handle possible undefined values
+        const errorMessage = axiosError.response?.data?.message ?? "Failed to create post.";
+        setError(errorMessage);
       } else {
+        // Handle other possible cases of `err`
         setError("Failed to create post.");
       }
-      throw err;
-    } finally {
+      throw err; // Rethrow to handle error in the component if needed
+    }finally {
       setIsCreating(false);
     }
   };

@@ -16,7 +16,7 @@ const Sidebar = () => {
   const { user } = useContext(AuthContext);
   const isUserLoggedIn = getToken();
   const { postsPage, myPostsPage } = useCustomNavigation();
-  const [selectedTab, setSelectedTab] = useState(null); // Initialize as null to handle loading state
+  const [selectedTab, setSelectedTab] = useState<null | 0 | 1>(null); // Initialize as null to handle loading state
   const [searchParams] = useSearchParams();
 
   useEffect(() => {

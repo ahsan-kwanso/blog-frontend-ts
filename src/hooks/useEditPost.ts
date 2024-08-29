@@ -7,7 +7,7 @@ import { API_URL } from "../utils/settings";
 const useEditPost = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useError();
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const editPost = async (postId, postData) => {
     setLoading(true);
