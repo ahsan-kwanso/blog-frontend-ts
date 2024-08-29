@@ -3,10 +3,14 @@ import { Snackbar, Alert, styled } from "@mui/material";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // Initialize SweetAlert2
+interface SnackbarContextType {
+  showSnackbar: (message: string, type?: "success" | "error" | "warning" | "info") => void;
+}
+
 const MySwal = withReactContent(Swal);
 
-// Create SnackbarContext
-const SnackbarContext = createContext();
+/// Create SnackbarContext with a default value
+const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
 
 // Styled Snackbar Component
 const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -34,7 +38,7 @@ export const SnackbarProvider = ({ children }) => {
   });
 
   // Show Snackbar with styling
-  const showSnackbar = (message, type = "info") => {
+  const showSnackbar = (message: string, type: "success" | "error" | "warning" | "info" = "info") => {
     const backgroundColor = themeMode === "dark" ? "#333" : "#fff"; // Dark or light theme
     const textColor = themeMode === "dark" ? "#fff" : "#000";
     MySwal.fire({
@@ -51,11 +55,12 @@ export const SnackbarProvider = ({ children }) => {
       didOpen: () => {
         // Add custom styling inline for the toast
         const toast = document.querySelector(".swal-toast");
-        if (toast) {
-          toast.style.backgroundColor = backgroundColor;
-          toast.style.marginBottom = "70px"; // Adjust this value as needed
-          toast.style.color = textColor; // Apply text color
-        }
+      if (toast) {
+        // Type assertion for element styling
+        (toast as HTMLElement).style.backgroundColor = backgroundColor;
+        (toast as HTMLElement).style.marginBottom = "70px"; // Adjust this value as needed
+        (toast as HTMLElement).style.color = textColor; // Apply text color
+      }
       },
     });
   };
@@ -73,7 +78,7 @@ export const SnackbarProvider = ({ children }) => {
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity={snackbar.type}>
+        <Alert onClose={handleClose} severity={snackbar.type as "success" | "error" | "warning" | "info"}>
           {snackbar.message}
         </Alert>
       </StyledSnackbar>
