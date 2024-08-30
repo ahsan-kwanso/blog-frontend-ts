@@ -24,7 +24,20 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
   minHeight: 300,
 }));
 
-const PostDetails = ({ post, onReplySubmit }) => {
+interface PostType {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+}
+
+// Define props interface for PostDetails component
+interface PostDetailsProps {
+  post: PostType;
+  onReplySubmit: () => void;
+}
+
+const PostDetails = ({ post, onReplySubmit } : PostDetailsProps) => {
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
   const { postsPage } = useCustomNavigation();
 
