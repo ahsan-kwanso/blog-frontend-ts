@@ -5,7 +5,7 @@ import { styled, alpha } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import debounce from "lodash/debounce";
+import {debounce} from "lodash";
 import { defaultPage, defaultLimit } from "../utils/pagination";
 
 const Search = styled("div")(({ theme }) => ({
@@ -63,7 +63,7 @@ const SearchField = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchQuery(value);
     debouncedSearch(value);
