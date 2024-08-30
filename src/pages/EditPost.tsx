@@ -17,18 +17,11 @@ import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomNavigation from "../routes/useCustomNavigation";
 
-// Define the Post type
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  updatedAt: string; // or Date if you prefer
-}
-
 const EditPost = () => {
   const { postId } = useParams<{ postId: string }>(); // Ensure postId is a string
+  const numericPostId = postId ? parseInt(postId, 10) : null;
   const { myPostsPage, postsPage } = useCustomNavigation();
-  const { post, isLoading, error: fetchError } = useFetchPostById(postId); // Pass the Post type to the hook
+  const { post, isLoading, error: fetchError } = useFetchPostById(numericPostId as number); // Pass the Post type to the hook
   const { editPost, error, success } = useEditPost();
 
   const {
@@ -53,7 +46,7 @@ const EditPost = () => {
 
   const onSubmit = async (data: { title: string; content: string }) => {
     try {
-      await editPost(postId, data);
+      await editPost(numericPostId as number, data);
 
       if (!error) {
         myPostsPage();

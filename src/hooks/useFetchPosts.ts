@@ -4,12 +4,29 @@ import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
 
-const useFetchPosts = (isMyPosts, page, limit) => {
+interface Post {
+  id: number;
+  author: string;
+  title: string;
+  content: string;
+  date: string;
+}
+
+// FetchPostsResponse interface to define the structure of the API response
+interface FetchPostsResponse {
+  total: number;
+  page: number;
+  pageSize: number;
+  nextPage: string | null;
+  posts: Post[];
+}
+
+const useFetchPosts = (isMyPosts : boolean, page : number, limit : number) => {
   const { user } = useContext(AuthContext);
-  const [posts, setPosts] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [nextPage, setNextPage] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [nextPage, setNextPage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useError();
 
   useEffect(() => {
@@ -30,7 +47,7 @@ const useFetchPosts = (isMyPosts, page, limit) => {
         // Determine which params to use
         const params = isMyPosts ? myPostsParams : defaultParams;
 
-        const response = await axiosInstance.get(API_URL.post, { params });
+        const response = await axiosInstance.get<FetchPostsResponse>(API_URL.post, { params });
         const { posts, total, nextPage } = response.data;
 
         setPosts(posts);

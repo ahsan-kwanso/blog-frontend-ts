@@ -4,9 +4,18 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 
-const useFetchPost = (postId) => {
-  const [post, setPost] = useState<any>();
-  const [isLoading, setIsLoading] = useState(true);
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  UserId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const useFetchPostById = (postId : number) => {
+  const [post, setPost] = useState<Post>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useError();
 
   useEffect(() => {
@@ -14,7 +23,7 @@ const useFetchPost = (postId) => {
       setIsLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 500));
       try {
-        const response = await axiosInstance.get(`${API_URL.post}/${postId}`);
+        const response = await axiosInstance.get<Post>(`${API_URL.post}/${postId}`);
         setPost(response.data);
       } catch (err) {
         setError("Failed to Load Post");
@@ -29,4 +38,4 @@ const useFetchPost = (postId) => {
   return { post, isLoading, error };
 };
 
-export default useFetchPost;
+export default useFetchPostById;

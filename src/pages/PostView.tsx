@@ -21,10 +21,11 @@ const StyledSkeleton = styled(Skeleton)(({ theme }) => ({
 }));
 
 const PostView = () => {
-  const { postId } = useParams();
-  const [refresh, setRefresh] = useState(0);
-  const { post, isLoading, error } = useFetchPostById(postId);
-  const { comments } = useFetchCommentsByPostId(postId, refresh);
+  const { postId } = useParams<{ postId: string }>();
+  const numericPostId = postId ? parseInt(postId, 10) : null;
+  const [refresh, setRefresh] = useState<number>(0);
+  const { post, isLoading, error } = useFetchPostById(numericPostId as number);
+  const { comments } = useFetchCommentsByPostId(numericPostId as number, refresh);
   const { postsPage } = useCustomNavigation();
   const handleCommentSubmit = () => {
     setRefresh((prev) => prev + 1); // Increment refresh count to trigger refetch

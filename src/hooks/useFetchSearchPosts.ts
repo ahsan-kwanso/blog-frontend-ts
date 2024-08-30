@@ -5,13 +5,30 @@ import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
 
-const useFetchSearchPosts = (title, page, limit, isMyPosts) => {
+interface Post {
+  id: number;
+  author: string;
+  title: string;
+  content: string;
+  date: string;
+}
+
+// FetchPostsResponse interface to define the structure of the API response
+interface FetchPostsResponse {
+  total: number;
+  page: number;
+  pageSize: number;
+  nextPage: string | null;
+  posts: Post[];
+}
+
+const useFetchSearchPosts = (title : string, page : number, limit : number, isMyPosts : boolean) => {
   const { user } = useContext(AuthContext);
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [nextPage, setNextPage] = useState(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [nextPage, setNextPage] = useState<string | null>(null);
   const [error, setError] = useError();
-  const [total, setTotalPosts] = useState(0);
+  const [total, setTotalPosts] = useState<number>(0);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -28,7 +45,7 @@ const useFetchSearchPosts = (title, page, limit, isMyPosts) => {
 
         // Determine which params to use
         const params = isMyPosts ? myPostsParams : defaultParams;
-        const response = await axiosInstance.get(API_URL.searchPosts, {
+        const response = await axiosInstance.get<FetchPostsResponse>(API_URL.searchPosts, {
           params,
         });
         setPosts(response.data.posts);

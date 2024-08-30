@@ -8,12 +8,17 @@ interface ErrorResponse {
   message: string;
 }
 
+interface PostData {
+  title: string;
+  content: string;
+}
+
 const useCreatePost = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const createPost = async (data  : any) => {
+  const createPost = async (data  : PostData) => {
     setIsCreating(true);
     setError(null); // Reset error state
     setSuccess(null); // Reset success state

@@ -4,11 +4,13 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 
+type OnSuccessCallback = () => void;
+
 const useDeletePost = () => {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [error, setError] = useError();
 
-  const deletePost = async (postId, onSuccess) => {
+  const deletePost = async (postId : number, onSuccess: OnSuccessCallback) => {
     try {
       setIsDeleting(true);
       const response = await axiosInstance.delete(`${API_URL.post}/${postId}`);
