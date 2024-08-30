@@ -12,24 +12,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplyForm from "./ReplyForm";
 import { format } from "date-fns";
 import { useDeleteComment } from "../hooks/useDeleteComment";
+import { CommentProps } from "../types/Comment.interfaces";
 
-// Define the types for comment and the props
-interface SubComment {
-  id: number;
-  title: string;
-  content: string;
-  UserId: number;
-  PostId: number;
-  ParentId: number | null;
-  createdAt: string;
-  updatedAt: string;
-  subComments: SubComment[];
-}
-
-interface CommentProps {
-  comment: SubComment;
-  onReplySubmit: () => void;
-}
 
 const Comment = ({ comment, onReplySubmit } : CommentProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

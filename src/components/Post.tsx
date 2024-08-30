@@ -18,6 +18,7 @@ import useDeletePost from "../hooks/useDeletePost";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import ConfirmAlert from "../Alerts/ConfirmAlert";
 import SuccessAlert from "../Alerts/SuccessAlert";
+import { PostProps } from "../types/Post.interfaces";
 
 const PostCard = styled(Card)(({ theme }) => ({
   width: "100%",
@@ -34,16 +35,6 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
   minHeight: 140,
 }));
 
-interface PostProps {
-  postId: number;
-  author: string;
-  image?: string;
-  title: string;
-  content: string;
-  date: string;
-  showEdit?: boolean;
-  showDelete?: boolean;
-}
 
 const Post = ({
   postId,

@@ -4,10 +4,7 @@ import ExitToApp from "@mui/icons-material/ExitToApp";
 import { AuthContext } from "../contexts/AuthContext";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { Typography, Tooltip } from "@mui/material";
-
-interface SignOutButtonProps {
-  isSmallScreen: boolean; // Define the type for isSmallScreen prop
-}
+import { SignOutButtonProps } from "../types/Buttons.interfaces";
 
 const SignOutButton = ({ isSmallScreen } : SignOutButtonProps) => {
   const { loginPage } = useCustomNavigation();

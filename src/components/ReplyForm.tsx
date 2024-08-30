@@ -6,14 +6,9 @@ import {z} from "zod"
 import { replySchema } from "../validations/schemaValidations";
 import useCreateComment from "../hooks/useCreateComment";
 import { useError } from "../hooks/useError";
+import { ReplyFormProps } from "../types/Comment.interfaces";
 
 type ReplyFormData = z.infer<typeof replySchema>;
-
-interface ReplyFormProps {
-  postId: number;
-  parentId?: number | null;
-  onClose: () => void;
-}
 
 const ReplyForm = ({ postId, parentId, onClose } : ReplyFormProps) => {
   const { createComment, error } = useCreateComment();

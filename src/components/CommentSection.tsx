@@ -1,23 +1,8 @@
 import React from "react";
 import { Box, Divider, Typography } from "@mui/material";
 import Comment from "./Comment";
+import { CommentSectionProps } from "../types/Comment.interfaces";
 
-interface SubComment {
-  id: number;
-  title: string;
-  content: string;
-  UserId: number;
-  PostId: number;
-  ParentId: number | null;
-  createdAt: string;
-  updatedAt: string;
-  subComments: SubComment[];
-}
-
-interface CommentSectionProps {
-  comments: SubComment[] | null; // Make sure to use the type you defined earlier
-  onReplySubmit: () => void;
-}
 const CommentSection = ({ comments, onReplySubmit } : CommentSectionProps) => {
   if (comments === null) {
     return (

@@ -3,10 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { Tooltip, Typography } from "@mui/material";
-
-interface LoginButtonProps {
-  isSmallScreen: boolean; // Define the type for isSmallScreen prop
-}
+import { LoginButtonProps } from "../types/Buttons.interfaces";
 
 const LoginButton = ({ isSmallScreen } : LoginButtonProps) => {
   const { loginPage } = useCustomNavigation();

@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import ReplyForm from "./ReplyForm"; // Assuming you have a ReplyForm component
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { useNavigation } from "react-router-dom";
+import { PostDetailsProps } from "../types/Post.interfaces";
 
 const PostCard = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
@@ -24,18 +25,6 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
   minHeight: 300,
 }));
 
-interface PostType {
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-}
-
-// Define props interface for PostDetails component
-interface PostDetailsProps {
-  post: PostType;
-  onReplySubmit: () => void;
-}
 
 const PostDetails = ({ post, onReplySubmit } : PostDetailsProps) => {
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);

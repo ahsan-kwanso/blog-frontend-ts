@@ -3,10 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { IconButton, Tooltip } from "@mui/material";
 import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-
-interface ThemeToggleButtonProps {
-  toggleTheme: () => void; // Function with no parameters and no return value
-}
+import { ThemeToggleButtonProps } from "../types/Buttons.interfaces";
 
 const ThemeToggleButton = ({ toggleTheme } : ThemeToggleButtonProps) => {
   const theme = useTheme();

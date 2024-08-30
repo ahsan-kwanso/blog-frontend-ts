@@ -3,10 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { Tooltip, Typography } from "@mui/material";
-
-interface SignUpButtonProps {
-  isSmallScreen: boolean; // Define the type for isSmallScreen prop
-}
+import { SignUpButtonProps } from "../types/Buttons.interfaces";
 
 const SignUpButton = ({ isSmallScreen } : SignUpButtonProps) => {
   const { signupPage } = useCustomNavigation();

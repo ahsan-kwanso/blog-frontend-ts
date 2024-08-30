@@ -3,23 +3,7 @@ import React from "react";
 import { Container, Grid, Skeleton } from "@mui/material";
 import Post from "./Post";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
-interface PostType {
-  id: number;
-  author: string;
-  title: string;
-  content: string;
-  date: string;
-  image?: string; // Optional if image might not be present
-}
-
-// Define props interface for PostList component
-interface PostListProps {
-  posts: PostType[];
-  isLoading: boolean;
-  showEdit: boolean;
-  showDelete: boolean;
-}
+import { PostListProps } from "../types/Post.interfaces";
 
 const PostList = ({ posts, isLoading, showEdit, showDelete } : PostListProps) => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
