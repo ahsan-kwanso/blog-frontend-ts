@@ -1,12 +1,21 @@
 import React from "react";
 import { Box, TextField, Button, Alert } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {z} from "zod"
 import { replySchema } from "../validations/schemaValidations";
 import useCreateComment from "../hooks/useCreateComment";
 import { useError } from "../hooks/useError";
 
-const ReplyForm = ({ postId, parentId, onClose }) => {
+type ReplyFormData = z.infer<typeof replySchema>;
+
+interface ReplyFormProps {
+  postId: number;
+  parentId?: number | null;
+  onClose: () => void;
+}
+
+const ReplyForm = ({ postId, parentId, onClose } : ReplyFormProps) => {
   const { createComment, error } = useCreateComment();
   const [formError, setFormError] = useError();
 
@@ -16,14 +25,14 @@ const ReplyForm = ({ postId, parentId, onClose }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<ReplyFormData>({
     resolver: zodResolver(replySchema),
     defaultValues: {
       reply: "",
     },
   });
 
-  const handleFormSubmit = async (data) => {
+  const handleFormSubmit: SubmitHandler<ReplyFormData> = async (data) => {
     try {
       await createComment({
         PostId: postId,

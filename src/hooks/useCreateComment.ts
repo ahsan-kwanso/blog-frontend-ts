@@ -8,11 +8,17 @@ interface ErrorResponse {
   message: string;
 }
 
+interface CreateCommentData {
+  PostId : number;
+  content? : string;
+  ParentId? : number | null;
+}
+
 export const useCreateComment = () => {
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const createComment = async (data : any) => {
+  const createComment = async (data : CreateCommentData) => {
     try {
       const response = await axiosInstance.post(API_URL.comment, data);
       setSuccess("Comment created successfully!");
