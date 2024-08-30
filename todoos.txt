@@ -3,3 +3,5 @@ later make that line 77 in tsconfig to true and 78 to true as well, then further
 
 
 modify contexts and then strict set to false and test app, then header siderbars, then each hook and its test
+
+working TS version of whole app
