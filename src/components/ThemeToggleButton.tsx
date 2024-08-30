@@ -4,7 +4,11 @@ import { IconButton, Tooltip } from "@mui/material";
 import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 
-const ThemeToggleButton = ({ toggleTheme }) => {
+interface ThemeToggleButtonProps {
+  toggleTheme: () => void; // Function with no parameters and no return value
+}
+
+const ThemeToggleButton = ({ toggleTheme } : ThemeToggleButtonProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
