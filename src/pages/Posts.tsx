@@ -7,6 +7,7 @@ import {
   Snackbar,
   Alert,
   Typography,
+  SelectChangeEvent
 } from "@mui/material";
 import PostList from "../components/PostList";
 import useFetchPosts from "../hooks/useFetchPosts";
@@ -63,7 +64,7 @@ const Posts = () => {
     setSearchParams(newParams);
   };
   
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>, value: number) => {
+  const handleRowsPerPageChange = (event: SelectChangeEvent<number>) => {
     const newLimit = event.target.value as string;
     setRowsPerPage(Number(newLimit)); // Ensure rowsPerPage is a number
   

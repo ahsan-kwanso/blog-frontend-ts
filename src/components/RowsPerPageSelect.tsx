@@ -1,8 +1,13 @@
 // src/components/RowsPerPageSelect.js
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 
-const RowsPerPageSelect = ({ rowsPerPage, onChange }) => {
+interface RowsPerPageSelectProps {
+  rowsPerPage: number;
+  onChange: (event: SelectChangeEvent<number>) => void;
+}
+
+const RowsPerPageSelect = ({ rowsPerPage, onChange } : RowsPerPageSelectProps ) => {
   return (
     <FormControl
       sx={{

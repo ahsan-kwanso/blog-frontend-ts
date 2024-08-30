@@ -25,12 +25,14 @@ const Sidebar = () => {
   }, [searchParams]);
 
   // Handle tab change
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-    if (newValue === 0) {
-      postsPage();
-    } else if (newValue === 1) {
-      myPostsPage();
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    if (newValue === 0 || newValue === 1) {
+      setSelectedTab(newValue);
+      if (newValue === 0) {
+        postsPage();
+      } else if (newValue === 1) {
+        myPostsPage();
+      }
     }
   };
 
