@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
 
-const NoPostsMessage = ({ isLoading, posts }) => {
+interface NoPostsMessageProps {
+  isLoading: boolean;
+  posts: any[]; // You can specify a more precise type if you have one
+}
+
+const NoPostsMessage = ({ isLoading, posts } : NoPostsMessageProps) => {
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {

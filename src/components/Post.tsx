@@ -34,6 +34,17 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
   minHeight: 140,
 }));
 
+interface PostProps {
+  postId: number;
+  author: string;
+  image?: string;
+  title: string;
+  content: string;
+  date: string;
+  showEdit?: boolean;
+  showDelete?: boolean;
+}
+
 const Post = ({
   postId,
   author,
@@ -43,7 +54,7 @@ const Post = ({
   date,
   showEdit,
   showDelete,
-}) => {
+} : PostProps) => {
   const { viewPostPage, editPostPage } = useCustomNavigation();
   const { deletePost, error: deleteError } = useDeletePost();
   const [successMessage, setSuccessMessage] = useState("");

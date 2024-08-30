@@ -13,12 +13,30 @@ import ReplyForm from "./ReplyForm";
 import { format } from "date-fns";
 import { useDeleteComment } from "../hooks/useDeleteComment";
 
-const Comment = ({ comment, onReplySubmit }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [replying, setReplying] = useState(false);
+// Define the types for comment and the props
+interface SubComment {
+  id: number;
+  title: string;
+  content: string;
+  UserId: number;
+  PostId: number;
+  ParentId: number | null;
+  createdAt: string;
+  updatedAt: string;
+  subComments: SubComment[];
+}
+
+interface CommentProps {
+  comment: SubComment;
+  onReplySubmit: () => void;
+}
+
+const Comment = ({ comment, onReplySubmit } : CommentProps) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [replying, setReplying] = useState<boolean>(false);
   const { deleteComment, error, success } = useDeleteComment();
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event : React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

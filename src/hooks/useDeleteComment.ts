@@ -11,7 +11,7 @@ export const useDeleteComment = () => {
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const deleteComment = async (commentId: string) => {
+  const deleteComment = async (commentId: number) => {
     try {
       const response = await axiosInstance.delete(`${API_URL.comment}/${commentId}`);
       if (response.status === 200) {
