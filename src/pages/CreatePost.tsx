@@ -14,11 +14,7 @@ import useCustomNavigation from "../routes/useCustomNavigation";
 import useCreatePost from "../hooks/useCreatePost";
 import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-interface PostData {
-  title: string;
-  content: string;
-}
+import { PostData } from "../types/Post.interfaces";
 
 const CreatePost = () => {
   const {

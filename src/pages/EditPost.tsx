@@ -16,6 +16,7 @@ import useEditPost from "../hooks/useEditPost";
 import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomNavigation from "../routes/useCustomNavigation";
+import { EditPostData } from "../types/Post.interfaces";
 
 const EditPost = () => {
   const { postId } = useParams<{ postId: string }>(); // Ensure postId is a string
@@ -44,7 +45,7 @@ const EditPost = () => {
     }
   }, [post, setValue]);
 
-  const onSubmit = async (data: { title: string; content: string }) => {
+  const onSubmit = async (data: EditPostData) => {
     try {
       await editPost(numericPostId as number, data);
 

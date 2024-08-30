@@ -20,6 +20,7 @@ import useCustomNavigation from "../routes/useCustomNavigation";
 import { PAGE_URL } from "../utils/settings";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { SignUpFormData } from "../types/Forms.interfaces";
 
 // Define styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -49,12 +50,6 @@ const LoginLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-
-interface SignUpFormData {
-  name : string;
-  email: string;
-  password: string;
-}
 
 const Signup = () => {
   const { signup } = useContext(AuthContext);

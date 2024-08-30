@@ -44,3 +44,13 @@ export interface NoPostsMessageProps {
     showEdit: boolean;
     showDelete: boolean;
   }
+
+  export interface PostData {
+    title: string;
+    content: string;
+  }
+
+  export interface EditPostData {
+    title?: string;
+    content?: string;
+  }
