@@ -3,15 +3,8 @@ import { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-
-interface ErrorResponse {
-  message: string;
-}
-
-interface PostData {
-  title: string;
-  content: string;
-}
+import { ErrorResponse } from "../types/Error.interfaces";
+import { PostData } from "../types/Post.interfaces";
 
 const useCreatePost = () => {
   const [isCreating, setIsCreating] = useState(false);

@@ -3,19 +3,14 @@ import { useState } from "react";
 import axiosInstance from "../axiosInstance"; // Adjust the path as needed
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-
-
-interface PostData {
-  title?: string;
-  content?: string;
-}
+import { EditPostData } from "../types/Post.interfaces";
 
 const useEditPost = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const editPost = async (postId : number, postData : PostData) => {
+  const editPost = async (postId : number, postData : EditPostData) => {
     setLoading(true);
     setError(null);
     setSuccess(null);

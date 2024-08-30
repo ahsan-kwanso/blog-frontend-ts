@@ -3,27 +3,13 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
+import { PostWithAuthor } from "../types/Post.interfaces";
+import { FetchPostsResponse } from "../types/Post.interfaces";
 
-interface Post {
-  id: number;
-  author: string;
-  title: string;
-  content: string;
-  date: string;
-}
-
-// FetchPostsResponse interface to define the structure of the API response
-interface FetchPostsResponse {
-  total: number;
-  page: number;
-  pageSize: number;
-  nextPage: string | null;
-  posts: Post[];
-}
 
 const useFetchPosts = (isMyPosts : boolean, page : number, limit : number) => {
   const { user } = useContext(AuthContext);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);

@@ -2,10 +2,7 @@ import { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-
-interface ErrorResponse {
-  message: string;
-}
+import { ErrorResponse } from "../types/Error.interfaces";
 
 export const useDeleteComment = () => {
   const [error, setError] = useError();

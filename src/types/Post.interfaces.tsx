@@ -54,3 +54,29 @@ export interface NoPostsMessageProps {
     title?: string;
     content?: string;
   }
+
+  export interface Post {
+    id: number;
+    title: string;
+    content: string;
+    UserId: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  export interface PostWithAuthor {
+    id: number;
+    author: string;
+    title: string;
+    content: string;
+    date: string;
+  }
+  
+  // FetchPostsResponse interface to define the structure of the API response
+  export interface FetchPostsResponse {
+    total: number;
+    page: number;
+    pageSize: number;
+    nextPage: string | null;
+    posts: PostWithAuthor[];
+  }

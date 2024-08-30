@@ -3,15 +3,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  UserId: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Post } from "../types/Post.interfaces";
 
 const useFetchPostById = (postId : number) => {
   const [post, setPost] = useState<Post>();

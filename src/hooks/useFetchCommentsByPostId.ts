@@ -3,23 +3,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-
-// Define interfaces for the comments
-interface SubComment {
-  id: number;
-  title: string;
-  content: string;
-  UserId: number;
-  PostId: number;
-  ParentId: number | null;
-  createdAt: string;
-  updatedAt: string;
-  subComments: SubComment[]; // Recursive type for nested sub-comments
-}
-
-interface Comment extends SubComment {
-  subComments: SubComment[]; // Top-level comments also have sub-comments
-}
+import { Comment } from "../types/Comment.interfaces";
 
 const useFetchCommentsByPostId = (postId : number, refresh : number) => {
   const [comments, setComments] = useState<Comment[] | null>(null);

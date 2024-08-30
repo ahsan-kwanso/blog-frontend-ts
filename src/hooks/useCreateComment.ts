@@ -3,16 +3,8 @@ import { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-
-interface ErrorResponse {
-  message: string;
-}
-
-interface CreateCommentData {
-  PostId : number;
-  content? : string;
-  ParentId? : number | null;
-}
+import { ErrorResponse } from "../types/Error.interfaces";
+import { CreateCommentData } from "../types/Comment.interfaces";
 
 export const useCreateComment = () => {
   const [error, setError] = useError();
