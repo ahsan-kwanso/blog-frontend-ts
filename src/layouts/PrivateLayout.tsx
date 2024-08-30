@@ -1,8 +1,12 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import { Container } from "@mui/material";
 import PrivateHeader from "../components/PrivateHeader";
 
-const PrivateLayout = ({ children }) => {
+interface PrivateLayoutProps {
+  children: ReactNode;
+}
+
+const PrivateLayout = ({ children } : PrivateLayoutProps) => {
   return (
     <div>
       <PrivateHeader />

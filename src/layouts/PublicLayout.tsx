@@ -1,8 +1,13 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import { Container } from "@mui/material";
 import PublicHeader from "../components/PublicHeader";
 
-const PublicLayout = ({ children }) => {
+interface PublicLayoutProps {
+  children: ReactNode;
+}
+
+
+const PublicLayout = ({ children } : PublicLayoutProps) => {
   return (
     <div>
       <PublicHeader />
