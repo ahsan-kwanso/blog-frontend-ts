@@ -1,5 +1,5 @@
 // src/utils/avatarUtils.js
-export function stringAvatar(name) {
+export function stringAvatar(name : string) {
   return {
     sx: {
       bgcolor: stringToColor(name),
@@ -10,10 +10,10 @@ export function stringAvatar(name) {
   };
 }
 
-function stringToColor(string) {
+function stringToColor(str : string) {
   let hash = 0;
-  for (let i = 0; i < string.length; i++) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   let color = "#";
   for (let i = 0; i < 3; i++) {
