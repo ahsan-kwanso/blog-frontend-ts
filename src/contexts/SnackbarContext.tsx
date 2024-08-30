@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Snackbar, Alert, styled } from "@mui/material";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -29,8 +29,11 @@ const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
   },
 }));
 
+interface SnackProviderProps {
+  children: ReactNode;
+}
 // SnackbarProvider Component
-export const SnackbarProvider = ({ children }) => {
+export const SnackbarProvider = ({ children } : SnackProviderProps) => {
   const themeMode = localStorage.getItem("themeMode");
   const [snackbar, setSnackbar] = useState({
     open: false,
