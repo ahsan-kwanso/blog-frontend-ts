@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const SuccessAlert = async (title, text) => {
+const SuccessAlert = async (title? : string, text? : string) : Promise<void>=> {
   // Get the theme mode from local storage
   const themeMode = localStorage.getItem("themeMode");
 
