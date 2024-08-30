@@ -25,7 +25,7 @@ const Posts = () => {
   const searchQuery = searchParams.get("search") || "";
   const isMyPosts = searchParams.get("filter") === "my-posts";
 
-  const [rowsPerPage, setRowsPerPage] = useState(limit);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(limit);
 
   const {
     posts: postsSearch,
@@ -46,7 +46,7 @@ const Posts = () => {
   const isLoading = searchQuery ? isLoadingSearch : isLoadingDefault;
   const error = searchQuery ? errorSearch : errorDefault;
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     // Define the type for newParams
     const newParams: Record<string, string> = {
       page: value.toString(),
@@ -63,7 +63,7 @@ const Posts = () => {
     setSearchParams(newParams);
   };
   
-  const handleRowsPerPageChange = (event, value) => {
+  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>, value: number) => {
     const newLimit = event.target.value as string;
     setRowsPerPage(Number(newLimit)); // Ensure rowsPerPage is a number
   

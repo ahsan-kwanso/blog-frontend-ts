@@ -49,6 +49,13 @@ const LoginLink = styled(Link)(({ theme }) => ({
   },
 }));
 
+
+interface SignUpFormData {
+  name : string;
+  email: string;
+  password: string;
+}
+
 const Signup = () => {
   const { signup } = useContext(AuthContext);
   const [error, setError] = useError();
@@ -68,7 +75,7 @@ const Signup = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data : SignUpFormData) => {
     try {
       const result = await signup(data.name, data.email, data.password);
       if (result.data.token) {

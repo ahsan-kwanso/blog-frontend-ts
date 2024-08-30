@@ -49,6 +49,11 @@ const SignupLink = styled(Link)(({ theme }) => ({
   },
 }));
 
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 const Login = () => {
   const { signin } = useContext(AuthContext);
   const { postsPage } = useCustomNavigation();
@@ -67,7 +72,7 @@ const Login = () => {
     },
   });
 
-  const onSubmit = async (data: { email: string; password: string }) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       const { status } = await signin(data.email, data.password);
       if (status === 200) {

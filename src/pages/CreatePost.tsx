@@ -15,6 +15,11 @@ import useCreatePost from "../hooks/useCreatePost";
 import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+interface PostData {
+  title: string;
+  content: string;
+}
+
 const CreatePost = () => {
   const {
     register,
@@ -31,7 +36,7 @@ const CreatePost = () => {
   const { myPostsPage, postsPage } = useCustomNavigation();
   const { createPost, isCreating, error, success } = useCreatePost();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data : PostData) => {
     try {
       await createPost(data);
       if (!error) {
