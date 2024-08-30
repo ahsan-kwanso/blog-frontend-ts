@@ -2,10 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Snackbar, Alert, styled } from "@mui/material";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// Initialize SweetAlert2
-interface SnackbarContextType {
-  showSnackbar: (message: string, type?: "success" | "error" | "warning" | "info") => void;
-}
+import { SnackbarContextType } from "../types/Contexts.interfaces";
 
 const MySwal = withReactContent(Swal);
 

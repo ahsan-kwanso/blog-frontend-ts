@@ -2,22 +2,9 @@ import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { getToken, setToken, removeToken } from "../utils/authUtils";
 import axiosInstance from "../axiosInstance";
 import { API_URL } from "../utils/settings";
-import { AxiosResponse } from "axios";
+import {User} from "../types/Contexts.interfaces"
+import { AuthContextType } from "../types/Contexts.interfaces";
 
-// Define TypeScript interfaces for the context
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-}
-
-interface AuthContextType {
-  user: User | null;
-  signup: (name: string, email: string, password: string) => Promise<AxiosResponse<any>>;
-  signin: (email: string, password: string) => Promise<AxiosResponse<any>>;
-  signout: () => void;
-}
 
 const initialAuthContext: AuthContextType = {
   user: null,

@@ -2,12 +2,7 @@ import React, { createContext, useState, useEffect, useContext, ReactNode } from
 import { ThemeProvider as MuiThemeProvider, CssBaseline } from "@mui/material";
 import lightTheme from "../themes/lightTheme";
 import darkTheme from "../themes/darkTheme";
-
-// Define the shape of the context value
-interface ThemeContextType {
-  themeMode: string;
-  toggleTheme: () => void;
-}
+import { ThemeContextType } from "../types/Contexts.interfaces";
 
 // Create the context with the correct type
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
