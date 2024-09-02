@@ -1,15 +1,11 @@
-export interface LoginButtonProps {
-    isSmallScreen: boolean; // Define the type for isSmallScreen prop
-  }
-
-export interface SignOutButtonProps {
-  isSmallScreen: boolean; // Define the type for isSmallScreen prop
-}
-
-export interface SignUpButtonProps {
-  isSmallScreen: boolean; // Define the type for isSmallScreen prop
+export interface SmallScreenProps {
+  isSmallScreen: boolean;
 }
 
 export interface ThemeToggleButtonProps {
-  toggleTheme: () => void; // Function with no parameters and no return value
+  toggleTheme: () => void;
 }
+
+export interface LoginButtonProps extends SmallScreenProps {}
+export interface SignOutButtonProps extends SmallScreenProps {}
+export interface SignUpButtonProps extends SmallScreenProps {}

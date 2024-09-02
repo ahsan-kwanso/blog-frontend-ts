@@ -1,6 +1,6 @@
 export interface NoPostsMessageProps {
     isLoading: boolean;
-    posts: any[]; // You can specify a more precise type if you have one
+    posts: any[]; 
   }
 
  export interface PostProps {
