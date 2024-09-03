@@ -1,5 +1,3 @@
-// src/components/RowsPerPageSelect.js
-import React from "react";
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 
 interface RowsPerPageSelectProps {

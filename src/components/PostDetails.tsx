@@ -26,7 +26,7 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
 
 
 const PostDetails = ({ post, onReplySubmit } : PostDetailsProps): JSX.Element => {
-  const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
+  const [isReplyFormVisible, setIsReplyFormVisible] = useState<boolean>(false);
   const { postsPage } = useCustomNavigation();
 
   const handleBackToDashboard = () => {

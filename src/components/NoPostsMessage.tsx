@@ -3,7 +3,7 @@ import { Typography, Box } from "@mui/material";
 import { NoPostsMessageProps } from "../types/Post.interfaces";
 
 const NoPostsMessage = ({ isLoading, posts }: NoPostsMessageProps): JSX.Element => {
-  const [showMessage, setShowMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isLoading && posts.length === 0) {

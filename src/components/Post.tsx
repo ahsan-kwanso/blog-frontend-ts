@@ -48,7 +48,6 @@ const Post = ({
 } : PostProps): JSX.Element => {
   const { viewPostPage, editPostPage } = useCustomNavigation();
   const { deletePost, error: deleteError } = useDeletePost();
-  const [successMessage, setSuccessMessage] = useState("");
 
   const onPostDeletion = () => {
     setTimeout(() => {
@@ -117,11 +116,6 @@ const Post = ({
       {deleteError && (
         <Snackbar open={Boolean(deleteError)} autoHideDuration={6000}>
           <Alert severity="error">{deleteError}</Alert>
-        </Snackbar>
-      )}
-      {successMessage && (
-        <Snackbar open={Boolean(successMessage)} autoHideDuration={2000}>
-          <Alert severity="success">{successMessage}</Alert>
         </Snackbar>
       )}
     </PostCard>
