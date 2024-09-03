@@ -37,7 +37,7 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
 
 
 const Post = ({
-  postId,
+  id,
   author,
   image,
   title,
@@ -57,11 +57,11 @@ const Post = ({
   };
   // Event handler functions
   const handleView = () => {
-    viewPostPage(postId); // Navigate to the PostView route
+    viewPostPage(id); // Navigate to the PostView route
   };
 
   const handleEdit = () => {
-    editPostPage(postId); // Navigate to the EditPost route
+    editPostPage(id); // Navigate to the EditPost route
   };
 
   const handleDelete = async () => {
@@ -71,7 +71,7 @@ const Post = ({
     );
 
     if (confirmed) {
-      deletePost(postId, async () => {
+      deletePost(id, async () => {
         await SuccessAlert("Deleted!", "Your post has been deleted.");
         //setSuccessMessage("Post deleted successfully");
         onPostDeletion();

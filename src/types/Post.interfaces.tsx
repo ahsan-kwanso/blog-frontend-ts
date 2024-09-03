@@ -1,82 +1,63 @@
+export interface PostBase {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  author?: string; // Optional if not always needed
+  image?: string;  // Optional if image might not be present
+}
+
+export interface PostProps extends PostBase {
+  id: number;
+  showEdit?: boolean;
+  showDelete?: boolean;
+}
+
+export interface PostDetailType extends PostBase {
+  createdAt: string;
+}
+
+export interface PostDetailsProps {
+  post: PostDetailType;
+  onReplySubmit: () => void;
+}
+
+export interface PostListProps {
+  posts: PostBase[];
+  isLoading: boolean;
+  showEdit: boolean;
+  showDelete: boolean;
+}
+
 export interface NoPostsMessageProps {
-    isLoading: boolean;
-    posts: any[]; 
-  }
+  isLoading: boolean;
+  posts: PostBase[];
+}
 
- export interface PostProps {
-    postId: number;
-    author: string;
-    image?: string;
-    title: string;
-    content: string;
-    date: string;
-    showEdit?: boolean;
-    showDelete?: boolean;
-  }
+export interface PostData {
+  title: string;
+  content: string;
+}
 
-  interface PostDetailType {
-    id: number;
-    title: string;
-    content: string;
-    createdAt: string;
-  }
-  
+export interface EditPostData {
+  title?: string;
+  content?: string;
+}
 
-  // Define props interface for PostDetails component
- export interface PostDetailsProps {
-    post: PostDetailType;
-    onReplySubmit: () => void;
-  }
+export interface Post extends PostBase {
+  UserId: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
-  interface PostType {
-    id: number;
-    author: string;
-    title: string;
-    content: string;
-    date: string;
-    image?: string; // Optional if image might not be present
-  }
-  
-  // Define props interface for PostList component
-  export interface PostListProps {
-    posts: PostType[];
-    isLoading: boolean;
-    showEdit: boolean;
-    showDelete: boolean;
-  }
+export interface PostWithAuthor extends PostBase {
+  author: string; // Ensuring author is required here
+}
 
-  export interface PostData {
-    title: string;
-    content: string;
-  }
-
-  export interface EditPostData {
-    title?: string;
-    content?: string;
-  }
-
-  export interface Post {
-    id: number;
-    title: string;
-    content: string;
-    UserId: number;
-    createdAt: string;
-    updatedAt: string;
-  }
-
-  export interface PostWithAuthor {
-    id: number;
-    author: string;
-    title: string;
-    content: string;
-    date: string;
-  }
-  
-  // FetchPostsResponse interface to define the structure of the API response
-  export interface FetchPostsResponse {
-    total: number;
-    page: number;
-    pageSize: number;
-    nextPage: string | null;
-    posts: PostWithAuthor[];
-  }
+export interface FetchPostsResponse {
+  total: number;
+  page: number;
+  pageSize: number;
+  nextPage: string | null;
+  posts: PostWithAuthor[];
+}

@@ -29,7 +29,7 @@ const PostList = ({ posts, isLoading, showEdit, showDelete } : PostListProps) =>
                 key={post.id}
               >
                 <Post
-                  postId={post?.id}
+                  id={post?.id}
                   author={post?.author}
                   image={post?.image}
                   title={post?.title}

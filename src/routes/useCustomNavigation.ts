@@ -22,6 +22,7 @@ const useCustomNavigation = () => {
     signupPage: () => navigate(PAGE_URL.signup),
     myPostsPage: () => navigate(`${PAGE_URL.posts}?filter=my-posts`),
     postsPage: () => navigate(PAGE_URL.posts),
+    basePage: () => navigate(PAGE_URL.base),
   };
 };
 

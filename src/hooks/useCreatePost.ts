@@ -23,7 +23,7 @@ const useCreatePost = () => {
       if (err instanceof Error) {
         const axiosError = err as { response?: { data?: ErrorResponse } };
 
-        // Use optional chaining and nullish coalescing to handle possible undefined values
+        // Use optional chaining to handle possible undefined values
         const errorMessage = axiosError.response?.data?.message ?? "Failed to create post.";
         setError(errorMessage);
       } else {

@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSnackbar } from "../contexts/SnackbarContext";
-import { getToken } from "../utils/authUtils";
+import { getToken, removeToken } from "../utils/authUtils";
 import PublicLayout from "../layouts/PublicLayout";
 import { PAGE_URL } from "../utils/settings";
+import { AuthContext } from "../contexts/AuthContext";
 
 const PublicRoute = () => {
   const token = getToken();
+  const {user} = useContext(AuthContext);
+  if (user === null) {
+    removeToken();
+  }
   const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
