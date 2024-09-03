@@ -5,7 +5,7 @@ import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { ThemeToggleButtonProps } from "../types/Buttons.interfaces";
 
-const ThemeToggleButton = ({ toggleTheme } : ThemeToggleButtonProps) => {
+const ThemeToggleButton = ({ toggleTheme } : ThemeToggleButtonProps) : React.JSX.Element => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 

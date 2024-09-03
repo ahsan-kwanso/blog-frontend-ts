@@ -5,7 +5,7 @@ import useCustomNavigation from "../routes/useCustomNavigation";
 import { Tooltip, Typography } from "@mui/material";
 import { SignUpButtonProps } from "../types/Buttons.interfaces";
 
-const SignUpButton = ({ isSmallScreen } : SignUpButtonProps) => {
+const SignUpButton = ({ isSmallScreen } : SignUpButtonProps) : JSX.Element => {
   const { signupPage } = useCustomNavigation();
 
   const handleSignUp = () => {

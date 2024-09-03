@@ -6,7 +6,7 @@ import useCustomNavigation from "../routes/useCustomNavigation";
 import { Typography, Tooltip } from "@mui/material";
 import { SignOutButtonProps } from "../types/Buttons.interfaces";
 
-const SignOutButton = ({ isSmallScreen } : SignOutButtonProps) => {
+const SignOutButton = ({ isSmallScreen } : SignOutButtonProps): JSX.Element => {
   const { loginPage } = useCustomNavigation();
   const { signout } = useContext(AuthContext);
 

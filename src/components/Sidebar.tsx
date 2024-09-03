@@ -11,7 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { getToken } from "../utils/authUtils";
 
-const Sidebar = () => {
+const Sidebar = (): JSX.Element => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { user } = useContext(AuthContext);
   const isUserLoggedIn = getToken();
@@ -38,7 +38,7 @@ const Sidebar = () => {
 
   // Render nothing until the selectedTab is properly set
   if (selectedTab === null) {
-    return null;
+    return <></>;
   }
 
   return (

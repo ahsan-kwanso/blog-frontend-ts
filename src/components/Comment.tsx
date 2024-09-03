@@ -15,7 +15,7 @@ import { useDeleteComment } from "../hooks/useDeleteComment";
 import { CommentProps } from "../types/Comment.interfaces";
 
 
-const Comment = ({ comment, onReplySubmit } : CommentProps) => {
+const Comment = ({ comment, onReplySubmit } : CommentProps) : JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [replying, setReplying] = useState<boolean>(false);
   const { deleteComment, error, success } = useDeleteComment();

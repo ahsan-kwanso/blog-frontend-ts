@@ -10,7 +10,7 @@ import { ReplyFormProps } from "../types/Comment.interfaces";
 
 type ReplyFormData = z.infer<typeof replySchema>;
 
-const ReplyForm = ({ postId, parentId, onClose } : ReplyFormProps) => {
+const ReplyForm = ({ postId, parentId, onClose } : ReplyFormProps): JSX.Element => {
   const { createComment, error } = useCreateComment();
   const [formError, setFormError] = useError();
 

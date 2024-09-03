@@ -57,7 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchField = () => {
+const SearchField = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();

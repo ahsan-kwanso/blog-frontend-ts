@@ -3,7 +3,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import Comment from "./Comment";
 import { CommentSectionProps } from "../types/Comment.interfaces";
 
-const CommentSection = ({ comments, onReplySubmit } : CommentSectionProps) => {
+const CommentSection = ({ comments, onReplySubmit } : CommentSectionProps): JSX.Element => {
   if (comments === null) {
     return (
       <Typography variant="body1" color="textSecondary">

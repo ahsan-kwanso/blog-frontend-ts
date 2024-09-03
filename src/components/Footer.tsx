@@ -21,7 +21,7 @@ const FooterText = styled(Typography)(({ theme }) => ({
   fontStyle: "italic",
 }));
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   const currentYear = new Date().getFullYear();
   return (
     <FooterContainer

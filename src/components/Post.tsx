@@ -45,7 +45,7 @@ const Post = ({
   date,
   showEdit,
   showDelete,
-} : PostProps) => {
+} : PostProps): JSX.Element => {
   const { viewPostPage, editPostPage } = useCustomNavigation();
   const { deletePost, error: deleteError } = useDeletePost();
   const [successMessage, setSuccessMessage] = useState("");

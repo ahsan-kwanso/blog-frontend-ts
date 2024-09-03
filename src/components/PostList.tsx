@@ -5,7 +5,7 @@ import Post from "./Post";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PostListProps } from "../types/Post.interfaces";
 
-const PostList = ({ posts, isLoading, showEdit, showDelete } : PostListProps) => {
+const PostList = ({ posts, isLoading, showEdit, showDelete } : PostListProps): JSX.Element => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   return (
     <Container sx={{ marginTop: "10px" }}>

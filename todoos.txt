@@ -8,3 +8,8 @@ working TS version of whole app
 
 
 opitimize the interfaces using extend, use generics somewhere
+
+
+tell return type jsx.element, everything must have return type
+enable linting for more robust handling
+when to use unknown never any

@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import useCustomNavigation from "../routes/useCustomNavigation";
 
-const ProfileButton = () => {
+const ProfileButton = (): JSX.Element => {
   const { profilePage } = useCustomNavigation();
 
   const handleClick = () => {

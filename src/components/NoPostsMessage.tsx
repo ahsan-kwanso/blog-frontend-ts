@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
 import { NoPostsMessageProps } from "../types/Post.interfaces";
 
-const NoPostsMessage = ({ isLoading, posts } : NoPostsMessageProps) => {
+const NoPostsMessage = ({ isLoading, posts }: NoPostsMessageProps): JSX.Element => {
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const NoPostsMessage = ({ isLoading, posts } : NoPostsMessageProps) => {
     }
   }, [isLoading, posts]);
 
-  if (isLoading) return null; // Don't show the message while loading
+  if (isLoading) return <></>; // Use empty fragment instead of null
 
   return showMessage ? (
     <Box
@@ -31,7 +31,7 @@ const NoPostsMessage = ({ isLoading, posts } : NoPostsMessageProps) => {
         No posts available.
       </Typography>
     </Box>
-  ) : null;
+  ) : <></>; // Use empty fragment instead of null
 };
 
 export default NoPostsMessage;

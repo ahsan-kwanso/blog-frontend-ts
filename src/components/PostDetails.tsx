@@ -6,7 +6,6 @@ import { getRandomImage } from "../utils/getRandomImage";
 import { format } from "date-fns";
 import ReplyForm from "./ReplyForm"; // Assuming you have a ReplyForm component
 import useCustomNavigation from "../routes/useCustomNavigation";
-import { useNavigation } from "react-router-dom";
 import { PostDetailsProps } from "../types/Post.interfaces";
 
 const PostCard = styled(Box)(({ theme }) => ({
@@ -26,7 +25,7 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
 }));
 
 
-const PostDetails = ({ post, onReplySubmit } : PostDetailsProps) => {
+const PostDetails = ({ post, onReplySubmit } : PostDetailsProps): JSX.Element => {
   const [isReplyFormVisible, setIsReplyFormVisible] = useState(false);
   const { postsPage } = useCustomNavigation();
 

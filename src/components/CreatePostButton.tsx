@@ -4,7 +4,7 @@ import useCustomNavigation from "../routes/useCustomNavigation";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AddIcon from "@mui/icons-material/Add";
 
-const CreatePostButton = () => {
+const CreatePostButton = () : JSX.Element => {
   const { createPostPage } = useCustomNavigation();
   const isSmallScreen = useMediaQuery("(max-width:750px)");
 

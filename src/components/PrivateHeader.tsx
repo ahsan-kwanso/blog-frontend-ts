@@ -17,7 +17,7 @@ const CustomTypography = styled(Typography)(({ theme }) => ({
   fontSize: "2rem",
 }));
 
-const PrivateHeader = () => {
+const PrivateHeader = (): JSX.Element => {
   const { toggleTheme } = useTheme();
 
   return (

@@ -5,7 +5,7 @@ import useCustomNavigation from "../routes/useCustomNavigation";
 import { Tooltip, Typography } from "@mui/material";
 import { LoginButtonProps } from "../types/Buttons.interfaces";
 
-const LoginButton = ({ isSmallScreen } : LoginButtonProps) => {
+const LoginButton = ({ isSmallScreen } : LoginButtonProps): JSX.Element => {
   const { loginPage } = useCustomNavigation();
 
   const handleLogin = () => {

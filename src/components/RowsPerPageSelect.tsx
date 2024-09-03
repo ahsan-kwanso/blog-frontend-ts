@@ -7,7 +7,7 @@ interface RowsPerPageSelectProps {
   onChange: (event: SelectChangeEvent<number>) => void;
 }
 
-const RowsPerPageSelect = ({ rowsPerPage, onChange } : RowsPerPageSelectProps ) => {
+const RowsPerPageSelect = ({ rowsPerPage, onChange } : RowsPerPageSelectProps ): JSX.Element=> {
   return (
     <FormControl
       sx={{
