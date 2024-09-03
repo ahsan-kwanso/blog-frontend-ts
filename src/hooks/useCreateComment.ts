@@ -4,15 +4,16 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
-import { CreateCommentData } from "../types/Comment.interfaces";
+import { CreateCommentData, Comment as CommentResponse } from "../types/Comment.interfaces";
+import { AxiosResponse } from "axios";
 
 export const useCreateComment = () => {
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const createComment = async (data : CreateCommentData) => {
+  const createComment = async (data : CreateCommentData) : Promise<CommentResponse> => {
     try {
-      const response = await axiosInstance.post(API_URL.comment, data);
+      const response = await axiosInstance.post<CommentResponse, AxiosResponse<CommentResponse>, CreateCommentData>(API_URL.comment, data);
       setSuccess("Comment created successfully!");
       return response.data;
     } catch (err: unknown) {

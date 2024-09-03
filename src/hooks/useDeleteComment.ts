@@ -3,14 +3,15 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
+import { AxiosResponse } from "axios";
 
 export const useDeleteComment = () => {
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const deleteComment = async (commentId: number) => {
+  const deleteComment = async (commentId: number) : Promise<boolean> => {
     try {
-      const response = await axiosInstance.delete(`${API_URL.comment}/${commentId}`);
+      const response = await axiosInstance.delete<boolean, AxiosResponse<boolean>, number>(`${API_URL.comment}/${commentId}`);
       if (response.status === 200) {
         setSuccess("Comment deleted successfully");
         return true;

@@ -4,19 +4,20 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
-import { PostData } from "../types/Post.interfaces";
+import { PostData, Post as PostResponse } from "../types/Post.interfaces";
+import { AxiosResponse } from "axios";
 
 const useCreatePost = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const createPost = async (data  : PostData) => {
+  const createPost = async (data  : PostData) : Promise<PostResponse> => {
     setIsCreating(true);
     setError(null); // Reset error state
     setSuccess(null); // Reset success state
     try {
-      const response = await axiosInstance.post(API_URL.post, data);
+      const response = await axiosInstance.post<PostResponse, AxiosResponse<PostResponse>, PostData>(API_URL.post, data);
       setSuccess("Post created successfully!");
       return response.data;
     } catch (err: unknown) {
