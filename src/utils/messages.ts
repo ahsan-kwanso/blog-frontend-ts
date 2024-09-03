@@ -1,5 +1,31 @@
 // validation messages for zod
-export const VALIDATION_MESSAGES = {
+interface ValidationMessages {
+  email: {
+    required: string;
+    invalid: string;
+  };
+  password: {
+    required: string;
+    minLength: string;
+  };
+  name: {
+    required: string;
+  };
+  title: {
+    required: string;
+    maxLength: string;
+  };
+  content: {
+    minLength: string;
+    maxLength: string;
+  };
+  reply: {
+    empty: string;
+    onlySpaces: string;
+  };
+}
+
+export const VALIDATION_MESSAGES :  ValidationMessages= {
   email: {
     required: "Email is required",
     invalid: "Invalid email address",
