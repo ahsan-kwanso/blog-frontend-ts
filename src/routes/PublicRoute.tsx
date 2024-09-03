@@ -6,7 +6,7 @@ import PublicLayout from "../layouts/PublicLayout";
 import { PAGE_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
 
-const PublicRoute = () => {
+const PublicRoute = (): JSX.Element => {
   const token = getToken();
   const {user} = useContext(AuthContext);
   if (user === null) {

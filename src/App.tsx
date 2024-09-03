@@ -5,7 +5,7 @@ import { SnackbarProvider } from "./contexts/SnackbarContext";
 import AppRoutes from "./routes/AppRoutes";
 import "./utils/global.css";
 
-const App = () => {
+const App = (): JSX.Element => {
   return (
     <AuthProvider>
       <ThemeProvider>

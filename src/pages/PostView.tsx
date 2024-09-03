@@ -20,7 +20,7 @@ const StyledSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-const PostView = () => {
+const PostView = (): JSX.Element => {
   const { postId } = useParams<{ postId: string }>();
   const numericPostId = postId ? parseInt(postId, 10) : null;
   const [refresh, setRefresh] = useState<number>(0);

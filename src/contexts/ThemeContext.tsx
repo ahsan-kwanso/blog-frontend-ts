@@ -19,7 +19,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const ThemeProvider = ({ children } : ThemeProviderProps) => {
+const ThemeProvider = ({ children } : ThemeProviderProps) : JSX.Element => {
   const [themeMode, setThemeMode] = useState(
     localStorage.getItem("themeMode") || "light"
   );

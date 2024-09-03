@@ -6,7 +6,7 @@ interface PrivateLayoutProps {
   children: ReactNode;
 }
 
-const PrivateLayout = ({ children } : PrivateLayoutProps) => {
+const PrivateLayout = ({ children } : PrivateLayoutProps) : JSX.Element => {
   return (
     <div>
       <PrivateHeader />

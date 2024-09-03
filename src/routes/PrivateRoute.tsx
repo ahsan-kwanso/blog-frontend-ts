@@ -5,7 +5,7 @@ import { getToken } from "../utils/authUtils";
 import PrivateLayout from "../layouts/PrivateLayout";
 import { PAGE_URL } from "../utils/settings";
 
-const PrivateRoute = () => {
+const PrivateRoute = (): JSX.Element => {
   const token = getToken();
   const { showSnackbar } = useSnackbar();
 

@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import { getToken, setToken, removeToken } from "../utils/authUtils";
 import axiosInstance from "../axiosInstance";
 import { API_URL } from "../utils/settings";
 import {User} from "../types/Contexts.interfaces"
 import { AuthContextType } from "../types/Contexts.interfaces";
+import { AxiosResponse } from "axios";
 
 
 const initialAuthContext: AuthContextType = {
@@ -26,7 +27,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+const AuthProvider = ({ children }: AuthProviderProps) : JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async () => {
@@ -46,7 +47,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     fetchUser();
   }, []);
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (name: string, email: string, password: string): Promise<AxiosResponse> => {
     try {
       const response = await axiosInstance.post(API_URL.signup, {
         name,
@@ -66,7 +67,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const signin = async (email: string, password: string) => {
+  const signin = async (email: string, password: string): Promise<AxiosResponse> => {
     try {
       const response = await axiosInstance.post(API_URL.signin, {
         email,

@@ -19,7 +19,7 @@ import Sidebar from "../components/Sidebar";
 import RowsPerPageSelect from "../components/RowsPerPageSelect";
 import NoPostsMessage from "../components/NoPostsMessage";
 
-const Posts = () => {
+const Posts = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);

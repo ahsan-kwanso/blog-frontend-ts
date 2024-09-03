@@ -7,7 +7,7 @@ interface PublicLayoutProps {
 }
 
 
-const PublicLayout = ({ children } : PublicLayoutProps) => {
+const PublicLayout = ({ children } : PublicLayoutProps) : JSX.Element => {
   return (
     <div>
       <PublicHeader />

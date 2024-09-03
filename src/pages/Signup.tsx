@@ -51,7 +51,7 @@ const LoginLink = styled(Link)(({ theme }) => ({
 }));
 
 
-const Signup = () => {
+const Signup = (): JSX.Element => {
   const { signup } = useContext(AuthContext);
   const [error, setError] = useError();
   const { postsPage } = useCustomNavigation();

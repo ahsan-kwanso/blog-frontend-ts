@@ -6,7 +6,7 @@ import { stringAvatar } from "../utils/avatarUtils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useCustomNavigation from "../routes/useCustomNavigation";
 
-const Profile = () => {
+const Profile = (): JSX.Element => {
   const { postsPage } = useCustomNavigation();
   const { user } = useContext(AuthContext);
 

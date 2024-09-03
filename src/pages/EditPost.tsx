@@ -1,5 +1,4 @@
-// src/pages/EditPost.jsx
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Container,
@@ -18,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { EditPostData } from "../types/Post.interfaces";
 
-const EditPost = () => {
+const EditPost = () : JSX.Element => {
   const { postId } = useParams<{ postId: string }>(); // Ensure postId is a string
   const numericPostId = postId ? parseInt(postId, 10) : null;
   const { myPostsPage, postsPage } = useCustomNavigation();

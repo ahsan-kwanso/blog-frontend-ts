@@ -1,5 +1,3 @@
-// src/pages/CreatePost.jsx
-import React from "react";
 import { useForm } from "react-hook-form";
 import {
   Container,
@@ -16,7 +14,7 @@ import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostData } from "../types/Post.interfaces";
 
-const CreatePost = () => {
+const CreatePost = () : JSX.Element => {
   const {
     register,
     handleSubmit,

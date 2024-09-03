@@ -15,7 +15,7 @@ const EditPost = lazy(() => import("../pages/EditPost"));
 const Profile = lazy(() => import("../pages/Profile"));
 const PostView = lazy(() => import("../pages/PostView"));
 
-const AppRoutes = () => {
+const AppRoutes = (): JSX.Element => {
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
