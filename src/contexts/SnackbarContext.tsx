@@ -7,8 +7,9 @@ import { SnackbarContextType } from "../types/Contexts.interfaces";
 const MySwal = withReactContent(Swal);
 
 /// Create SnackbarContext with a default value
-const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
-
+const SnackbarContext = createContext<SnackbarContextType | undefined>(
+  undefined
+);
 
 // Styled Snackbar Component
 const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -30,7 +31,9 @@ interface SnackProviderProps {
   children: ReactNode;
 }
 // SnackbarProvider Component
-export const SnackbarProvider = ({ children } : SnackProviderProps) : JSX.Element => {
+export const SnackbarProvider = ({
+  children,
+}: SnackProviderProps): JSX.Element => {
   const themeMode = localStorage.getItem("themeMode");
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -39,7 +42,10 @@ export const SnackbarProvider = ({ children } : SnackProviderProps) : JSX.Elemen
   });
 
   // Show Snackbar with styling
-  const showSnackbar = (message: string, type: "success" | "error" | "warning" | "info" = "info") => {
+  const showSnackbar = (
+    message: string,
+    type: "success" | "error" | "warning" | "info" = "info"
+  ) => {
     const backgroundColor = themeMode === "dark" ? "#333" : "#fff"; // Dark or light theme
     const textColor = themeMode === "dark" ? "#fff" : "#000";
     MySwal.fire({
@@ -56,12 +62,12 @@ export const SnackbarProvider = ({ children } : SnackProviderProps) : JSX.Elemen
       didOpen: () => {
         // Add custom styling inline for the toast
         const toast = document.querySelector(".swal-toast");
-      if (toast) {
-        // Type assertion for element styling
-        (toast as HTMLElement).style.backgroundColor = backgroundColor;
-        (toast as HTMLElement).style.marginBottom = "70px"; // Adjust this value as needed
-        (toast as HTMLElement).style.color = textColor; // Apply text color
-      }
+        if (toast) {
+          // Type assertion for element styling
+          (toast as HTMLElement).style.backgroundColor = backgroundColor;
+          (toast as HTMLElement).style.marginBottom = "70px"; // Adjust this value as needed
+          (toast as HTMLElement).style.color = textColor; // Apply text color
+        }
       },
     });
   };
@@ -79,7 +85,10 @@ export const SnackbarProvider = ({ children } : SnackProviderProps) : JSX.Elemen
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity={snackbar.type as "success" | "error" | "warning" | "info"}>
+        <Alert
+          onClose={handleClose}
+          severity={snackbar.type as "success" | "error" | "warning" | "info"}
+        >
           {snackbar.message}
         </Alert>
       </StyledSnackbar>

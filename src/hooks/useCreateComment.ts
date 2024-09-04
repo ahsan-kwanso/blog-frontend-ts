@@ -13,6 +13,7 @@ export const useCreateComment = () => {
 
   const createComment = async (data : CreateCommentData) : Promise<CommentResponse> => {
     try {
+      //make generic for this post, see reeact query, lazy query query
       const response = await axiosInstance.post<CommentResponse, AxiosResponse<CommentResponse>, CreateCommentData>(API_URL.comment, data);
       setSuccess("Comment created successfully!");
       return response.data;
