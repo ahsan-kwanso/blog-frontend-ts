@@ -36,3 +36,21 @@ export interface CreateCommentData {
   content?: string;
   ParentId?: number | null;
 }
+
+export interface UseCreateCommentReturn {
+  createComment: (data: CreateCommentData) => Promise<Comment>;
+  error: string | null;
+  success: string | null;
+}
+
+export interface UseDeleteCommentReturn {
+  deleteComment: (commentId: number) => Promise<boolean>;
+  error: string | null;
+  success: string | null;
+}
+
+export interface UseFetchCommentsByPostIdReturn {
+  comments: Comment[] | null;
+  isLoading: boolean;
+  error: string | null;
+}

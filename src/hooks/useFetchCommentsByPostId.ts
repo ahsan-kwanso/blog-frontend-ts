@@ -3,9 +3,15 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
-import { Comment } from "../types/Comment.interfaces";
+import {
+  Comment,
+  UseFetchCommentsByPostIdReturn,
+} from "../types/Comment.interfaces";
 
-const useFetchCommentsByPostId = (postId : number, refresh : number) => {
+const useFetchCommentsByPostId = (
+  postId: number,
+  refresh: number
+): UseFetchCommentsByPostIdReturn => {
   const [comments, setComments] = useState<Comment[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useError();

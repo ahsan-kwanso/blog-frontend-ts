@@ -4,20 +4,27 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AxiosResponse } from "axios";
+import {
+  OnSuccessCallback,
+  DeletePostResponse,
+  UseDeletePostReturn,
+} from "../types/Post.interfaces";
 
-type OnSuccessCallback = () => void;
-type DeletePostResponse = {
-  message: string;
-};
-
-const useDeletePost = () => {
+const useDeletePost = (): UseDeletePostReturn => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [error, setError] = useError();
 
-  const deletePost = async (postId : number, onSuccess: OnSuccessCallback) : Promise<void> => {
+  const deletePost = async (
+    postId: number,
+    onSuccess: OnSuccessCallback
+  ): Promise<void> => {
     try {
       setIsDeleting(true);
-      const response = await axiosInstance.delete<DeletePostResponse, AxiosResponse<DeletePostResponse>, number>(`${API_URL.post}/${postId}`);
+      const response = await axiosInstance.delete<
+        DeletePostResponse,
+        AxiosResponse<DeletePostResponse>,
+        number
+      >(`${API_URL.post}/${postId}`);
       if (response.data.message === "Post deleted successfully") {
         onSuccess(); // Callback to refresh the posts list or handle success
       } else {

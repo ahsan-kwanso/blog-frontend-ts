@@ -4,17 +4,26 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
-import { CreateCommentData, Comment as CommentResponse } from "../types/Comment.interfaces";
+import {
+  CreateCommentData,
+  Comment as CommentResponse,
+  UseCreateCommentReturn,
+} from "../types/Comment.interfaces";
 import { AxiosResponse } from "axios";
 
-export const useCreateComment = () => {
+export const useCreateComment = (): UseCreateCommentReturn => {
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 
-  const createComment = async (data : CreateCommentData) : Promise<CommentResponse> => {
+  const createComment = async (
+    data: CreateCommentData
+  ): Promise<CommentResponse> => {
     try {
-      //make generic for this post, see reeact query, lazy query query
-      const response = await axiosInstance.post<CommentResponse, AxiosResponse<CommentResponse>, CreateCommentData>(API_URL.comment, data);
+      const response = await axiosInstance.post<
+        CommentResponse,
+        AxiosResponse<CommentResponse>,
+        CreateCommentData
+      >(API_URL.comment, data);
       setSuccess("Comment created successfully!");
       return response.data;
     } catch (err: unknown) {
@@ -22,7 +31,8 @@ export const useCreateComment = () => {
         const axiosError = err as { response?: { data?: ErrorResponse } };
 
         // Use optional chaining and nullish coalescing to handle possible undefined values
-        const errorMessage = axiosError.response?.data?.message ?? "Failed to create comment.";
+        const errorMessage =
+          axiosError.response?.data?.message ?? "Failed to create comment.";
         setError(errorMessage);
       } else {
         // Handle other possible cases of `err`

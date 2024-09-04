@@ -1,0 +1,58 @@
+React Query
+React Query is a powerful library for managing server state in React applications. It simplifies data fetching, caching, synchronizing, and updating data in your application.
+
+Key Features:
+Data Fetching: React Query abstracts the process of fetching data, making it easy to use within React components.
+Caching: Automatically caches the fetched data and reuses it until it becomes stale. This minimizes unnecessary network requests.
+Background Synchronization: Keeps the data in sync by refetching it in the background if necessary.
+Automatic Refetching: Can refetch data when certain events occur, such as window focus, network reconnection, or a specific interval.
+Optimistic Updates: Temporarily update the UI while waiting for the server response, and roll back if the request fails.
+Pagination and Infinite Query: Built-in support for pagination and infinite scrolling.
+
+
+
+import { useQuery } from 'react-query';
+
+function fetchData() {
+  return fetch('https://api.example.com/data').then(response => response.json());
+}
+
+function MyComponent() {
+  const { data, error, isLoading } = useQuery('fetchData', fetchData);
+
+  if (isLoading) return <span>Loading...</span>;
+  if (error) return <span>Error: {error.message}</span>;
+
+  return (
+    <div>
+      {data.map(item => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  );
+}
+
+
+Explanation:
+useQuery: This hook is used to fetch data and manage its state. It accepts a unique key ('fetchData') and a function to fetch data (fetchData).
+The hook returns the data, error, and isLoading states, which you can use to conditionally render your UI.
+
+
+Lazy Query in React
+Lazy Query refers to a query that is not executed immediately when a component mounts. Instead, it's executed on demand, typically in response to a user action like a button click.
+
+Use Case:
+When you don’t want to fetch data automatically when the component loads, but only when a certain condition is met, such as a user clicking a button or submitting a form.
+
+
+Explanation:
+useLazyQuery: Unlike useQuery, this hook does not automatically execute when the component renders. Instead, it returns a function (getData in the example) that you can call when you want to execute the query.
+The query will only execute when getData is invoked, allowing more control over when data fetching occurs.
+Comparison
+React Query: Primarily used for automatically fetching, caching, and syncing data from REST APIs or other endpoints when the component mounts or when specified triggers occur. It is well-suited for managing server state and reducing the need for manual state management.
+
+Lazy Query: Used when you want to delay data fetching until a specific event happens (like a button click). It provides more control over when queries are executed, making it useful for scenarios where immediate data fetching is not desired.
+
+Both concepts serve different purposes, and the choice between them depends on your use case and the specific requirements of your application.
+
+

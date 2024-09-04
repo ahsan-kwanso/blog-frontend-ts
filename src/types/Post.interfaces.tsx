@@ -4,7 +4,7 @@ export interface PostBase {
   content: string;
   date: string;
   author?: string; // Optional if not always needed
-  image?: string;  // Optional if image might not be present
+  image?: string; // Optional if image might not be present
 }
 
 export interface PostProps extends PostBase {
@@ -61,3 +61,44 @@ export interface FetchPostsResponse {
   nextPage: string | null;
   posts: PostWithAuthor[];
 }
+
+export interface UseCreatePostReturn {
+  createPost: (data: PostData) => Promise<Post>;
+  isCreating: boolean;
+  error: string | null;
+  success: string | null;
+}
+
+export type OnSuccessCallback = () => void;
+export interface UseDeletePostReturn {
+  deletePost: (postId: number, onSuccess: OnSuccessCallback) => Promise<void>;
+  isDeleting: boolean;
+  error: string | null;
+}
+
+export type DeletePostResponse = {
+  message: string;
+};
+
+export interface UseEditPostReturn {
+  editPost: (postId: number, postData: EditPostData) => Promise<Post>;
+  loading: boolean;
+  error: string | null;
+  success: string | null;
+}
+
+export interface UseFetchPostByIdReturn {
+  post: Post | undefined;
+  isLoading: boolean;
+  error: string | null;
+}
+
+export interface UseFetchPostsReturn {
+  posts: PostWithAuthor[];
+  total: number;
+  nextPage: string | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
+export interface UseFetchSearchPostsReturn extends UseFetchPostsReturn {}

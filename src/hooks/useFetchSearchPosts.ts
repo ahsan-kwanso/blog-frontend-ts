@@ -4,10 +4,18 @@ import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
-import { PostWithAuthor } from "../types/Post.interfaces";
-import { FetchPostsResponse } from "../types/Post.interfaces";
+import {
+  PostWithAuthor,
+  FetchPostsResponse,
+  UseFetchSearchPostsReturn,
+} from "../types/Post.interfaces";
 
-const useFetchSearchPosts = (title : string, page : number, limit : number, isMyPosts : boolean) => {
+const useFetchSearchPosts = (
+  title: string,
+  page: number,
+  limit: number,
+  isMyPosts: boolean
+): UseFetchSearchPostsReturn => {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -30,9 +38,12 @@ const useFetchSearchPosts = (title : string, page : number, limit : number, isMy
 
         // Determine which params to use
         const params = isMyPosts ? myPostsParams : defaultParams;
-        const response = await axiosInstance.get<FetchPostsResponse>(API_URL.searchPosts, {
-          params,
-        });
+        const response = await axiosInstance.get<FetchPostsResponse>(
+          API_URL.searchPosts,
+          {
+            params,
+          }
+        );
         setPosts(response.data.posts);
         setTotalPosts(response.data.total);
         setNextPage(response.data.nextPage);
