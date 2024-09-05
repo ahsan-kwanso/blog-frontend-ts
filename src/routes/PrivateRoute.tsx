@@ -16,7 +16,7 @@ const PrivateRoute = (): JSX.Element => {
   }, [token, showSnackbar]);
 
   if (!token) {
-    return <Navigate to={PAGE_URL.login} />;
+    return <Navigate to={PAGE_URL.base} />;
   }
 
   return (
