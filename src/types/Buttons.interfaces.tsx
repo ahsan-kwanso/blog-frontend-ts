@@ -9,3 +9,4 @@ export interface ThemeToggleButtonProps {
 export interface LoginButtonProps extends SmallScreenProps {}
 export interface SignOutButtonProps extends SmallScreenProps {}
 export interface SignUpButtonProps extends SmallScreenProps {}
+export interface ManageButtonProps extends SmallScreenProps {}

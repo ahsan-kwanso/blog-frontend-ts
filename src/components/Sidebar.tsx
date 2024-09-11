@@ -6,6 +6,7 @@ import { Person } from "@mui/icons-material";
 import SignOutButton from "./SignOutButton";
 import LoginButton from "./LoginButton";
 import SignUpButton from "./SignUpButton";
+import ManageButton from "./ManageButton";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { useSearchParams } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
@@ -14,6 +15,7 @@ import { getToken } from "../utils/authUtils";
 const Sidebar = (): JSX.Element => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { user } = useContext(AuthContext);
+  const isAdmin = user?.role === "admin";
   const isUserLoggedIn = getToken();
   const { postsPage, myPostsPage } = useCustomNavigation();
   const [selectedTab, setSelectedTab] = useState<null | 0 | 1>(null); // Initialize as null to handle loading state
@@ -90,10 +92,13 @@ const Sidebar = (): JSX.Element => {
       </Tabs>
       <Box sx={{ marginTop: "auto", mb: 7, ml: isSmallScreen ? 0 : 2 }}>
         {user && isUserLoggedIn ? (
-          <SignOutButton isSmallScreen={isSmallScreen} />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mr: 1 }}>
+            {isAdmin && <ManageButton isSmallScreen={isSmallScreen} />}
+            <SignOutButton isSmallScreen={isSmallScreen} />
+          </Box>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mr: 2 }}>
-            <LoginButton  isSmallScreen={isSmallScreen} />
+            <LoginButton isSmallScreen={isSmallScreen} />
             <SignUpButton isSmallScreen={isSmallScreen} />
           </Box>
         )}
