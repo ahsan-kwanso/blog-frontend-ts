@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import ReplyForm from "./ReplyForm"; // Assuming you have a ReplyForm component
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { PostDetailsProps } from "../types/Post.interfaces";
+import BackToDashboardButton from "./BackToDashboardButton";
 
 const PostCard = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
@@ -24,14 +25,11 @@ const PostImage = styled(CardMedia)(({ theme }) => ({
   minHeight: 300,
 }));
 
-
-const PostDetails = ({ post, onReplySubmit } : PostDetailsProps): JSX.Element => {
+const PostDetails = ({
+  post,
+  onReplySubmit,
+}: PostDetailsProps): JSX.Element => {
   const [isReplyFormVisible, setIsReplyFormVisible] = useState<boolean>(false);
-  const { postsPage } = useCustomNavigation();
-
-  const handleBackToDashboard = () => {
-    postsPage();
-  };
 
   const handleReplyClick = () => {
     setIsReplyFormVisible(true);
@@ -45,7 +43,7 @@ const PostDetails = ({ post, onReplySubmit } : PostDetailsProps): JSX.Element =>
   return (
     <PostCard>
       {/* <PostImage component="img" image={getRandomImage()} alt={title} /> */}
-      <PostImage image={getRandomImage()}/>
+      <PostImage image={getRandomImage()} />
       <Typography
         variant="h4"
         gutterBottom
@@ -91,22 +89,13 @@ const PostDetails = ({ post, onReplySubmit } : PostDetailsProps): JSX.Element =>
             Reply
           </Button>
         )}
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleBackToDashboard}
-          sx={{
-            marginBottom: "10px",
-          }}
-        >
-          Back to Dashboard
-        </Button>
+        <BackToDashboardButton />
       </Box>
       {isReplyFormVisible && (
         <ReplyForm
           onClose={handleCloseReplyForm}
           postId={post?.id}
-          parentId={null}
+          parentCommentId={null}
         />
       )}
     </PostCard>
