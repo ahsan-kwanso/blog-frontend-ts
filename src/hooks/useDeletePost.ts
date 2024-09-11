@@ -25,7 +25,11 @@ const useDeletePost = (): UseDeletePostReturn => {
         AxiosResponse<DeletePostResponse>,
         number
       >(`${API_URL.post}/${postId}`);
-      if (response.data.message === "Post deleted successfully") {
+
+      if (
+        response.data.message === "Post deleted successfully" ||
+        response.status === 200
+      ) {
         onSuccess(); // Callback to refresh the posts list or handle success
       } else {
         setError(response.data.message);
