@@ -5,7 +5,6 @@ import PublicRoute from "./PublicRoute";
 import Footer from "../components/Footer";
 import { PAGE_URL } from "../utils/settings";
 import NotFound from "../pages/NotFound";
-import ManageUsers from "../pages/ManageUsers";
 
 // Lazy load the pages
 const Login = lazy(() => import("../pages/Login"));
@@ -15,6 +14,7 @@ const Posts = lazy(() => import("../pages/Posts"));
 const EditPost = lazy(() => import("../pages/EditPost"));
 const Profile = lazy(() => import("../pages/Profile"));
 const PostView = lazy(() => import("../pages/PostView"));
+const ManageUsers = lazy(() => import("../pages/ManageUsers"));
 
 const AppRoutes = (): JSX.Element => {
   return (
