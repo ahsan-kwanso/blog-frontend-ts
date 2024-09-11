@@ -17,4 +17,5 @@ export const PAGE_URL = {
   editPost: `/posts/edit-post/:postId`,
   profile: `/profile`,
   viewPost: `/posts/:postId`,
+  manageUsers: `/manage-users`,
 };
