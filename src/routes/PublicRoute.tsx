@@ -8,14 +8,11 @@ import { AuthContext } from "../contexts/AuthContext";
 
 const PublicRoute = (): JSX.Element => {
   const token = getToken();
-  const {user} = useContext(AuthContext);
-  if (user === null) {
-    removeToken();
-  }
+  const { user } = useContext(AuthContext);
   const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (token) {
+    if (token && user === null) {
       showSnackbar("Already logged in!");
     }
   }, [token, showSnackbar]);
