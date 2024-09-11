@@ -4,7 +4,7 @@ export interface BaseComment {
   content: string;
   UserId: number;
   PostId: number;
-  ParentId: number | null;
+  ParentCommentId: number | null; // for previous versions use ParentId, for ts express backend
   createdAt: string;
   updatedAt: string;
   subComments: BaseComment[];
@@ -26,7 +26,7 @@ export interface CommentSectionProps {
 // Props for the reply form component
 export interface ReplyFormProps {
   postId: number;
-  parentId?: number | null;
+  parentCommentId?: number | null;
   onClose: () => void;
 }
 
@@ -34,7 +34,7 @@ export interface ReplyFormProps {
 export interface CreateCommentData {
   PostId: number;
   content?: string;
-  ParentId?: number | null;
+  ParentCommentId?: number | null;
 }
 
 export interface UseCreateCommentReturn {

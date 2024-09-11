@@ -14,13 +14,12 @@ import { format } from "date-fns";
 import { useDeleteComment } from "../hooks/useDeleteComment";
 import { CommentProps } from "../types/Comment.interfaces";
 
-
-const Comment = ({ comment, onReplySubmit } : CommentProps) : JSX.Element => {
+const Comment = ({ comment, onReplySubmit }: CommentProps): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [replying, setReplying] = useState<boolean>(false);
   const { deleteComment, error, success } = useDeleteComment();
 
-  const handleMenuClick = (event : React.MouseEvent<HTMLElement>) => {
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -87,7 +86,7 @@ const Comment = ({ comment, onReplySubmit } : CommentProps) : JSX.Element => {
         <ReplyForm
           onClose={handleCloseReplyForm}
           postId={comment.PostId}
-          parentId={comment.id}
+          parentCommentId={comment.id} // for express ts use parentId
         />
       )}
       {comment?.subComments && (

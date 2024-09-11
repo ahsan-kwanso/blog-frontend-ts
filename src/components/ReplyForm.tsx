@@ -2,7 +2,7 @@ import React from "react";
 import { Box, TextField, Button, Alert } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {z} from "zod"
+import { z } from "zod";
 import { replySchema } from "../validations/schemaValidations";
 import useCreateComment from "../hooks/useCreateComment";
 import { useError } from "../hooks/useError";
@@ -10,7 +10,11 @@ import { ReplyFormProps } from "../types/Comment.interfaces";
 
 type ReplyFormData = z.infer<typeof replySchema>;
 
-const ReplyForm = ({ postId, parentId, onClose } : ReplyFormProps): JSX.Element => {
+const ReplyForm = ({
+  postId,
+  parentCommentId,
+  onClose,
+}: ReplyFormProps): JSX.Element => {
   const { createComment, error } = useCreateComment();
   const [formError, setFormError] = useError();
 
@@ -32,7 +36,7 @@ const ReplyForm = ({ postId, parentId, onClose } : ReplyFormProps): JSX.Element 
       await createComment({
         PostId: postId,
         content: data.reply,
-        ParentId: parentId || null,
+        ParentCommentId: parentCommentId || null, // for previous express ts use parentId
       });
       reset(); // Clear the input field
       onClose(); // Close the form after submission
