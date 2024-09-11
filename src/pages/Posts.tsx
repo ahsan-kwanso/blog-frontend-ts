@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   Container,
@@ -7,7 +7,7 @@ import {
   Snackbar,
   Alert,
   Typography,
-  SelectChangeEvent
+  SelectChangeEvent,
 } from "@mui/material";
 import PostList from "../components/PostList";
 import useFetchPosts from "../hooks/useFetchPosts";
@@ -18,9 +18,12 @@ import CreatePostButton from "../components/CreatePostButton";
 import Sidebar from "../components/Sidebar";
 import RowsPerPageSelect from "../components/RowsPerPageSelect";
 import NoPostsMessage from "../components/NoPostsMessage";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Posts = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useContext(AuthContext);
+  const isAdmin = user?.role === "admin";
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
   const searchQuery = searchParams.get("search") || "";
@@ -47,40 +50,43 @@ const Posts = (): JSX.Element => {
   const isLoading = searchQuery ? isLoadingSearch : isLoadingDefault;
   const error = searchQuery ? errorSearch : errorDefault;
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     // Define the type for newParams
     const newParams: Record<string, string> = {
       page: value.toString(),
-      limit: rowsPerPage.toString()
+      limit: rowsPerPage.toString(),
     };
-  
+
     if (searchQuery) {
       newParams.search = searchQuery;
     }
     if (isMyPosts) {
       newParams.filter = "my-posts";
     }
-  
+
     setSearchParams(newParams);
   };
-  
+
   const handleRowsPerPageChange = (event: SelectChangeEvent<number>) => {
     const newLimit = event.target.value as string;
     setRowsPerPage(Number(newLimit)); // Ensure rowsPerPage is a number
-  
+
     // Define the type for newParams
     const newParams: Record<string, string> = {
       page: "1", // Set page to 1 when changing rows per page
-      limit: newLimit
+      limit: newLimit,
     };
-  
+
     if (searchQuery) {
       newParams.search = searchQuery;
     }
     if (isMyPosts) {
       newParams.filter = "my-posts";
     }
-  
+
     setSearchParams(newParams);
   };
 
@@ -129,7 +135,7 @@ const Posts = (): JSX.Element => {
               posts={posts}
               isLoading={isLoading}
               showEdit={isMyPosts ? true : false}
-              showDelete={isMyPosts ? true : false}
+              showDelete={isMyPosts || isAdmin ? true : false}
             />
             <Box
               sx={{
