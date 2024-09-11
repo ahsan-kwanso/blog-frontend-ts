@@ -15,17 +15,12 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { useState } from "react";
 import ConfirmAlert from "../Alerts/ConfirmAlert";
 import SuccessAlert from "../Alerts/SuccessAlert";
-
-const mockUsers = [
-  { id: 1, name: "John Doe", email: "john@example.com", posts: 5 },
-  { id: 2, name: "Jane Smith", email: "jane@example.com", posts: 3 },
-  // Add more mock data as needed
-];
+import useFetchUsers from "../hooks/useFetchUsers";
 
 const UserTable = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-
+  const { users, isLoading, error } = useFetchUsers();
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     user: any
@@ -51,6 +46,9 @@ const UserTable = () => {
     }
   };
 
+  if (isLoading) return <Box>Loading...</Box>; // Show a loading state
+  if (error) return <Box>Error loading users</Box>; // Show an error state
+
   return (
     <Box sx={{ overflowX: "auto" }}>
       <TableContainer>
@@ -64,7 +62,7 @@ const UserTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {mockUsers.map((user) => (
+            {users.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>

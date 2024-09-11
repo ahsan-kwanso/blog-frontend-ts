@@ -6,6 +6,7 @@ export const API_URL = {
   me: `/users/me`,
   signup: `/auth/signup`,
   signin: `/auth/signin`,
+  users: `users`,
 };
 
 export const PAGE_URL = {
