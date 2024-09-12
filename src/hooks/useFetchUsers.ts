@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
@@ -13,38 +13,38 @@ const useFetchUsers = (): UseFetchUsersReturn => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useError();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setIsLoading(true);
+  const fetchUsers = async () => {
+    try {
+      setIsLoading(true);
 
-        const response = await axiosInstance.get(
-          API_URL.users // Assuming the API URL is /users
-        );
+      const response = await axiosInstance.get(
+        API_URL.users // Assuming the API URL is /users
+      );
 
-        // Access users from the response data
-        const usersData = response.data; // Adjust this if the structure is different
-        setUsers(usersData);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          const axiosError = err as { response?: { data?: ErrorResponse } };
+      // Access users from the response data
+      const usersData = response.data; // Adjust this if the structure is different
+      setUsers(usersData);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        const axiosError = err as { response?: { data?: ErrorResponse } };
 
-          // Handle the error response
-          const errorMessage =
-            axiosError.response?.data?.message ?? "Failed to delete comment.";
-          setError(errorMessage);
-        } else {
-          setError("Failed to delete comment.");
-        }
-      } finally {
-        setIsLoading(false); // Stop loading
+        // Handle the error response
+        const errorMessage =
+          axiosError.response?.data?.message ?? "Failed to fetch users.";
+        setError(errorMessage);
+      } else {
+        setError("Failed to fetch users.");
       }
-    };
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+  };
 
-    fetchUsers(); // Trigger the fetch
-  }, [setError]); // Dependencies for useEffect
+  useEffect(() => {
+    fetchUsers(); // Trigger the fetch on mount
+  }, []); // Dependencies for useEffect
 
-  return { users, isLoading, error };
+  return { users, isLoading, error, fetchUsers };
 };
 
 export default useFetchUsers;

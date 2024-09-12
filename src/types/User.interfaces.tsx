@@ -11,5 +11,12 @@ export interface UserWithNumberOfPosts {
 export interface UseFetchUsersReturn {
   users: UserWithNumberOfPosts[];
   isLoading: boolean;
-  error: any; // Adjust type as needed
+  error: string | null;
+  fetchUsers: () => Promise<void>;
+}
+
+export interface UserEditRoleReturn {
+  editUserRole: (userId: number, role: string) => Promise<void>;
+  isLoading: boolean;
+  error: string | null;
 }
