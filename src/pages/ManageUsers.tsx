@@ -1,13 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Container, Typography, Paper, Box } from "@mui/material";
 import UserTable from "../components/UserTable";
 import BackToDashboardButton from "../components/BackToDashboardButton";
-import { AuthContext } from "../contexts/AuthContext";
 
 const ManageUsers = (): JSX.Element => {
-  const { user } = useContext(AuthContext);
-  const isAdmin: boolean = user?.role === "admin";
-  return isAdmin ? (
+  return (
     <Container
       component="main"
       maxWidth="md"
@@ -55,35 +52,6 @@ const ManageUsers = (): JSX.Element => {
         </Paper>
       </Box>
     </Container>
-  ) : (
-    <>
-      <Container
-        component="main"
-        maxWidth="md"
-        sx={{
-          marginTop: "80px", // Adjusted margin for centering
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center", // Centers the content horizontally
-          justifyContent: "center", // Centers the content vertically
-        }}
-      >
-        <Box sx={{ my: 3, textAlign: "center", width: "100%" }}>
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
-            sx={{
-              fontWeight: "bold", // Make the title bold for emphasis
-              color: "primary.main", // Use theme's primary color for the title
-            }}
-          >
-            You are not Authorized to this Page.
-          </Typography>
-          <BackToDashboardButton />
-        </Box>
-      </Container>
-    </>
   );
 };
 

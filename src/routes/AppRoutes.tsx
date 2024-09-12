@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
+import AuthorizedRoute from "./AuthorizedRoute";
 import Footer from "../components/Footer";
 import { PAGE_URL } from "../utils/settings";
 import NotFound from "../pages/NotFound";
@@ -32,6 +33,8 @@ const AppRoutes = (): JSX.Element => {
             <Route path={PAGE_URL.profile} element={<Profile />} />
             <Route path={PAGE_URL.posts} element={<Posts />} />
             <Route path={PAGE_URL.viewPost} element={<PostView />} />
+          </Route>
+          <Route element={<AuthorizedRoute />}>
             <Route path={PAGE_URL.manageUsers} element={<ManageUsers />} />
           </Route>
           {/* Other routes */}
