@@ -46,7 +46,7 @@ const useFetchUsers = (page: number, limit: number): UseFetchUsersReturn => {
 
   useEffect(() => {
     fetchUsers(); // Trigger the fetch on mount
-  }, []); // Dependencies for useEffect
+  }, [page, limit]); // Dependencies for useEffect
 
   return { users, isLoading, error, fetchUsers, total, nextPage };
 };
