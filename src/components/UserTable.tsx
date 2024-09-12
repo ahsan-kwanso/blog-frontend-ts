@@ -13,7 +13,6 @@ import {
   MenuItem,
   Snackbar,
   Alert,
-  Skeleton,
 } from "@mui/material";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { useState } from "react";
@@ -23,6 +22,7 @@ import useFetchUsers from "../hooks/useFetchUsers";
 import useEditUserRole from "../hooks/useEditUserRole";
 import { AuthContext } from "../contexts/AuthContext";
 import { defaultLimit, defaultPage } from "../utils/pagination";
+import { renderSkeletonRows } from "./TableSkeleton";
 
 const UserTable = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -68,25 +68,6 @@ const UserTable = () => {
         await SuccessAlert("Action Completed", `${action} was successful!`);
       }
     }
-  };
-
-  const renderSkeletonRows = () => {
-    return Array.from({ length: 5 }).map((_, index) => (
-      <TableRow key={index}>
-        <TableCell>
-          <Skeleton variant="text" width={100} />
-        </TableCell>
-        <TableCell>
-          <Skeleton variant="text" width={200} />
-        </TableCell>
-        <TableCell>
-          <Skeleton variant="text" width={60} />
-        </TableCell>
-        <TableCell>
-          <Skeleton variant="rectangular" width={30} height={30} />
-        </TableCell>
-      </TableRow>
-    ));
   };
 
   return (
