@@ -17,6 +17,7 @@ import useFetchUsers from "../hooks/useFetchUsers";
 import useEditUserRole from "../hooks/useEditUserRole";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
+import FilterUsers from "../components/FilterUsers";
 
 const ManageUsers = (): JSX.Element => {
   const isSmallScreen = useMediaQuery("(max-width:650px)");
@@ -24,6 +25,10 @@ const ManageUsers = (): JSX.Element => {
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimitUser}`);
   const [rowsPerPage, setRowsPerPage] = useState<number>(limit);
+  const [sortBy, setSortBy] = useState<string>("");
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
+  const [roleFilter, setRoleFilter] = useState<string>("");
+
   const { users, isLoading, error, fetchUsers, total, nextPage } =
     useFetchUsers(page, limit);
   const {
@@ -38,7 +43,6 @@ const ManageUsers = (): JSX.Element => {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    // Define the type for newParams
     const newParams: Record<string, string> = {
       page: value.toString(),
       limit: rowsPerPage.toString(),
@@ -51,7 +55,6 @@ const ManageUsers = (): JSX.Element => {
     const newLimit = event.target.value as string;
     setRowsPerPage(Number(newLimit)); // Ensure rowsPerPage is a number
 
-    // Define the type for newParams
     const newParams: Record<string, string> = {
       page: "1", // Set page to 1 when changing rows per page
       limit: newLimit,
@@ -60,38 +63,58 @@ const ManageUsers = (): JSX.Element => {
     setSearchParams(newParams);
   };
 
+  const handleSortChange = (sortBy: string, order: "asc" | "desc") => {
+    setSortBy(sortBy);
+    setOrder(order);
+    // Add logic to refetch users with new sort and order parameters if needed
+  };
+
+  const handleFilterChange = (role: string) => {
+    setRoleFilter(role);
+    // Add logic to refetch users with new role filter if needed
+  };
+
   return (
     <Container
       component="main"
       maxWidth="md"
       sx={{
-        marginTop: "80px", // Adjusted margin for centering
+        marginTop: "80px",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center", // Centers the content horizontally
-        justifyContent: "center", // Centers the content vertically
+        alignItems: "center",
       }}
     >
-      <Box sx={{ my: 3, textAlign: "center", width: "100%" }}>
+      <Box sx={{ my: 3, width: "100%" }}>
         <Typography
           variant="h4"
           component="h1"
+          ml={3}
+          mr={3}
           gutterBottom
           sx={{
-            fontWeight: "bold", // Make the title bold for emphasis
-            color: "primary.main", // Use theme's primary color for the title
+            fontWeight: "bold",
+            color: "primary.main",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          User Management
+          Admin Panel
+          <FilterUsers
+            onSortChange={handleSortChange}
+            onFilterChange={handleFilterChange}
+          />
         </Typography>
         <Paper
           sx={{
-            p: 4, // More padding for a cleaner layout
-            width: "100%", // Full width for the table to fit the container
-            maxWidth: "800px", // Set a max width for the content
-            boxShadow: 3, // Add some shadow for depth
-            borderRadius: 2, // Rounded corners for a modern look
-            position: "relative", // Set relative positioning for the Paper
+            p: 4,
+            width: "100%",
+            maxWidth: "100%", // Ensure it uses the full width available
+            boxShadow: 3,
+            borderRadius: 2,
+            position: "relative",
+            overflowX: "auto", // Ensure overflow is handled
           }}
         >
           <UserTable
@@ -102,14 +125,6 @@ const ManageUsers = (): JSX.Element => {
             loggedInUserId={loggedInUserId}
             editError={editError}
           />
-          <Box
-            sx={{
-              position: "absolute",
-              right: 0, // Aligns the button to the right
-              mt: 5,
-              mr: 2, // Margin right for spacing
-            }}
-          ></Box>
         </Paper>
       </Box>
       <Box
