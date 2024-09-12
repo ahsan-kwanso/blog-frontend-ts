@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Box,
   Table,
@@ -15,30 +14,30 @@ import {
   Alert,
 } from "@mui/material";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import { useState } from "react";
 import ConfirmAlert from "../Alerts/ConfirmAlert";
 import SuccessAlert from "../Alerts/SuccessAlert";
-import useFetchUsers from "../hooks/useFetchUsers";
-import useEditUserRole from "../hooks/useEditUserRole";
-import { AuthContext } from "../contexts/AuthContext";
-import { defaultLimit, defaultPage } from "../utils/pagination";
 import { renderSkeletonRows } from "./TableSkeleton";
 
-const UserTable = () => {
+// Define props for UserTable
+interface UserTableProps {
+  users: any[];
+  isLoading: boolean;
+  fetchUsers: () => Promise<void>;
+  editUserRole: (userId: number, role: string) => Promise<void>;
+  loggedInUserId: string;
+  editError: string | null;
+}
+
+const UserTable = ({
+  users,
+  isLoading,
+  fetchUsers,
+  editUserRole,
+  loggedInUserId,
+  editError,
+}: UserTableProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
-  const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
-  const { users, isLoading, error, fetchUsers, total, nextPage } =
-    useFetchUsers(page, limit);
-  const {
-    editUserRole,
-    isLoading: isEditing,
-    error: editError,
-  } = useEditUserRole();
-  const { user } = useContext(AuthContext);
-  const loggedInUserId = user?.id;
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -64,7 +63,7 @@ const UserTable = () => {
       const role = action === "Make Admin" ? "admin" : "user";
       await editUserRole(selectedUser.id, role);
       if (!editError) {
-        await fetchUsers(); //as it will help updating UI to update roles
+        await fetchUsers(); // As it will help updating UI to update roles
         await SuccessAlert("Action Completed", `${action} was successful!`);
       }
     }

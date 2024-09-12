@@ -1,9 +1,63 @@
-import React from "react";
-import { Container, Typography, Paper, Box } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Container,
+  Typography,
+  Paper,
+  Box,
+  SelectChangeEvent,
+  Pagination,
+} from "@mui/material";
 import UserTable from "../components/UserTable";
 import BackToDashboardButton from "../components/BackToDashboardButton";
+import { useSearchParams } from "react-router-dom";
+import RowsPerPageSelect from "../components/RowsPerPageSelect";
+import { defaultLimit, defaultPage } from "../utils/pagination";
+import useFetchUsers from "../hooks/useFetchUsers";
+import useEditUserRole from "../hooks/useEditUserRole";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 const ManageUsers = (): JSX.Element => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
+  const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(limit);
+  const { users, isLoading, error, fetchUsers, total, nextPage } =
+    useFetchUsers(page, limit);
+  const {
+    editUserRole,
+    isLoading: isEditing,
+    error: editError,
+  } = useEditUserRole();
+  const { user } = useContext(AuthContext);
+  const loggedInUserId = user?.id as string;
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    // Define the type for newParams
+    const newParams: Record<string, string> = {
+      page: value.toString(),
+      limit: rowsPerPage.toString(),
+    };
+
+    setSearchParams(newParams);
+  };
+
+  const handleRowsPerPageChange = (event: SelectChangeEvent<number>) => {
+    const newLimit = event.target.value as string;
+    setRowsPerPage(Number(newLimit)); // Ensure rowsPerPage is a number
+
+    // Define the type for newParams
+    const newParams: Record<string, string> = {
+      page: "1", // Set page to 1 when changing rows per page
+      limit: newLimit,
+    };
+
+    setSearchParams(newParams);
+  };
+
   return (
     <Container
       component="main"
@@ -38,7 +92,14 @@ const ManageUsers = (): JSX.Element => {
             position: "relative", // Set relative positioning for the Paper
           }}
         >
-          <UserTable />
+          <UserTable
+            users={users}
+            isLoading={isLoading}
+            fetchUsers={fetchUsers}
+            editUserRole={editUserRole}
+            loggedInUserId={loggedInUserId}
+            editError={editError}
+          />
           <Box
             sx={{
               position: "absolute",
@@ -50,6 +111,25 @@ const ManageUsers = (): JSX.Element => {
             <BackToDashboardButton />
           </Box>
         </Paper>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 2,
+          mb: 8,
+        }}
+      >
+        <Pagination
+          count={Math.ceil(total / rowsPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+        />
+        <RowsPerPageSelect
+          rowsPerPage={rowsPerPage}
+          onChange={handleRowsPerPageChange}
+        />
       </Box>
     </Container>
   );
