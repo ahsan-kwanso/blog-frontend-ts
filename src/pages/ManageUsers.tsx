@@ -25,12 +25,18 @@ const ManageUsers = (): JSX.Element => {
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimitUser}`);
   const [rowsPerPage, setRowsPerPage] = useState<number>(limit);
-  const [sortBy, setSortBy] = useState<string>("");
-  const [order, setOrder] = useState<"asc" | "desc">("asc");
-  const [roleFilter, setRoleFilter] = useState<string>("");
+  const [sortBy, setSortBy] = useState<string>(
+    searchParams.get("sortBy") ?? ""
+  );
+  const [order, setOrder] = useState<"asc" | "desc">(
+    (searchParams.get("sortOrder") as "asc" | "desc") ?? ""
+  );
+  const [roleFilter, setRoleFilter] = useState<string>(
+    searchParams.get("role") ?? ""
+  );
 
   const { users, isLoading, error, fetchUsers, total, nextPage } =
-    useFetchUsers(page, limit);
+    useFetchUsers(page, limit, sortBy, order, roleFilter);
   const {
     editUserRole,
     isLoading: isEditing,
@@ -47,6 +53,9 @@ const ManageUsers = (): JSX.Element => {
       page: value.toString(),
       limit: rowsPerPage.toString(),
     };
+    if (sortBy) newParams.sortBy = sortBy;
+    if (order) newParams.sortOrder = order;
+    if (roleFilter) newParams.role = roleFilter;
 
     setSearchParams(newParams);
   };
@@ -59,19 +68,41 @@ const ManageUsers = (): JSX.Element => {
       page: "1", // Set page to 1 when changing rows per page
       limit: newLimit,
     };
-
+    if (sortBy) newParams.sortBy = sortBy;
+    if (order) newParams.sortOrder = order;
+    if (roleFilter) newParams.role = roleFilter;
     setSearchParams(newParams);
   };
 
   const handleSortChange = (sortBy: string, order: "asc" | "desc") => {
     setSortBy(sortBy);
     setOrder(order);
-    // Add logic to refetch users with new sort and order parameters if needed
+
+    const newParams: Record<string, string> = {
+      page: "1",
+      limit: rowsPerPage.toString(),
+    };
+
+    if (sortBy) newParams.sortBy = sortBy;
+    if (order) newParams.sortOrder = order; // Add only if there's an order
+    if (roleFilter) newParams.role = roleFilter; // Only include role if it's set
+
+    setSearchParams(newParams);
   };
 
   const handleFilterChange = (role: string) => {
     setRoleFilter(role);
-    // Add logic to refetch users with new role filter if needed
+
+    const newParams: Record<string, string> = {
+      page: "1",
+      limit: rowsPerPage.toString(),
+    };
+
+    if (sortBy) newParams.sortBy = sortBy;
+    if (order) newParams.sortOrder = order;
+    if (role) newParams.role = role; // Only include role if it's set
+
+    setSearchParams(newParams);
   };
 
   return (

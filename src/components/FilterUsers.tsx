@@ -56,9 +56,9 @@ const FilterUsers: React.FC<UserFilterProps> = ({
           onChange={handleSortChange}
           displayEmpty
         >
-          {/* <MenuItem value="">
+          <MenuItem value="">
             <em>None</em>
-          </MenuItem> */}
+          </MenuItem>
           <MenuItem value="name:asc">Name (A-Z)</MenuItem>
           <MenuItem value="name:desc">Name (Z-A)</MenuItem>
           <MenuItem value="posts:asc">Posts (Low to High)</MenuItem>
@@ -73,7 +73,16 @@ const FilterUsers: React.FC<UserFilterProps> = ({
           value={role}
           onChange={handleFilterChange}
           displayEmpty
+          renderValue={(selected) => {
+            if (!selected) {
+              return <em></em>;
+            }
+            return selected === "" ? "" : selected;
+          }}
         >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
           <MenuItem value="admin">Admins</MenuItem>
           <MenuItem value="user">Users</MenuItem>
         </Select>

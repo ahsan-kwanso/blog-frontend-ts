@@ -8,7 +8,21 @@ import {
   UseFetchUsersReturn,
 } from "../types/User.interfaces";
 
-const useFetchUsers = (page: number, limit: number): UseFetchUsersReturn => {
+interface FetchUsersParams {
+  page: number;
+  limit: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  role?: string;
+}
+
+const useFetchUsers = (
+  page: number,
+  limit: number,
+  sortBy?: string,
+  sortOrder?: "asc" | "desc",
+  role?: string
+): UseFetchUsersReturn => {
   const [users, setUsers] = useState<UserWithNumberOfPosts[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [nextPage, setNextPage] = useState<string | null>(null);
@@ -19,7 +33,17 @@ const useFetchUsers = (page: number, limit: number): UseFetchUsersReturn => {
     try {
       setIsLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 400));
-      const params = { page, limit };
+      const params: FetchUsersParams = { page, limit };
+
+      if (sortBy) {
+        params.sortBy = sortBy;
+      }
+      if (sortOrder) {
+        params.sortOrder = sortOrder;
+      }
+      if (role) {
+        params.role = role;
+      }
       const response = await axiosInstance.get(
         API_URL.users, // Assuming the API URL is /users
         { params }
@@ -46,7 +70,7 @@ const useFetchUsers = (page: number, limit: number): UseFetchUsersReturn => {
 
   useEffect(() => {
     fetchUsers(); // Trigger the fetch on mount
-  }, [page, limit]); // Dependencies for useEffect
+  }, [page, limit, sortBy, sortOrder, role]); // Dependencies for useEffect
 
   return { users, isLoading, error, fetchUsers, total, nextPage };
 };
