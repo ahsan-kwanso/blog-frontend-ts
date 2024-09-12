@@ -11,7 +11,7 @@ import UserTable from "../components/UserTable";
 import BackToDashboardButton from "../components/BackToDashboardButton";
 import { useSearchParams } from "react-router-dom";
 import RowsPerPageSelect from "../components/RowsPerPageSelect";
-import { defaultLimit, defaultPage } from "../utils/pagination";
+import { defaultLimitUser, defaultPage } from "../utils/pagination";
 import useFetchUsers from "../hooks/useFetchUsers";
 import useEditUserRole from "../hooks/useEditUserRole";
 import { AuthContext } from "../contexts/AuthContext";
@@ -20,7 +20,7 @@ import { useContext } from "react";
 const ManageUsers = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
-  const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
+  const limit = parseInt(searchParams.get("limit") ?? `${defaultLimitUser}`);
   const [rowsPerPage, setRowsPerPage] = useState<number>(limit);
   const { users, isLoading, error, fetchUsers, total, nextPage } =
     useFetchUsers(page, limit);
@@ -129,6 +129,7 @@ const ManageUsers = (): JSX.Element => {
         <RowsPerPageSelect
           rowsPerPage={rowsPerPage}
           onChange={handleRowsPerPageChange}
+          lowLimits={true}
         />
       </Box>
     </Container>

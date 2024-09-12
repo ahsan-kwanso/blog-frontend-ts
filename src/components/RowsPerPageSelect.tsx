@@ -1,11 +1,23 @@
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 
 interface RowsPerPageSelectProps {
   rowsPerPage: number;
   onChange: (event: SelectChangeEvent<number>) => void;
+  lowLimits?: boolean;
 }
 
-const RowsPerPageSelect = ({ rowsPerPage, onChange } : RowsPerPageSelectProps ): JSX.Element=> {
+const RowsPerPageSelect = ({
+  rowsPerPage,
+  onChange,
+  lowLimits = false,
+}: RowsPerPageSelectProps): JSX.Element => {
+  const limit = lowLimits ? 4 : 6;
   return (
     <FormControl
       sx={{
@@ -36,10 +48,10 @@ const RowsPerPageSelect = ({ rowsPerPage, onChange } : RowsPerPageSelectProps ):
           },
         }}
       >
-        <MenuItem value={6}>6</MenuItem>
-        <MenuItem value={12}>12</MenuItem>
-        <MenuItem value={18}>18</MenuItem>
-        <MenuItem value={24}>24</MenuItem>
+        <MenuItem value={limit * 1}>{limit * 1}</MenuItem>
+        <MenuItem value={limit * 2}>{limit * 2}</MenuItem>
+        <MenuItem value={limit * 3}>{limit * 3}</MenuItem>
+        <MenuItem value={limit * 4}>{limit * 4}</MenuItem>
       </Select>
     </FormControl>
   );
