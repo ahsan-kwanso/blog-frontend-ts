@@ -17,6 +17,7 @@ const initialAuthContext: AuthContextType = {
   signout: () => {
     throw new Error("signout function not implemented");
   },
+  loading: true,
 };
 
 // Create the context with initial values
@@ -28,6 +29,7 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const fetchUser = async () => {
     const token = getToken();
     if (token) {
@@ -37,6 +39,8 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
       } catch (error: unknown) {
         console.error("Failed to fetch user:", error);
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -101,7 +105,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signup, signin, signout }}>
+    <AuthContext.Provider value={{ user, signup, signin, signout, loading }}>
       {children}
     </AuthContext.Provider>
   );

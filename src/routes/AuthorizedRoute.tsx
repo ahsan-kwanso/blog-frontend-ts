@@ -1,24 +1,57 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { useSnackbar } from "../contexts/SnackbarContext";
 import { getToken } from "../utils/authUtils";
 import PrivateLayout from "../layouts/PrivateLayout";
 import { PAGE_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
+import CircularProgress from "@mui/material/CircularProgress"; // Material-UI spinner
 
 const AuthorizedRoute = (): JSX.Element => {
   const token = getToken();
   const { showSnackbar } = useSnackbar();
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const isAdmin = user?.role === "admin";
-  useEffect(() => {
-    if (token && !isAdmin) {
-      showSnackbar("You don't have access to this page");
-    } else if (!token) {
-      showSnackbar("Please login first");
-    }
-  }, [token, isAdmin, showSnackbar]);
 
+  // State for managing the delay for the spinner
+  const [delayComplete, setDelayComplete] = useState(false);
+
+  // Add a 0.5-second delay before proceeding with the logic
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayComplete(true);
+    }, 500);
+    // Clean up the timer when component unmounts
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!loading && delayComplete) {
+      if (token && !isAdmin) {
+        showSnackbar("You don't have access to this page");
+      } else if (!token) {
+        showSnackbar("Please login first");
+      }
+    }
+  }, [token, isAdmin, showSnackbar, loading, delayComplete]);
+
+  // Show the spinner for the first 2 seconds, or if the auth context is still loading
+  if (loading || !delayComplete) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  // After the 2-second delay and once loading is done, proceed with route checks
   if (!isAdmin) {
     return <Navigate to={PAGE_URL.posts} />;
   }

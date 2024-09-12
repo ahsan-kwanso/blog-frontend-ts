@@ -8,22 +8,26 @@ import {
   UseFetchUsersReturn,
 } from "../types/User.interfaces";
 
-const useFetchUsers = (): UseFetchUsersReturn => {
+const useFetchUsers = (page: number, limit: number): UseFetchUsersReturn => {
   const [users, setUsers] = useState<UserWithNumberOfPosts[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [nextPage, setNextPage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useError();
 
   const fetchUsers = async () => {
     try {
       setIsLoading(true);
-
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      const params = { page, limit };
       const response = await axiosInstance.get(
-        API_URL.users // Assuming the API URL is /users
+        API_URL.users, // Assuming the API URL is /users
+        { params }
       );
-
-      // Access users from the response data
-      const usersData = response.data; // Adjust this if the structure is different
-      setUsers(usersData);
+      const { users, total, nextPage } = response.data;
+      setUsers(users);
+      setTotal(total);
+      setNextPage(nextPage);
     } catch (err: unknown) {
       if (err instanceof Error) {
         const axiosError = err as { response?: { data?: ErrorResponse } };
@@ -44,7 +48,7 @@ const useFetchUsers = (): UseFetchUsersReturn => {
     fetchUsers(); // Trigger the fetch on mount
   }, []); // Dependencies for useEffect
 
-  return { users, isLoading, error, fetchUsers };
+  return { users, isLoading, error, fetchUsers, total, nextPage };
 };
 
 export default useFetchUsers;

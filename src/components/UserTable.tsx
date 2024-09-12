@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Box,
   Table,
@@ -12,6 +13,7 @@ import {
   MenuItem,
   Snackbar,
   Alert,
+  Skeleton,
 } from "@mui/material";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { useState } from "react";
@@ -20,11 +22,16 @@ import SuccessAlert from "../Alerts/SuccessAlert";
 import useFetchUsers from "../hooks/useFetchUsers";
 import useEditUserRole from "../hooks/useEditUserRole";
 import { AuthContext } from "../contexts/AuthContext";
+import { defaultLimit, defaultPage } from "../utils/pagination";
 
 const UserTable = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  const { users, isLoading, error, fetchUsers } = useFetchUsers();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
+  const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
+  const { users, isLoading, error, fetchUsers, total, nextPage } =
+    useFetchUsers(page, limit);
   const {
     editUserRole,
     isLoading: isEditing,
@@ -63,7 +70,24 @@ const UserTable = () => {
     }
   };
 
-  if (isLoading) return <Box>Loading...</Box>; // Show a loading state
+  const renderSkeletonRows = () => {
+    return Array.from({ length: 5 }).map((_, index) => (
+      <TableRow key={index}>
+        <TableCell>
+          <Skeleton variant="text" width={100} />
+        </TableCell>
+        <TableCell>
+          <Skeleton variant="text" width={200} />
+        </TableCell>
+        <TableCell>
+          <Skeleton variant="text" width={60} />
+        </TableCell>
+        <TableCell>
+          <Skeleton variant="rectangular" width={30} height={30} />
+        </TableCell>
+      </TableRow>
+    ));
+  };
 
   return (
     <Box sx={{ overflowX: "auto" }}>
@@ -78,42 +102,44 @@ const UserTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.posts}</TableCell>
-                <TableCell>
-                  <IconButton onClick={(e) => handleClick(e, user)}>
-                    <AdminPanelSettingsIcon />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl) && selectedUser?.id === user.id}
-                    onClose={handleClose}
-                  >
-                    <MenuItem
-                      onClick={() => handleAction("Make Admin")}
-                      disabled={
-                        user.role === "admin" ||
-                        user.id === Number(loggedInUserId)
-                      }
-                    >
-                      Make Admin
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => handleAction("Dismiss as Admin")}
-                      disabled={
-                        user.role === "user" ||
-                        user.id === Number(loggedInUserId)
-                      }
-                    >
-                      Dismiss as Admin
-                    </MenuItem>
-                  </Menu>
-                </TableCell>
-              </TableRow>
-            ))}
+            {isLoading
+              ? renderSkeletonRows()
+              : users.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.posts}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={(e) => handleClick(e, user)}>
+                        <AdminPanelSettingsIcon />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && selectedUser?.id === user.id}
+                        onClose={handleClose}
+                      >
+                        <MenuItem
+                          onClick={() => handleAction("Make Admin")}
+                          disabled={
+                            user.role === "admin" ||
+                            user.id === Number(loggedInUserId)
+                          }
+                        >
+                          Make Admin
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => handleAction("Dismiss as Admin")}
+                          disabled={
+                            user.role === "user" ||
+                            user.id === Number(loggedInUserId)
+                          }
+                        >
+                          Dismiss as Admin
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </TableContainer>

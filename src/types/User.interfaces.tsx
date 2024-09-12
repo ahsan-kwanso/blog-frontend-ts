@@ -13,6 +13,8 @@ export interface UseFetchUsersReturn {
   isLoading: boolean;
   error: string | null;
   fetchUsers: () => Promise<void>;
+  total: number;
+  nextPage: string | null;
 }
 
 export interface UserEditRoleReturn {

@@ -14,6 +14,7 @@ export interface AuthContextType {
   ) => Promise<AxiosResponse<any>>;
   signin: (email: string, password: string) => Promise<AxiosResponse<any>>;
   signout: () => void;
+  loading: boolean;
 }
 
 export interface User {
