@@ -6,6 +6,7 @@ import {
   Box,
   SelectChangeEvent,
   Pagination,
+  useMediaQuery,
 } from "@mui/material";
 import UserTable from "../components/UserTable";
 import BackToDashboardButton from "../components/BackToDashboardButton";
@@ -18,6 +19,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
 
 const ManageUsers = (): JSX.Element => {
+  const isSmallScreen = useMediaQuery("(max-width:650px)");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimitUser}`);
@@ -107,9 +109,7 @@ const ManageUsers = (): JSX.Element => {
               mt: 5,
               mr: 2, // Margin right for spacing
             }}
-          >
-            <BackToDashboardButton />
-          </Box>
+          ></Box>
         </Paper>
       </Box>
       <Box
@@ -131,6 +131,9 @@ const ManageUsers = (): JSX.Element => {
           onChange={handleRowsPerPageChange}
           lowLimits={true}
         />
+        <Box sx={{ ml: 4 }}>
+          <BackToDashboardButton showIcon={isSmallScreen} />
+        </Box>
       </Box>
     </Container>
   );
