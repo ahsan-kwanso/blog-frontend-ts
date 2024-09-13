@@ -6,15 +6,23 @@ import PrivateLayout from "../layouts/PrivateLayout";
 import { PAGE_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
 import CircularProgress from "@mui/material/CircularProgress"; // Material-UI spinner
+import useCustomNavigation from "./useCustomNavigation";
 
 const AuthorizedRoute = (): JSX.Element => {
   const token = getToken();
   const { showSnackbar } = useSnackbar();
   const { user, loading } = useContext(AuthContext);
   const isAdmin = user?.role === "admin";
-
+  const { basePage } = useCustomNavigation();
   // State for managing the delay for the spinner
   const [delayComplete, setDelayComplete] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      showSnackbar("Please login first");
+      basePage();
+    }
+  }, [token, showSnackbar]);
 
   // Add a 0.5-second delay before proceeding with the logic
   useEffect(() => {
