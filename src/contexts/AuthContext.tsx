@@ -17,6 +17,9 @@ const initialAuthContext: AuthContextType = {
   signout: () => {
     throw new Error("signout function not implemented");
   },
+  verifyEmail: async () => {
+    throw new Error("verifyEmail function not implemented");
+  },
   loading: true,
 };
 
@@ -29,7 +32,7 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const fetchUser = async () => {
     const token = getToken();
     if (token) {
@@ -55,13 +58,13 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     password: string
   ): Promise<AxiosResponse> => {
     try {
+      setLoading(true);
       const response = await axiosInstance.post(API_URL.signup, {
         name,
         email,
         password,
       });
-      setToken(response.data.token);
-      await fetchUser();
+      setLoading(false);
       return response;
     } catch (error: unknown) {
       let errorMessage = "Something went wrong!";
@@ -71,6 +74,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
         };
         errorMessage = axiosError.response?.data?.message ?? "Invalid format";
       }
+      setLoading(false);
       throw new Error(errorMessage);
     }
   };
@@ -80,12 +84,14 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     password: string
   ): Promise<AxiosResponse> => {
     try {
+      setLoading(true);
       const response = await axiosInstance.post(API_URL.signin, {
         email,
         password,
       });
       setToken(response.data.token);
       await fetchUser();
+      setLoading(false);
       return response;
     } catch (error: unknown) {
       let errorMessage = "Something went wrong!";
@@ -95,6 +101,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
         };
         errorMessage = axiosError.response?.data?.message ?? "Invalid format";
       }
+      setLoading(false);
       throw new Error(errorMessage);
     }
   };
@@ -104,8 +111,36 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     removeToken();
   };
 
+  const verifyEmail = async (
+    email: string,
+    code: string
+  ): Promise<AxiosResponse> => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1200)); // for better UX
+      setLoading(true);
+      const response = await axiosInstance.post(API_URL.verifyEmail, {
+        email,
+        code,
+      });
+      setLoading(false);
+      return response;
+    } catch (error: unknown) {
+      let errorMessage = "Verification failed!";
+      if (error instanceof Error) {
+        const axiosError = error as {
+          response?: { data?: { message?: string } };
+        };
+        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
+      }
+      setLoading(false);
+      throw new Error(errorMessage);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, signup, signin, signout, loading }}>
+    <AuthContext.Provider
+      value={{ user, signup, signin, signout, verifyEmail, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

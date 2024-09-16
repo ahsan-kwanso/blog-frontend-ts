@@ -21,6 +21,7 @@ import { PAGE_URL } from "../utils/settings";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { LoginFormData } from "../types/Forms.interfaces";
+import { useSnackbar } from "../contexts/SnackbarContext";
 
 // Define styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -50,13 +51,12 @@ const SignupLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-
-const Login = () : JSX.Element => {
-  const { signin } = useContext(AuthContext);
-  const { postsPage } = useCustomNavigation();
+const Login = (): JSX.Element => {
+  const { signin, loading } = useContext(AuthContext);
+  const { postsPage, CodeVerificationPage } = useCustomNavigation();
   const [error, setError] = useError();
   const [showPassword, setShowPassword] = useState(false);
-
+  const { showSnackbar } = useSnackbar();
   const {
     register,
     handleSubmit,
@@ -80,6 +80,15 @@ const Login = () : JSX.Element => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
+        if (
+          error.message ===
+          "Email not verified. A verification code has been sent to your email."
+        ) {
+          showSnackbar(
+            "Email not verified. A verification code has been sent to your email."
+          );
+          CodeVerificationPage();
+        }
       } else {
         setError("An unknown error occurred.");
       }
@@ -140,7 +149,7 @@ const Login = () : JSX.Element => {
             color="primary"
             fullWidth
           >
-            Sign In
+            {loading ? "Processing..." : "SIGN IN"}
           </SubmitButton>
           <SignupLink href={PAGE_URL.signup} variant="body2">
             Don't have an account? Sign Up

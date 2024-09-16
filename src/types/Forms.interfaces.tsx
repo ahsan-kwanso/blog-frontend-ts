@@ -4,5 +4,10 @@ export interface LoginFormData {
 }
 
 export interface SignUpFormData extends LoginFormData {
-  name : string;
+  name: string;
+}
+
+export interface verifyFormData {
+  email: string;
+  code: string;
 }

@@ -26,6 +26,7 @@ const useCustomNavigation = () => {
     postsPage: () => navigate(PAGE_URL.posts),
     basePage: () => navigate(PAGE_URL.base),
     manageUsersPage: () => navigate(PAGE_URL.manageUsers),
+    CodeVerificationPage: () => navigate(PAGE_URL.codeVerification),
   };
 };
 

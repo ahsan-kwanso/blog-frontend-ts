@@ -7,6 +7,7 @@ export const API_URL = {
   signup: `/auth/signup`,
   signin: `/auth/signin`,
   users: `users`,
+  verifyEmail: `/auth/verify-email`,
 };
 
 export const PAGE_URL = {
@@ -19,4 +20,5 @@ export const PAGE_URL = {
   profile: `/profile`,
   viewPost: `/posts/:postId`,
   manageUsers: `/manage-users`,
+  codeVerification: `/verify-email`,
 };

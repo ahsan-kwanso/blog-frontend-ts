@@ -50,11 +50,10 @@ const LoginLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-
 const Signup = (): JSX.Element => {
-  const { signup } = useContext(AuthContext);
+  const { signup, loading } = useContext(AuthContext);
   const [error, setError] = useError();
-  const { postsPage } = useCustomNavigation();
+  const { CodeVerificationPage } = useCustomNavigation();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -70,11 +69,11 @@ const Signup = (): JSX.Element => {
     },
   });
 
-  const onSubmit = async (data : SignUpFormData) => {
+  const onSubmit = async (data: SignUpFormData) => {
     try {
       const result = await signup(data.name, data.email, data.password);
-      if (result.data.token) {
-        postsPage();
+      if (result.data.message) {
+        CodeVerificationPage();
       } else {
         setError("An unexpected error occurred. Try Again Later");
       }
@@ -150,7 +149,7 @@ const Signup = (): JSX.Element => {
             color="primary"
             fullWidth
           >
-            Sign Up
+            {loading ? "Processing..." : "SIGN UP"}
           </SubmitButton>
           <LoginLink href={PAGE_URL.login} variant="body2">
             Already have an account? Sign In

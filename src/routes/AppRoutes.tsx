@@ -16,6 +16,7 @@ const EditPost = lazy(() => import("../pages/EditPost"));
 const Profile = lazy(() => import("../pages/Profile"));
 const PostView = lazy(() => import("../pages/PostView"));
 const ManageUsers = lazy(() => import("../pages/ManageUsers"));
+const CodeVerification = lazy(() => import("../pages/CodeVerification"));
 
 const AppRoutes = (): JSX.Element => {
   return (
@@ -26,6 +27,10 @@ const AppRoutes = (): JSX.Element => {
             <Route path={PAGE_URL.login} element={<Login />} />
             <Route path={PAGE_URL.signup} element={<Signup />} />
             <Route path={PAGE_URL.base} element={<Posts />} />
+            <Route
+              path={PAGE_URL.codeVerification}
+              element={<CodeVerification />}
+            />
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path={PAGE_URL.createPost} element={<CreatePost />} />

@@ -21,6 +21,14 @@ export const signupSchema = z.object({
     .min(6, VALIDATION_MESSAGES.password.minLength),
 });
 
+export const verifyEmailSchema = z.object({
+  email: z
+    .string()
+    .nonempty(VALIDATION_MESSAGES.email.required)
+    .email(VALIDATION_MESSAGES.email.invalid),
+  code: z.string().nonempty(VALIDATION_MESSAGES.password.required),
+});
+
 export const postSchema = z.object({
   title: z
     .string()
