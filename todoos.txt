@@ -13,3 +13,8 @@ opitimize the interfaces using extend, use generics somewhere
 tell return type jsx.element, everything must have return type
 enable linting for more robust handling
 when to use unknown never any
+
+
+
+
+Will think how just take verification code on that page and not the email, have to keep context, but will do it later currently more focus on backend
