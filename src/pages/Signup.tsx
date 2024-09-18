@@ -72,7 +72,11 @@ const Signup = (): JSX.Element => {
   const onSubmit = async (data: SignUpFormData) => {
     try {
       const result = await signup(data.name, data.email, data.password);
-      if (result.data.message) {
+      if (
+        result.data.message === "Seems Like Email doesn't exist or not valid"
+      ) {
+        setError(result.data.message);
+      } else if (result.data.message) {
         CodeVerificationPage();
       } else {
         setError("An unexpected error occurred. Try Again Later");
