@@ -8,6 +8,9 @@ import { AxiosResponse } from "axios";
 
 const initialAuthContext: AuthContextType = {
   user: null,
+  setUser: () => {
+    throw new Error("setUser function not implemented");
+  },
   signup: async () => {
     throw new Error("signup function not implemented");
   },
@@ -139,7 +142,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
   return (
     <AuthContext.Provider
-      value={{ user, signup, signin, signout, verifyEmail, loading }}
+      value={{ user, setUser, signup, signin, signout, verifyEmail, loading }}
     >
       {children}
     </AuthContext.Provider>

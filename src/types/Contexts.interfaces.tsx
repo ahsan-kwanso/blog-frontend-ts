@@ -7,6 +7,7 @@ export interface ThemeContextType {
 
 export interface AuthContextType {
   user: User | null;
+  setUser: (user: User | null) => void; // Add this line
   signup: (
     name: string,
     email: string,
@@ -24,6 +25,7 @@ export interface User {
   email: string;
   role: string;
   createdAt: Date;
+  profilePictureUrl?: string;
 }
 
 export interface SnackbarContextType {
