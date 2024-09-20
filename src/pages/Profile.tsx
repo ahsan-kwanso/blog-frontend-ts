@@ -8,9 +8,12 @@ import {
   Button,
   CircularProgress,
   styled,
+  Dialog,
+  IconButton,
 } from "@mui/material";
 import { stringAvatar } from "../utils/avatarUtils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CloseIcon from "@mui/icons-material/Close";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import useProfilePictureUpload from "../hooks/useProfilePictureUpload";
 
@@ -31,6 +34,7 @@ const Profile = (): JSX.Element => {
   const { uploadProfilePicture, loading, error } = useProfilePictureUpload(); // Hook for upload logic
   const [selectedFile, setSelectedFile] = useState<File | null>(null); // Store the selected file
   const [fileError, setFileError] = useState<string | null>(null); // Store file error
+  const [open, setOpen] = useState(false);
 
   const handleBack = () => {
     postsPage();
@@ -81,6 +85,16 @@ const Profile = (): JSX.Element => {
     }
   };
 
+  // Handle profile picture click (open modal)
+  const handlePictureClick = () => {
+    setOpen(true); // Open the dialog when profile picture is clicked
+  };
+
+  // Close profile picture modal
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   if (!user) {
     return <Typography>No user data available</Typography>;
   }
@@ -108,7 +122,9 @@ const Profile = (): JSX.Element => {
             borderRadius: "50%",
             marginBottom: 2,
             padding: 1,
+            cursor: "pointer", // Add pointer to indicate it's clickable
           }}
+          onClick={handlePictureClick} // Open modal on click
         >
           {user.profilePictureUrl ? (
             <Avatar
@@ -202,6 +218,36 @@ const Profile = (): JSX.Element => {
           )}
         </Box>
       </Box>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <Box sx={{ position: "relative", padding: 2 }}>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          {/* Larger profile picture */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Avatar
+              src={user.profilePictureUrl}
+              sx={{ width: 200, height: 200 }} // Larger avatar size
+            />
+          </Box>
+        </Box>
+      </Dialog>
     </Container>
   );
 };
