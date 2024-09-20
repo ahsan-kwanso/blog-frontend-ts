@@ -115,7 +115,7 @@ const Posts = (): JSX.Element => {
               mt: {
                 xs: 10,
                 sm: 5,
-                md: 3,
+                md: 4.5,
               },
               ml: 2,
               mr: 2,
