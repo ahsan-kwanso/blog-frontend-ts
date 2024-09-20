@@ -107,7 +107,11 @@ const Login = (): JSX.Element => {
         </Typography>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            label="Email"
+            label={
+              <span>
+                Email <span style={{ color: "red" }}>*</span>
+              </span>
+            }
             variant="outlined"
             margin="normal"
             fullWidth
@@ -116,7 +120,11 @@ const Login = (): JSX.Element => {
             helperText={errors.email?.message}
           />
           <TextField
-            label="Password"
+            label={
+              <span>
+                Password <span style={{ color: "red" }}>*</span>
+              </span>
+            }
             type={showPassword ? "text" : "password"}
             variant="outlined"
             margin="normal"

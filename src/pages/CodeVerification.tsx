@@ -87,7 +87,11 @@ const CodeVerification = (): JSX.Element => {
         </Typography>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            label="Email"
+            label={
+              <span>
+                Email <span style={{ color: "red" }}>*</span>
+              </span>
+            }
             variant="outlined"
             margin="normal"
             fullWidth
@@ -96,7 +100,11 @@ const CodeVerification = (): JSX.Element => {
             helperText={errors.email?.message}
           />
           <TextField
-            label="Verification Code"
+            label={
+              <span>
+                Verification Code <span style={{ color: "red" }}>*</span>
+              </span>
+            }
             variant="outlined"
             margin="normal"
             fullWidth

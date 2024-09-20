@@ -8,6 +8,9 @@ interface ValidationMessages {
     required: string;
     minLength: string;
   };
+  code: {
+    required: string;
+  };
   name: {
     required: string;
   };
@@ -25,7 +28,7 @@ interface ValidationMessages {
   };
 }
 
-export const VALIDATION_MESSAGES :  ValidationMessages= {
+export const VALIDATION_MESSAGES: ValidationMessages = {
   email: {
     required: "Email is required",
     invalid: "Invalid email address",
@@ -33,6 +36,9 @@ export const VALIDATION_MESSAGES :  ValidationMessages= {
   password: {
     required: "Password is required",
     minLength: "Password must be at least 6 characters long",
+  },
+  code: {
+    required: "Code is required",
   },
   name: {
     required: "Name is required",
