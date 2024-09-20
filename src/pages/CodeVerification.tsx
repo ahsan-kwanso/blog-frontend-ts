@@ -51,6 +51,7 @@ const CodeVerification = (): JSX.Element => {
   const [error, setError] = useError();
   const { showSnackbar } = useSnackbar();
   const { loginPage } = useCustomNavigation();
+  const [isSubmitting, setIsSubmitting] = useState(false); // Add this state
   const {
     register,
     handleSubmit,
@@ -64,6 +65,7 @@ const CodeVerification = (): JSX.Element => {
   });
 
   const onSubmit = async (data: verifyFormData) => {
+    setIsSubmitting(true); // Disable the button when form is submitted
     try {
       const response = await verifyEmail(data.email, data.code);
       if (response.data.message === "Email successfully verified!") {
@@ -74,8 +76,10 @@ const CodeVerification = (): JSX.Element => {
       if (error instanceof Error) {
         showSnackbar(error.message);
       } else {
-        setError("Failed to verify email, An unknown error occured");
+        setError("Failed to verify email, An unknown error occurred");
       }
+    } finally {
+      setIsSubmitting(false); // Re-enable the button after the API call is complete
     }
   };
 
@@ -122,15 +126,15 @@ const CodeVerification = (): JSX.Element => {
             variant="contained"
             color="primary"
             fullWidth
-            disabled={loading}
+            disabled={isSubmitting || loading} // Disable if submitting or loading
           >
-            {loading ? "Verifying..." : "Verify"}
+            {isSubmitting || loading ? "Verifying..." : "Verify"}
           </SubmitButton>
           <SignUpLink href={PAGE_URL.signup} variant="body2">
             Didn't receive code? Sign Up
           </SignUpLink>
           <SignUpLink href={PAGE_URL.login} variant="body2" sx={{ ml: "50px" }}>
-            Verifed? Login
+            Verified? Login
           </SignUpLink>
         </Form>
       </StyledPaper>
