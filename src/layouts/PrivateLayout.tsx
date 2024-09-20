@@ -1,15 +1,17 @@
-import React, {ReactNode} from "react";
+import React, { ReactNode } from "react";
 import { Container } from "@mui/material";
 import PrivateHeader from "../components/PrivateHeader";
+import Sidebar from "../components/Sidebar";
 
 interface PrivateLayoutProps {
   children: ReactNode;
 }
 
-const PrivateLayout = ({ children } : PrivateLayoutProps) : JSX.Element => {
+const PrivateLayout = ({ children }: PrivateLayoutProps): JSX.Element => {
   return (
     <div>
       <PrivateHeader />
+      <Sidebar />
       <Container style={{ marginTop: "20px" }}>{children}</Container>
     </div>
   );
