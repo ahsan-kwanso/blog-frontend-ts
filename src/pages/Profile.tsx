@@ -7,14 +7,18 @@ import {
   Box,
   Button,
   CircularProgress,
-  Input,
   styled,
 } from "@mui/material";
 import { stringAvatar } from "../utils/avatarUtils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import useProfilePictureUpload from "../hooks/useProfilePictureUpload";
-import { User } from "../types/Contexts.interfaces";
+
+// Maximum file size in bytes (e.g., 2MB)
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
+// Allowed image types
+const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
 
 // Styled Input to hide the default file input
 const HiddenInput = styled("input")({
@@ -26,14 +30,33 @@ const Profile = (): JSX.Element => {
   const { user, setUser } = useContext(AuthContext); // Assume setUser is available to update the user
   const { uploadProfilePicture, loading, error } = useProfilePictureUpload(); // Hook for upload logic
   const [selectedFile, setSelectedFile] = useState<File | null>(null); // Store the selected file
+  const [fileError, setFileError] = useState<string | null>(null); // Store file error
 
   const handleBack = () => {
     postsPage();
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
+    const file = event.target.files?.[0];
+
+    if (file) {
+      // Check if the file type is allowed
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        setFileError("Only JPEG, PNG, or GIF files are allowed");
+        setSelectedFile(null);
+        return;
+      }
+
+      // Check if the file size exceeds the maximum size
+      if (file.size > MAX_FILE_SIZE) {
+        setFileError("File size must be less than 2MB");
+        setSelectedFile(null);
+        return;
+      }
+
+      // Clear any previous errors and set the file
+      setFileError(null);
+      setSelectedFile(file);
     }
   };
 
@@ -144,6 +167,7 @@ const Profile = (): JSX.Element => {
             <HiddenInput
               id="file-upload"
               type="file"
+              accept="image/*" // Accept only image files
               onChange={handleFileChange}
             />
             <Button
@@ -151,6 +175,7 @@ const Profile = (): JSX.Element => {
               color="secondary"
               onClick={handleUpload}
               sx={{ flexShrink: 0 }}
+              disabled={!selectedFile || !!fileError} // Disable upload if no file or there is a file error
             >
               {loading ? (
                 <>
@@ -161,6 +186,13 @@ const Profile = (): JSX.Element => {
               )}
             </Button>
           </Box>
+
+          {/* Show file validation error */}
+          {fileError && (
+            <Typography color="error" variant="body2">
+              {fileError}
+            </Typography>
+          )}
 
           {/* Show error message if upload fails */}
           {error && (
