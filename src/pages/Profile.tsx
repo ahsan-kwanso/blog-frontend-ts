@@ -10,12 +10,17 @@ import {
   styled,
   Dialog,
   IconButton,
+  Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 import { stringAvatar } from "../utils/avatarUtils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloseIcon from "@mui/icons-material/Close";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import useProfilePictureUpload from "../hooks/useProfilePictureUpload";
+import { useTheme } from "@mui/material/styles";
 
 // Maximum file size in bytes (e.g., 2MB)
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
@@ -29,6 +34,8 @@ const HiddenInput = styled("input")({
 });
 
 const Profile = (): JSX.Element => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // For responsiveness
   const { postsPage } = useCustomNavigation();
   const { user, setUser } = useContext(AuthContext); // Assume setUser is available to update the user
   const { uploadProfilePicture, loading, error } = useProfilePictureUpload(); // Hook for upload logic
@@ -100,7 +107,7 @@ const Profile = (): JSX.Element => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <Box
         sx={{
           display: "flex",
@@ -110,6 +117,9 @@ const Profile = (): JSX.Element => {
           border: "1px solid #ddd",
           borderRadius: "8px",
           marginTop: "100px",
+          marginLeft: {
+            xs: "90px", // Add left margin for extra-small screens
+          },
         }}
       >
         <Box
@@ -149,36 +159,31 @@ const Profile = (): JSX.Element => {
           Joined: {new Date(user.createdAt).toLocaleDateString()}
         </Typography>
 
-        <Box sx={{ mt: 4 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<ArrowBackIcon />}
-            onClick={handleBack}
-          >
-            Back to Dashboard
-          </Button>
-        </Box>
-
         <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             <label htmlFor="file-upload">
-              <Button
-                variant="contained"
-                component="span"
-                sx={{
-                  flexGrow: 1,
-                  textAlign: "left",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                {selectedFile
-                  ? `${selectedFile.name.slice(0, 8)}${
+              <Tooltip title="Choose File" arrow>
+                <Button
+                  variant="contained"
+                  component="span"
+                  sx={{
+                    flexGrow: 1,
+                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {isSmallScreen ? (
+                    <FileUploadIcon />
+                  ) : selectedFile ? (
+                    `${selectedFile.name.slice(0, 8)}${
                       selectedFile.name.length > 8 ? "..." : ""
                     }`
-                  : "Choose File"}
-              </Button>
+                  ) : (
+                    "Choose File"
+                  )}
+                </Button>
+              </Tooltip>
             </label>
             <HiddenInput
               id="file-upload"
@@ -197,6 +202,8 @@ const Profile = (): JSX.Element => {
                 <>
                   <CircularProgress size={20} sx={{ mr: 1 }} /> Uploading...
                 </>
+              ) : isSmallScreen ? (
+                <CloudUploadIcon />
               ) : (
                 "Upload Picture"
               )}

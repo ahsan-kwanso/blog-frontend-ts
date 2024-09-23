@@ -11,6 +11,7 @@ const PrivateLayout = ({ children }: PrivateLayoutProps): JSX.Element => {
   return (
     <div>
       <PrivateHeader />
+      <Sidebar />
       <Container style={{ marginTop: "20px" }}>{children}</Container>
     </div>
   );

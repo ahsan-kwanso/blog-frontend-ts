@@ -14,7 +14,7 @@ import { postSchema } from "../validations/schemaValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostData } from "../types/Post.interfaces";
 
-const CreatePost = () : JSX.Element => {
+const CreatePost = (): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ const CreatePost = () : JSX.Element => {
   const { myPostsPage, postsPage } = useCustomNavigation();
   const { createPost, isCreating, error, success } = useCreatePost();
 
-  const onSubmit = async (data : PostData) => {
+  const onSubmit = async (data: PostData) => {
     try {
       await createPost(data);
       if (!error) {
@@ -46,7 +46,7 @@ const CreatePost = () : JSX.Element => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <Box
         sx={{
           display: "flex",
@@ -56,6 +56,12 @@ const CreatePost = () : JSX.Element => {
           padding: 3,
           border: "1px solid #ddd",
           borderRadius: "8px",
+          marginLeft: {
+            xs: "90px", // Add left margin for extra-small screens
+          },
+          marginBottom: {
+            xs: "90px",
+          },
         }}
       >
         <Typography variant="h5">Create Post</Typography>

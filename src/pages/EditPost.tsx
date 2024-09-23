@@ -17,11 +17,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { EditPostData } from "../types/Post.interfaces";
 
-const EditPost = () : JSX.Element => {
+const EditPost = (): JSX.Element => {
   const { postId } = useParams<{ postId: string }>(); // Ensure postId is a string
   const numericPostId = postId ? parseInt(postId, 10) : null;
   const { myPostsPage, postsPage } = useCustomNavigation();
-  const { post, isLoading, error: fetchError } = useFetchPostById(numericPostId as number); // Pass the Post type to the hook
+  const {
+    post,
+    isLoading,
+    error: fetchError,
+  } = useFetchPostById(numericPostId as number); // Pass the Post type to the hook
   const { editPost, error, success } = useEditPost();
 
   const {
@@ -61,7 +65,7 @@ const EditPost = () : JSX.Element => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <Box
         sx={{
           display: "flex",
@@ -71,6 +75,12 @@ const EditPost = () : JSX.Element => {
           padding: 3,
           border: "1px solid #ddd",
           borderRadius: "8px",
+          marginLeft: {
+            xs: "90px", // Add left margin for extra-small screens
+          },
+          marginBottom: {
+            xs: "90px",
+          },
         }}
       >
         <Typography variant="h5">Edit Post</Typography>

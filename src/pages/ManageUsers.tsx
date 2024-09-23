@@ -114,6 +114,7 @@ const ManageUsers = (): JSX.Element => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        marginLeft: { xs: "60px", sm: "160px" },
       }}
     >
       <Box sx={{ my: 3, width: "100%" }}>
@@ -167,7 +168,7 @@ const ManageUsers = (): JSX.Element => {
         }}
       >
         <Pagination
-          count={Math.ceil(total / rowsPerPage)}
+          count={Math.ceil(total / rowsPerPage) - 1}
           page={page}
           onChange={handlePageChange}
           color="primary"
@@ -177,9 +178,6 @@ const ManageUsers = (): JSX.Element => {
           onChange={handleRowsPerPageChange}
           lowLimits={true}
         />
-        <Box sx={{ ml: 4 }}>
-          <BackToDashboardButton showIcon={isSmallScreen} />
-        </Box>
       </Box>
     </Container>
   );

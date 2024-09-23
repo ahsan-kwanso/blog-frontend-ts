@@ -25,7 +25,10 @@ const PostView = (): JSX.Element => {
   const numericPostId = postId ? parseInt(postId, 10) : null;
   const [refresh, setRefresh] = useState<number>(0);
   const { post, isLoading, error } = useFetchPostById(numericPostId as number);
-  const { comments } = useFetchCommentsByPostId(numericPostId as number, refresh);
+  const { comments } = useFetchCommentsByPostId(
+    numericPostId as number,
+    refresh
+  );
   const { postsPage } = useCustomNavigation();
   const handleCommentSubmit = () => {
     setRefresh((prev) => prev + 1); // Increment refresh count to trigger refetch
@@ -44,7 +47,7 @@ const PostView = (): JSX.Element => {
   return (
     <Container
       component="main"
-      maxWidth="md"
+      maxWidth="lg"
       sx={{
         paddingX: { xs: 1, sm: 3, md: 4 }, // Adjust horizontal padding for different screen sizes
       }}
@@ -56,6 +59,11 @@ const PostView = (): JSX.Element => {
           backgroundColor: "background.paper",
           borderRadius: 2,
           boxShadow: { xs: 1, sm: 3 }, // Adjust shadow intensity for different screen sizes
+          marginLeft: {
+            md: "100px",
+            sm: "90px",
+            xs: "70px", // Add left margin for extra-small screens
+          },
         }}
       >
         {error && (
