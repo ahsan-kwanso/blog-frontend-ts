@@ -114,17 +114,11 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     removeToken();
   };
 
-  const verifyEmail = async (
-    email: string,
-    code: string
-  ): Promise<AxiosResponse> => {
+  const verifyEmail = async (token: string): Promise<AxiosResponse> => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1200)); // for better UX
       setLoading(true);
-      const response = await axiosInstance.post(API_URL.verifyEmail, {
-        email,
-        code,
-      });
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // for testing the page
+      const response = await axiosInstance.post(API_URL.verifyEmail, { token });
       setLoading(false);
       return response;
     } catch (error: unknown) {

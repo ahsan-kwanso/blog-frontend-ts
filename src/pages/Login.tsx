@@ -82,12 +82,11 @@ const Login = (): JSX.Element => {
         setError(error.message);
         if (
           error.message ===
-          "Email not verified. A verification code has been sent to your email."
+          "Email not verified. A verification link has been sent to your email."
         ) {
           showSnackbar(
-            "Email not verified. A verification code has been sent to your email."
+            "Email not verified. A verification link has been sent to your email."
           );
-          CodeVerificationPage();
         }
       } else {
         setError("An unknown error occurred.");

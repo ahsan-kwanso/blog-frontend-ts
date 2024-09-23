@@ -21,6 +21,7 @@ import { PAGE_URL } from "../utils/settings";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { SignUpFormData } from "../types/Forms.interfaces";
+import { useSnackbar } from "../contexts/SnackbarContext";
 
 // Define styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -53,6 +54,7 @@ const LoginLink = styled(Link)(({ theme }) => ({
 const Signup = (): JSX.Element => {
   const { signup, loading } = useContext(AuthContext);
   const [error, setError] = useError();
+  const { showSnackbar } = useSnackbar();
   const { CodeVerificationPage } = useCustomNavigation();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -77,7 +79,7 @@ const Signup = (): JSX.Element => {
       ) {
         setError(result.data.message);
       } else if (result.data.message) {
-        CodeVerificationPage();
+        showSnackbar("A verification Email is sent to your account");
       } else {
         setError("An unexpected error occurred. Try Again Later");
       }

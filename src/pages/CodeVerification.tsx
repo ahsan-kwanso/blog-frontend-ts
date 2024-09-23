@@ -1,23 +1,17 @@
-import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  TextField,
-  Button,
   Container,
   Typography,
   Paper,
   Alert,
-  Link,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { useError } from "../hooks/useError";
-import { PAGE_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { verifyEmailSchema } from "../validations/schemaValidations";
-import { verifyFormData } from "../types/Forms.interfaces";
+import { useError } from "../hooks/useError";
 import useCustomNavigation from "../routes/useCustomNavigation";
 import { useSnackbar } from "../contexts/SnackbarContext";
+import { useLocation } from "react-router-dom";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -27,116 +21,66 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginTop: theme.spacing(8),
 }));
 
-const Form = styled("form")(({ theme }) => ({
-  width: "100%",
-  maxWidth: 400,
-}));
-
-const SubmitButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-}));
-
-const SignUpLink = styled(Link)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  textDecoration: "none",
-  color: theme.palette.primary.main,
-  "&:hover": {
-    textDecoration: "underline",
-  },
-}));
-
 const CodeVerification = (): JSX.Element => {
   const { verifyEmail, loading } = useContext(AuthContext);
   const [error, setError] = useError();
   const { showSnackbar } = useSnackbar();
   const { loginPage } = useCustomNavigation();
-  const [isSubmitting, setIsSubmitting] = useState(false); // Add this state
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(verifyEmailSchema),
-    defaultValues: {
-      email: "",
-      code: "",
-    },
-  });
+  const [isVerifying, setIsVerifying] = useState(true);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
+  const location = useLocation();
 
-  const onSubmit = async (data: verifyFormData) => {
-    setIsSubmitting(true); // Disable the button when form is submitted
-    try {
-      const response = await verifyEmail(data.email, data.code);
-      if (response.data.message === "Email successfully verified!") {
-        showSnackbar("Verified!");
-        loginPage();
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showSnackbar(error.message);
-      } else {
-        setError("Failed to verify email, An unknown error occurred");
-      }
-    } finally {
-      setIsSubmitting(false); // Re-enable the button after the API call is complete
+  // Extract token from URL and trigger email verification
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get("token");
+
+    if (token) {
+      const verifyUserEmail = async () => {
+        try {
+          setIsVerifying(true);
+          const response = await verifyEmail(token); // Only the token is needed now
+          if (response.data.message === "Email successfully verified!") {
+            showSnackbar("Email Verified!");
+            setVerificationSuccess(true);
+            loginPage(); // Redirect to login after a short delay or immediately
+          }
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Failed to verify email, an unknown error occurred.");
+          }
+        } finally {
+          setIsVerifying(false);
+        }
+      };
+
+      verifyUserEmail();
+    } else {
+      setError("Invalid or missing verification token.");
+      setIsVerifying(false);
     }
-  };
+  }, [location.search, verifyEmail, setError, showSnackbar, loginPage]);
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: "100px" }}>
       <StyledPaper>
         <Typography variant="h5" component="h1" sx={{ fontWeight: "bold" }}>
-          Verify Your Email
+          {verificationSuccess ? "Email Verified" : "Verify Your Email"}
         </Typography>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            label={
-              <span>
-                Email <span style={{ color: "red" }}>*</span>
-              </span>
-            }
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            {...register("email", { required: "Email is required" })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
-          <TextField
-            label={
-              <span>
-                Verification Code <span style={{ color: "red" }}>*</span>
-              </span>
-            }
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            {...register("code", { required: "Code is required" })}
-            error={!!errors.code}
-            helperText={errors.code?.message}
-          />
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          <SubmitButton
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            disabled={isSubmitting || loading} // Disable if submitting or loading
-          >
-            {isSubmitting || loading ? "Verifying..." : "Verify"}
-          </SubmitButton>
-          <SignUpLink href={PAGE_URL.signup} variant="body2">
-            Didn't receive code? Sign Up
-          </SignUpLink>
-          <SignUpLink href={PAGE_URL.login} variant="body2" sx={{ ml: "50px" }}>
-            Verified? Login
-          </SignUpLink>
-        </Form>
+
+        {isVerifying ? (
+          <CircularProgress sx={{ mt: 4 }} />
+        ) : error ? (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error}
+          </Alert>
+        ) : (
+          <Typography sx={{ mt: 2 }}>
+            Your email has been successfully verified!
+          </Typography>
+        )}
       </StyledPaper>
     </Container>
   );
