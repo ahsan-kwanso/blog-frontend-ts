@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { getToken, setToken, removeToken } from "../utils/authUtils";
-import axiosInstance from "../axiosInstance";
+import axiosInstanceAuth from "../axiosInstanceAuth";
 import { API_URL } from "../utils/settings";
 import { User } from "../types/Contexts.interfaces";
 import { AuthContextType } from "../types/Contexts.interfaces";
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     const token = getToken();
     if (token) {
       try {
-        const response = await axiosInstance.get(API_URL.me);
+        const response = await axiosInstanceAuth.get(API_URL.me);
         setUser(response.data); // in previous version with express js used response.data.user
       } catch (error: unknown) {
         console.error("Failed to fetch user:", error);
@@ -62,7 +62,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   ): Promise<AxiosResponse> => {
     try {
       setLoading(true);
-      const response = await axiosInstance.post(API_URL.signup, {
+      const response = await axiosInstanceAuth.post(API_URL.signup, {
         name,
         email,
         password,
@@ -88,7 +88,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   ): Promise<AxiosResponse> => {
     try {
       setLoading(true);
-      const response = await axiosInstance.post(API_URL.signin, {
+      const response = await axiosInstanceAuth.post(API_URL.signin, {
         email,
         password,
       });
@@ -118,7 +118,9 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     try {
       setLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 2000)); // for testing the page
-      const response = await axiosInstance.post(API_URL.verifyEmail, { token });
+      const response = await axiosInstanceAuth.post(API_URL.verifyEmail, {
+        token,
+      });
       setLoading(false);
       return response;
     } catch (error: unknown) {

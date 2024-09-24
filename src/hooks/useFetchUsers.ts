@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
@@ -23,6 +23,7 @@ const useFetchUsers = (
   sortOrder?: "asc" | "desc",
   role?: string
 ): UseFetchUsersReturn => {
+  const axiosInstance = useAxiosInstance();
   const [users, setUsers] = useState<UserWithNumberOfPosts[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [nextPage, setNextPage] = useState<string | null>(null);

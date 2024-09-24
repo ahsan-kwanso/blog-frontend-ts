@@ -1,10 +1,11 @@
 // src/hooks/useProfilePictureUpload.js
 import { useState } from "react";
 import { ErrorResponse } from "../types/Error.interfaces";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 
 const useProfilePictureUpload = () => {
+  const axiosInstance = useAxiosInstance();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useError();
 

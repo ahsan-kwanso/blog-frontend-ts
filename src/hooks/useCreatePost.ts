@@ -1,6 +1,6 @@
 // src/hooks/useCreatePost.js
 import { useState } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
@@ -12,6 +12,7 @@ import {
 import { AxiosResponse } from "axios";
 
 const useCreatePost = (): UseCreatePostReturn => {
+  const axiosInstance = useAxiosInstance();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);

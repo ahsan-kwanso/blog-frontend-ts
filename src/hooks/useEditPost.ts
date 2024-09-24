@@ -1,6 +1,6 @@
 // src/hooks/useEditPost.js
 import { useState } from "react";
-import axiosInstance from "../axiosInstance"; // Adjust the path as needed
+import useAxiosInstance from "../axiosInstance"; // Adjust the path as needed
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import {
@@ -11,6 +11,7 @@ import {
 import { AxiosResponse } from "axios";
 
 const useEditPost = (): UseEditPostReturn => {
+  const axiosInstance = useAxiosInstance();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);

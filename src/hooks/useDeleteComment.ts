@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
@@ -7,6 +7,7 @@ import { UseDeleteCommentReturn } from "../types/Comment.interfaces";
 import { AxiosResponse } from "axios";
 
 export const useDeleteComment = (): UseDeleteCommentReturn => {
+  const axiosInstance = useAxiosInstance();
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 

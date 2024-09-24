@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
@@ -14,6 +14,7 @@ const useFetchPosts = (
   page: number,
   limit: number
 ): UseFetchPostsReturn => {
+  const axiosInstance = useAxiosInstance();
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [total, setTotal] = useState<number>(0);

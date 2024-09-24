@@ -1,6 +1,5 @@
 // src/hooks/useCreateComment.js
 import { useState } from "react";
-import axiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
@@ -10,8 +9,10 @@ import {
   UseCreateCommentReturn,
 } from "../types/Comment.interfaces";
 import { AxiosResponse } from "axios";
+import useAxiosInstance from "../axiosInstance";
 
 export const useCreateComment = (): UseCreateCommentReturn => {
+  const axiosInstance = useAxiosInstance();
   const [error, setError] = useError();
   const [success, setSuccess] = useState<string | null>(null);
 

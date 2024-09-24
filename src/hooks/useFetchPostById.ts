@@ -1,11 +1,12 @@
 // src/hooks/useFetchPost.js
 import { useState, useEffect } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { Post, UseFetchPostByIdReturn } from "../types/Post.interfaces";
 
 const useFetchPostById = (postId: number): UseFetchPostByIdReturn => {
+  const axiosInstance = useAxiosInstance();
   const [post, setPost] = useState<Post>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useError();

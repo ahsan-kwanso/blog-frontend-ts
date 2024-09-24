@@ -1,11 +1,12 @@
 import { useState } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { API_URL } from "../utils/settings";
 import { ErrorResponse } from "../types/Error.interfaces";
 import { UserEditRoleReturn } from "../types/User.interfaces";
 import { useError } from "./useError";
 
 const useEditUserRole = (): UserEditRoleReturn => {
+  const axiosInstance = useAxiosInstance();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useError();
 

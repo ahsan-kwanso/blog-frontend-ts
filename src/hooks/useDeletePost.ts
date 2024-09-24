@@ -1,6 +1,6 @@
 // src/hooks/useDeletePost.js
 import { useState } from "react";
-import axiosInstance from "../axiosInstance";
+import useAxiosInstance from "../axiosInstance";
 import { useError } from "./useError";
 import { API_URL } from "../utils/settings";
 import { AxiosResponse } from "axios";
@@ -11,6 +11,7 @@ import {
 } from "../types/Post.interfaces";
 
 const useDeletePost = (): UseDeletePostReturn => {
+  const axiosInstance = useAxiosInstance();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [error, setError] = useError();
 
