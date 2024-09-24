@@ -18,3 +18,7 @@ when to use unknown never any
 
 
 Will think how just take verification code on that page and not the email, have to keep context, but will do it later currently more focus on backend
+
+
+
+Application completed with nestjs backend and frontend with mui token based authentication
