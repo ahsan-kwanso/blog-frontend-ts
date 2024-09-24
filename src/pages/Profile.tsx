@@ -43,10 +43,6 @@ const Profile = (): JSX.Element => {
   const [fileError, setFileError] = useState<string | null>(null); // Store file error
   const [open, setOpen] = useState(false);
 
-  const handleBack = () => {
-    postsPage();
-  };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
