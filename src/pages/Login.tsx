@@ -79,7 +79,6 @@ const Login = (): JSX.Element => {
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setError(error.message);
         if (
           error.message ===
           "Email not verified. A verification link has been sent to your email."
@@ -87,6 +86,8 @@ const Login = (): JSX.Element => {
           showSnackbar(
             "Email not verified. A verification link has been sent to your email."
           );
+        } else {
+          setError(error.message);
         }
       } else {
         setError("An unknown error occurred.");

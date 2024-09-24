@@ -12,7 +12,7 @@ const AuthorizedRoute = (): JSX.Element => {
   const token = getToken();
   const { showSnackbar } = useSnackbar();
   const { user, loading } = useContext(AuthContext);
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role.name === "admin";
   const { basePage } = useCustomNavigation();
   // State for managing the delay for the spinner
   const [delayComplete, setDelayComplete] = useState(false);

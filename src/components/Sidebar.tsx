@@ -127,7 +127,7 @@ import { getToken } from "../utils/authUtils";
 const Sidebar = (): JSX.Element => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { user } = useContext(AuthContext);
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role.name === "admin";
   const isUserLoggedIn = getToken();
   const { postsPage, myPostsPage } = useCustomNavigation();
   const [selectedTab, setSelectedTab] = useState<null | 0 | 1>(null);

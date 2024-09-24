@@ -23,7 +23,7 @@ import { AuthContext } from "../contexts/AuthContext";
 const Posts = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useContext(AuthContext);
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role.name === "admin";
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimit}`);
   const searchQuery = searchParams.get("search") || "";

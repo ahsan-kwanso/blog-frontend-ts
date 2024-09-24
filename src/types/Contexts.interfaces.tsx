@@ -19,13 +19,21 @@ export interface AuthContextType {
   loading: boolean;
 }
 
+export interface Role {
+  id: number;
+  name: string;
+}
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: Role;
   createdAt: Date;
+  updatedAt?: Date; // Added updatedAt for completeness
+  isVerified: boolean;
   profilePictureUrl?: string;
+  verificationToken?: string; // Added verificationToken if needed
 }
 
 export interface SnackbarContextType {
