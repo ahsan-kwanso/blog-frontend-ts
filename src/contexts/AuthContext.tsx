@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getToken, setToken, removeToken } from "../utils/authUtils";
+import { getToken, removeToken } from "../utils/authUtils";
 import axiosInstanceAuth from "../axiosInstanceAuth";
 import { API_URL } from "../utils/settings";
 import { User } from "../types/Contexts.interfaces";
@@ -92,7 +92,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
         email,
         password,
       });
-      setToken(response.data.token);
+      //setToken(response.data.token); now cookie is managing this
       await fetchUser();
       setLoading(false);
       return response;

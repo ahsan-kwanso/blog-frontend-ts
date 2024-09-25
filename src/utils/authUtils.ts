@@ -1,15 +1,14 @@
-const TOKEN_KEY = "token";
+import Cookies from "js-cookie";
+const TOKEN_KEY = "auth_token";
 
 export const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY);
+  return Cookies.get(TOKEN_KEY);
 };
 
-export const setToken = (token : string) => {
+export const setToken = (token: string) => {
   localStorage.setItem(TOKEN_KEY, token);
 };
 
 export const removeToken = () => {
-  localStorage.removeItem(TOKEN_KEY);
+  Cookies.remove(TOKEN_KEY);
 };
-
-export const TOKEN_STORED = getToken();

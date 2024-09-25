@@ -53,7 +53,7 @@ const SignupLink = styled(Link)(({ theme }) => ({
 
 const Login = (): JSX.Element => {
   const { signin, loading } = useContext(AuthContext);
-  const { postsPage, CodeVerificationPage } = useCustomNavigation();
+  const { postsPage } = useCustomNavigation();
   const [error, setError] = useError();
   const [showPassword, setShowPassword] = useState(false);
   const { showSnackbar } = useSnackbar();
@@ -72,7 +72,7 @@ const Login = (): JSX.Element => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const { status } = await signin(data.email, data.password);
-      if (status === 200) {
+      if (status === 201) {
         postsPage();
       } else {
         setError("An unexpected error occurred. Try Again Later");

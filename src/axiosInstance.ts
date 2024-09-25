@@ -9,25 +9,27 @@ const useAxiosInstance = () => {
   const { showSnackbar } = useSnackbar();
   const axiosInstance = axios.create({
     baseURL: backend_url,
+    withCredentials: true, // Ensure cookies are sent with each request
   });
 
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      const token = getToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`; // Fix template string syntax
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
+  // axiosInstance.interceptors.request.use(
+  //   (config) => {
+  //     const token = getToken();
+  //     if (token) {
+  //       config.headers.Authorization = `Bearer ${token}`; // Fix template string syntax
+  //     }
+  //     return config;
+  //   },
+  //   (error) => Promise.reject(error)
+  // );
 
   axiosInstance.interceptors.response.use(
     (response) => response, // Simply return the response if it's successful
     async (error) => {
       const { response } = error;
 
-      if (response && response.status === 401) {
+      if (response && (response.status === 401 || response.status === 500)) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         // Call signOut function to remove the token
         showSnackbar("Session expired. Please log in again.");
 

@@ -128,7 +128,6 @@ const Sidebar = (): JSX.Element => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { user } = useContext(AuthContext);
   const isAdmin = user?.role.name === "admin";
-  const isUserLoggedIn = getToken();
   const { postsPage, myPostsPage } = useCustomNavigation();
   const [selectedTab, setSelectedTab] = useState<null | 0 | 1>(null);
   const [searchParams] = useSearchParams();
@@ -212,7 +211,7 @@ const Sidebar = (): JSX.Element => {
       )}
 
       <Box sx={{ marginTop: "auto", mb: 7, ml: isSmallScreen ? 0 : 2 }}>
-        {user && isUserLoggedIn ? (
+        {user ? (
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mr: 1 }}>
             {isAdmin && <ManageButton isSmallScreen={isSmallScreen} />}
             <SignOutButton isSmallScreen={isSmallScreen} />
