@@ -1,12 +1,14 @@
 import axios from "axios";
-import { getToken, removeToken } from "./utils/authUtils";
 import { backend_url } from "./utils/settings";
 import useCustomNavigation from "./routes/useCustomNavigation";
 import { useSnackbar } from "./contexts/SnackbarContext";
+import { useContext } from "react";
+import { AuthContext } from "./contexts/AuthContext";
 
 const useAxiosInstance = () => {
   const { loginPage } = useCustomNavigation(); // Now inside a hook
   const { showSnackbar } = useSnackbar();
+  const { signout } = useContext(AuthContext);
   const axiosInstance = axios.create({
     baseURL: backend_url,
     withCredentials: true, // Ensure cookies are sent with each request
@@ -35,7 +37,7 @@ const useAxiosInstance = () => {
 
         // Optional: Delay before redirecting to the login page
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        removeToken();
+        signout();
         loginPage();
       }
 

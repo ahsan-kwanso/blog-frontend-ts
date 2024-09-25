@@ -1,22 +1,28 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 import { Outlet, Navigate } from "react-router-dom";
 import { useSnackbar } from "../contexts/SnackbarContext";
-import { getToken } from "../utils/authUtils";
 import PrivateLayout from "../layouts/PrivateLayout";
 import { PAGE_URL } from "../utils/settings";
+import { useValidateRoute } from "../hooks/useValidateRoute";
 
 const PrivateRoute = (): JSX.Element => {
-  const token = getToken();
+  const { isAuthenticated, loading } = useValidateRoute();
   const { showSnackbar } = useSnackbar();
 
+  // Show snackbar if not authenticated and loading is complete
   useEffect(() => {
-    if (!token) {
+    if (!loading && !isAuthenticated) {
       showSnackbar("Please login first");
     }
-  }, [token, showSnackbar]);
+  }, [loading, isAuthenticated, showSnackbar]);
 
-  if (!token) {
-    return <Navigate to={PAGE_URL.base} />;
+  if (loading) {
+    return <CircularProgress sx={{ mt: 4 }} />; // Optional loading state
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to={PAGE_URL.login} />;
   }
 
   return (
@@ -25,5 +31,4 @@ const PrivateRoute = (): JSX.Element => {
     </PrivateLayout>
   );
 };
-
 export default PrivateRoute;

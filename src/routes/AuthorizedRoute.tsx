@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { useSnackbar } from "../contexts/SnackbarContext";
-import { getToken } from "../utils/authUtils";
 import PrivateLayout from "../layouts/PrivateLayout";
 import { PAGE_URL } from "../utils/settings";
 import { AuthContext } from "../contexts/AuthContext";
 import CircularProgress from "@mui/material/CircularProgress"; // Material-UI spinner
 import useCustomNavigation from "./useCustomNavigation";
+import { useValidateRoute } from "../hooks/useValidateRoute";
 
 const AuthorizedRoute = (): JSX.Element => {
-  const token = getToken();
+  const { isAuthenticated, loading: loadingAuth } = useValidateRoute();
   const { showSnackbar } = useSnackbar();
   const { user, loading } = useContext(AuthContext);
   const isAdmin = user?.role.name === "admin";
@@ -18,11 +18,11 @@ const AuthorizedRoute = (): JSX.Element => {
   const [delayComplete, setDelayComplete] = useState(false);
 
   useEffect(() => {
-    if (!token) {
+    if (!isAuthenticated && !loadingAuth) {
       showSnackbar("Please login first");
       basePage();
     }
-  }, [token, showSnackbar]);
+  }, [isAuthenticated, showSnackbar]);
 
   // Add a 0.5-second delay before proceeding with the logic
   useEffect(() => {
@@ -35,13 +35,13 @@ const AuthorizedRoute = (): JSX.Element => {
 
   useEffect(() => {
     if (!loading && delayComplete) {
-      if (token && !isAdmin) {
+      if (isAuthenticated && !isAdmin) {
         showSnackbar("You don't have access to this page");
-      } else if (!token) {
+      } else if (!isAuthenticated) {
         showSnackbar("Please login first");
       }
     }
-  }, [token, isAdmin, showSnackbar, loading, delayComplete]);
+  }, [isAuthenticated, isAdmin, showSnackbar, loading, delayComplete]);
 
   // Show the spinner for the first 2 seconds, or if the auth context is still loading
   if (loading || !delayComplete) {
@@ -63,7 +63,7 @@ const AuthorizedRoute = (): JSX.Element => {
   if (!isAdmin) {
     return <Navigate to={PAGE_URL.posts} />;
   }
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to={PAGE_URL.base} />;
   }
 

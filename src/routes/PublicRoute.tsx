@@ -1,22 +1,26 @@
-import React, { useContext, useEffect } from "react";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSnackbar } from "../contexts/SnackbarContext";
-import { getToken } from "../utils/authUtils";
 import PublicLayout from "../layouts/PublicLayout";
 import { PAGE_URL } from "../utils/settings";
+import { useValidateRoute } from "../hooks/useValidateRoute";
 
 const PublicRoute = (): JSX.Element => {
-  const token = getToken();
+  const { isAuthenticated, loading } = useValidateRoute();
   const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (token) {
+    if (isAuthenticated) {
       showSnackbar("Already logged in!");
     }
-  }, [token, showSnackbar]);
+  }, [loading, isAuthenticated, showSnackbar]);
 
-  if (token) {
+  if (isAuthenticated) {
     return <Navigate to={PAGE_URL.posts} />;
+  }
+  if (loading) {
+    return <CircularProgress sx={{ mt: 4 }} />; // Optional loading state
   }
 
   return (

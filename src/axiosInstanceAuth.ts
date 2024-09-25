@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getToken } from "./utils/authUtils";
 import { backend_url } from "./utils/settings";
 
 const axiosInstanceAuth = axios.create({

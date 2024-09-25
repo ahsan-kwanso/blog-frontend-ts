@@ -6,6 +6,8 @@ export const API_URL = {
   me: `/users/me`,
   signup: `/auth/signup`,
   signin: `/auth/signin`,
+  signout: `/auth/signout`,
+  protectedCheck: `/auth/protected-route`,
   users: `users`,
   verifyEmail: `/auth/verify-email`,
 };

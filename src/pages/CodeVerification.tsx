@@ -67,7 +67,7 @@ const CodeVerification = (): JSX.Element => {
     <Container component="main" maxWidth="xs" sx={{ marginTop: "100px" }}>
       <StyledPaper>
         <Typography variant="h5" component="h1" sx={{ fontWeight: "bold" }}>
-          {verificationSuccess ? "Email Verified" : "Verify Your Email"}
+          {verificationSuccess ? "Email Verified" : "Verifying Your Email"}
         </Typography>
 
         {isVerifying ? (

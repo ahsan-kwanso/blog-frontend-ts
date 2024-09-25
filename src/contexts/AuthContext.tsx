@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getToken, removeToken } from "../utils/authUtils";
 import axiosInstanceAuth from "../axiosInstanceAuth";
 import { API_URL } from "../utils/settings";
 import { User } from "../types/Contexts.interfaces";
@@ -37,17 +36,15 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const fetchUser = async () => {
-    const token = getToken();
-    if (token) {
-      try {
-        const response = await axiosInstanceAuth.get(API_URL.me);
-        setUser(response.data); // in previous version with express js used response.data.user
-      } catch (error: unknown) {
-        console.error("Failed to fetch user:", error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
+    setLoading(true);
+    try {
+      const response = await axiosInstanceAuth.get(API_URL.me);
+      setUser(response.data); // in previous version with express js used response.data.user
+    } catch (error: unknown) {
+      console.error("Failed to fetch user:", error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,9 +106,14 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     }
   };
 
-  const signout = () => {
-    setUser(null);
-    removeToken();
+  const signout = async () => {
+    try {
+      await axiosInstanceAuth.get(API_URL.signout); // Call the signout endpoint
+      setUser(null); // Clear user state in your context or state management
+      // Optionally navigate to the login page
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   const verifyEmail = async (token: string): Promise<AxiosResponse> => {
