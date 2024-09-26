@@ -111,7 +111,7 @@ const Posts = (): JSX.Element => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              mb: 2,
+              mb: 1.75,
               mt: {
                 xs: 10,
                 sm: 5,
