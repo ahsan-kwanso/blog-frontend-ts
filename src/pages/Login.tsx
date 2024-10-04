@@ -71,12 +71,8 @@ const Login = (): JSX.Element => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const { status } = await signin(data.email, data.password);
-      if (status === 201) {
-        postsPage();
-      } else {
-        setError("An unexpected error occurred. Try Again Later");
-      }
+      await signin(data.email, data.password);
+      postsPage();
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (

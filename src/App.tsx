@@ -4,16 +4,20 @@ import ThemeProvider from "./contexts/ThemeContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
 import AppRoutes from "./routes/AppRoutes";
 import "./utils/global.css";
+import { ApolloProvider } from "@apollo/client";
+import client from "./apolloClient";
 
 const App = (): JSX.Element => {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <SnackbarProvider>
-          <AppRoutes />
-        </SnackbarProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <ThemeProvider>
+          <SnackbarProvider>
+            <AppRoutes />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </ApolloProvider>
   );
 };
 

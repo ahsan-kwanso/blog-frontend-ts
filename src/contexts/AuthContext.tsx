@@ -4,6 +4,8 @@ import { API_URL } from "../utils/settings";
 import { User } from "../types/Contexts.interfaces";
 import { AuthContextType } from "../types/Contexts.interfaces";
 import { AxiosResponse } from "axios";
+import { useMutation } from "@apollo/client";
+import { LOGIN_MUTATION } from "../GraphQL/mutations";
 
 const initialAuthContext: AuthContextType = {
   user: null,
@@ -35,6 +37,8 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  // Using Apollo's useMutation hook for login
+  const [login, { data, error }] = useMutation(LOGIN_MUTATION);
   const fetchUser = async () => {
     setLoading(true);
     try {
@@ -79,20 +83,18 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     }
   };
 
-  const signin = async (
-    email: string,
-    password: string
-  ): Promise<AxiosResponse> => {
+  const signin = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const response = await axiosInstanceAuth.post(API_URL.signin, {
-        email,
-        password,
+      setLoading(true);
+      const response = await login({
+        variables: { email, password },
       });
-      //setToken(response.data.token); now cookie is managing this
-      await fetchUser();
-      setLoading(false);
-      return response;
+      if (response?.data?.login?.token) {
+        // Now you can fetch the user after a successful login
+        await fetchUser();
+      }
+      return;
     } catch (error: unknown) {
       let errorMessage = "Something went wrong!";
       if (error instanceof Error) {

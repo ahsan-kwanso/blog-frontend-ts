@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.11.8",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
@@ -15,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.3",
     "date-fns": "^3.6.0",
+    "graphql": "^16.9.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",

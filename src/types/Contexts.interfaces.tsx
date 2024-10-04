@@ -13,7 +13,8 @@ export interface AuthContextType {
     email: string,
     password: string
   ) => Promise<AxiosResponse<any>>;
-  signin: (email: string, password: string) => Promise<AxiosResponse<any>>;
+  //signin: (email: string, password: string) => Promise<AxiosResponse<any>>;
+  signin: (email: string, password: string) => void;
   signout: () => void;
   verifyEmail: (token: string) => Promise<AxiosResponse<any>>;
   loading: boolean;
