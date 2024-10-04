@@ -1,11 +1,12 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import axiosInstanceAuth from "../axiosInstanceAuth";
-import { API_URL } from "../utils/settings";
-import { User } from "../types/Contexts.interfaces";
-import { AuthContextType } from "../types/Contexts.interfaces";
-import { AxiosResponse } from "axios";
-import { useMutation } from "@apollo/client";
-import { LOGIN_MUTATION } from "../GraphQL/mutations";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import {
+  LOGIN_MUTATION,
+  SIGNUP_MUTATION,
+  SIGNOUT_MUTATION,
+} from "../GraphQL/mutations";
+import { CURRENT_USER_QUERY } from "../GraphQL/queries"; // Assume this is the query to get the current user
+import { AuthContextType, User } from "../types/Contexts.interfaces";
 
 const initialAuthContext: AuthContextType = {
   user: null,
@@ -21,13 +22,9 @@ const initialAuthContext: AuthContextType = {
   signout: () => {
     throw new Error("signout function not implemented");
   },
-  verifyEmail: async () => {
-    throw new Error("verifyEmail function not implemented");
-  },
   loading: true,
 };
 
-// Create the context with initial values
 const AuthContext = createContext<AuthContextType>(initialAuthContext);
 
 interface AuthProviderProps {
@@ -37,112 +34,99 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-  // Using Apollo's useMutation hook for login
-  const [login, { data, error }] = useMutation(LOGIN_MUTATION);
-  const fetchUser = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstanceAuth.get(API_URL.me);
-      setUser(response.data); // in previous version with express js used response.data.user
-    } catch (error: unknown) {
-      console.error("Failed to fetch user:", error);
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
 
+  // Apollo mutations for authentication
+  const [login] = useMutation(LOGIN_MUTATION);
+  const [signup] = useMutation(SIGNUP_MUTATION);
+  const [signout] = useMutation(SIGNOUT_MUTATION);
+
+  // Lazy query to fetch the current user
+  const [fetchUser, { data: currentUserData, loading: userLoading }] =
+    useLazyQuery(CURRENT_USER_QUERY, {
+      fetchPolicy: "network-only",
+    });
+
+  // Effect to fetch the current user on component mount
   useEffect(() => {
-    fetchUser();
-  }, []);
+    const fetchCurrentUser = async () => {
+      try {
+        setLoading(true);
+        await fetchUser(); // Fetch the current user from the server
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const signup = async (
+    fetchCurrentUser();
+  }, [fetchUser]);
+
+  // Effect to set user after login or fetching the current user
+  useEffect(() => {
+    if (currentUserData && currentUserData.currentUser) {
+      setUser(currentUserData.currentUser);
+    }
+  }, [currentUserData]);
+
+  const handleSignup = async (
     name: string,
     email: string,
     password: string
-  ): Promise<AxiosResponse> => {
+  ) => {
     try {
       setLoading(true);
-      const response = await axiosInstanceAuth.post(API_URL.signup, {
-        name,
-        email,
-        password,
+      await signup({
+        variables: { signupDto: { name, email, password } },
       });
       setLoading(false);
-      return response;
-    } catch (error: unknown) {
-      let errorMessage = "Something went wrong!";
-      if (error instanceof Error) {
-        const axiosError = error as {
-          response?: { data?: { message?: string } };
-        };
-        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
-      }
+      return;
+    } catch (error) {
       setLoading(false);
-      throw new Error(errorMessage);
+      console.error("Signup error:", error);
+      throw new Error("Signup failed");
     }
   };
 
-  const signin = async (email: string, password: string) => {
+  const handleSignin = async (email: string, password: string) => {
     try {
-      setLoading(true);
       setLoading(true);
       const response = await login({
-        variables: { email, password },
+        variables: { loginDto: { email, password } },
       });
       if (response?.data?.login?.token) {
-        // Now you can fetch the user after a successful login
-        await fetchUser();
-      }
-      return;
-    } catch (error: unknown) {
-      let errorMessage = "Something went wrong!";
-      if (error instanceof Error) {
-        const axiosError = error as {
-          response?: { data?: { message?: string } };
-        };
-        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
+        await fetchUser(); // Fetch user after successful login
       }
       setLoading(false);
-      throw new Error(errorMessage);
-    }
-  };
-
-  const signout = async () => {
-    try {
-      await axiosInstanceAuth.get(API_URL.signout); // Call the signout endpoint
-      setUser(null); // Clear user state in your context or state management
-      // Optionally navigate to the login page
     } catch (error) {
-      console.error("Error signing out:", error);
+      setLoading(false);
+      console.error("Login error:", error);
+      throw new Error("Login failed");
     }
   };
 
-  const verifyEmail = async (token: string): Promise<AxiosResponse> => {
+  const handleSignout = async () => {
     try {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // for testing the page
-      const response = await axiosInstanceAuth.post(API_URL.verifyEmail, {
-        token,
-      });
+      await signout();
+      setUser(null); // Clear user after sign-out
       setLoading(false);
-      return response;
-    } catch (error: unknown) {
-      let errorMessage = "Verification failed!";
-      if (error instanceof Error) {
-        const axiosError = error as {
-          response?: { data?: { message?: string } };
-        };
-        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
-      }
+    } catch (error) {
       setLoading(false);
-      throw new Error(errorMessage);
+      console.error("Signout error:", error);
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, signup, signin, signout, verifyEmail, loading }}
+      value={{
+        user,
+        setUser,
+        signup: handleSignup,
+        signin: handleSignin,
+        signout: handleSignout,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>

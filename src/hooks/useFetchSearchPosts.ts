@@ -1,66 +1,77 @@
-// src/hooks/useSearchPosts.js
-import { useState, useEffect, useContext } from "react";
-import useAxiosInstance from "../axiosInstance";
-import { useError } from "./useError";
-import { API_URL } from "../utils/settings";
+import { useQuery } from "@apollo/client";
+import { gql } from "graphql-tag";
+import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import {
-  PostWithAuthor,
-  FetchPostsResponse,
-  UseFetchSearchPostsReturn,
-} from "../types/Post.interfaces";
+import { UseFetchPostsReturn } from "../types/Post.interfaces";
+
+// Define the GraphQL query
+const GET_SEARCH_POSTS = gql`
+  query GetSearchPosts(
+    $title: String!
+    $page: Float!
+    $limit: Float!
+    $filter: String
+    $userId: Float
+  ) {
+    searchPosts(
+      paginationQuery: {
+        title: $title
+        page: $page
+        limit: $limit
+        filter: $filter
+        userId: $userId
+      }
+    ) {
+      posts {
+        id
+        title
+        content
+        date
+      }
+      total
+      nextPage
+      page
+      pageSize
+    }
+  }
+`;
 
 const useFetchSearchPosts = (
   title: string,
+  isMyPosts: boolean,
   page: number,
-  limit: number,
-  isMyPosts: boolean
-): UseFetchSearchPostsReturn => {
-  const axiosInstance = useAxiosInstance();
+  limit: number
+): UseFetchPostsReturn => {
   const { user } = useContext(AuthContext);
-  const [posts, setPosts] = useState<PostWithAuthor[]>([]);
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [nextPage, setNextPage] = useState<string | null>(null);
-  const [error, setError] = useError();
-  const [total, setTotalPosts] = useState<number>(0);
+  const userId = isMyPosts ? user?.id : null; // Only fetch user ID when necessary
+  const filter = isMyPosts ? "my-posts" : null;
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      try {
-        const defaultParams = { title, page, limit };
-        const myPostsParams = {
-          title,
-          page,
-          limit,
-          filter: "my-posts",
-          userId: user?.id,
-        };
+  const variables: any = { title, page, limit }; // Always include title, page, and limit
 
-        // Determine which params to use
-        const params = isMyPosts ? myPostsParams : defaultParams;
-        const response = await axiosInstance.get<FetchPostsResponse>(
-          API_URL.searchPosts,
-          {
-            params,
-          }
-        );
-        setPosts(response.data.posts);
-        setTotalPosts(response.data.total);
-        setNextPage(response.data.nextPage);
-      } catch (err) {
-        setError("Something went wrong!");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Add optional fields if they exist
+  if (filter) {
+    variables.filter = filter;
+  }
+  if (userId !== null) {
+    variables.userId = userId;
+  }
 
-    if (title) {
-      fetchPosts();
-    }
-  }, [title, page, limit, setError, isMyPosts]);
+  const { loading, error, data } = useQuery(GET_SEARCH_POSTS, {
+    variables,
+    fetchPolicy: "network-only", // Adjust fetch policy as needed
+  });
 
-  return { posts, nextPage, isLoading, error, total };
+  const posts = data?.searchPosts.posts || [];
+  const total = data?.searchPosts.total || 0;
+  const nextPage = data?.searchPosts.nextPage || null;
+
+  return {
+    posts,
+    total,
+    nextPage,
+    isLoading: loading,
+    error: error?.message || "",
+  };
 };
 
 export default useFetchSearchPosts;

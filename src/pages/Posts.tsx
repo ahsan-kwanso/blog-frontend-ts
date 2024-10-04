@@ -36,7 +36,7 @@ const Posts = (): JSX.Element => {
     total: totalSearch,
     isLoading: isLoadingSearch,
     error: errorSearch,
-  } = useFetchSearchPosts(searchQuery, page, rowsPerPage, isMyPosts);
+  } = useFetchSearchPosts(searchQuery, isMyPosts, page, rowsPerPage);
 
   const {
     posts: postsDefault,

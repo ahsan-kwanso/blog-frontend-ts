@@ -1,64 +1,44 @@
-import { useState, useEffect, useContext } from "react";
-import useAxiosInstance from "../axiosInstance";
-import { useError } from "./useError";
-import { API_URL } from "../utils/settings";
+import { useQuery } from "@apollo/client";
+import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import {
-  FetchPostsResponse,
-  PostWithAuthor,
-  UseFetchPostsReturn,
-} from "../types/Post.interfaces";
+import { UseFetchPostsReturn } from "../types/Post.interfaces";
+import { GET_POSTS } from "../GraphQL/queries";
 
 const useFetchPosts = (
   isMyPosts: boolean,
   page: number,
   limit: number
 ): UseFetchPostsReturn => {
-  const axiosInstance = useAxiosInstance();
   const { user } = useContext(AuthContext);
-  const [posts, setPosts] = useState<PostWithAuthor[]>([]);
-  const [total, setTotal] = useState<number>(0);
-  const [nextPage, setNextPage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useError();
+  const userId = isMyPosts ? user?.id : null; // Only fetch user ID when necessary
+  const filter = isMyPosts ? "my-posts" : null;
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 400));
+  const variables: any = { page, limit }; // Always include page and limit
 
-        // Construct params object conditionally
-        const defaultParams = { page, limit };
-        const myPostsParams = {
-          page,
-          limit,
-          filter: "my-posts",
-          userId: user?.id,
-        };
+  // Add optional fields if they exist
+  if (filter) {
+    variables.filter = filter;
+  }
+  if (userId !== null) {
+    variables.userId = userId;
+  }
 
-        // Determine which params to use
-        const params = isMyPosts ? myPostsParams : defaultParams;
+  const { loading, error, data } = useQuery(GET_POSTS, {
+    variables,
+    fetchPolicy: "network-only", // Adjust fetch policy as needed
+  });
 
-        const response = await axiosInstance.get<FetchPostsResponse>(
-          API_URL.post,
-          { params }
-        );
-        const { posts, total, nextPage } = response.data;
+  const posts = data?.getPosts.posts || [];
+  const total = data?.getPosts.total || 0;
+  const nextPage = data?.getPosts.nextPage || null;
 
-        setPosts(posts);
-        setTotal(total);
-        setNextPage(nextPage);
-      } catch (err) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, [isMyPosts, page, limit, user?.id, setError]);
-
-  return { posts, total, nextPage, isLoading, error };
+  return {
+    posts,
+    total,
+    nextPage,
+    isLoading: loading,
+    error: error?.message || "",
+  };
 };
 
 export default useFetchPosts;

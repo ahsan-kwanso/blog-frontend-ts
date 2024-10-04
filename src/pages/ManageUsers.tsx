@@ -20,7 +20,6 @@ import { useContext } from "react";
 import FilterUsers from "../components/FilterUsers";
 
 const ManageUsers = (): JSX.Element => {
-  const isSmallScreen = useMediaQuery("(max-width:650px)");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") ?? `${defaultPage}`);
   const limit = parseInt(searchParams.get("limit") ?? `${defaultLimitUser}`);

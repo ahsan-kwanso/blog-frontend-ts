@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { ApolloError } from "@apollo/client"; // Import ApolloError for better error handling
 
 export interface ThemeContextType {
   themeMode: string;
@@ -7,16 +7,10 @@ export interface ThemeContextType {
 
 export interface AuthContextType {
   user: User | null;
-  setUser: (user: User | null) => void; // Add this line
-  signup: (
-    name: string,
-    email: string,
-    password: string
-  ) => Promise<AxiosResponse<any>>;
-  //signin: (email: string, password: string) => Promise<AxiosResponse<any>>;
-  signin: (email: string, password: string) => void;
-  signout: () => void;
-  verifyEmail: (token: string) => Promise<AxiosResponse<any>>;
+  setUser: (user: User | null) => void;
+  signup: (name: string, email: string, password: string) => void; // Return type updated to reflect GraphQL response
+  signin: (email: string, password: string) => Promise<void>; // Return type changed to Promise<void>
+  signout: () => Promise<void>; // Added Promise<void> return type for consistency
   loading: boolean;
 }
 
@@ -31,10 +25,10 @@ export interface User {
   email: string;
   role: Role;
   createdAt: Date;
-  updatedAt?: Date; // Added updatedAt for completeness
+  updatedAt?: Date; // Optional, included for completeness
   isVerified: boolean;
   profilePictureUrl?: string;
-  verificationToken?: string; // Added verificationToken if needed
+  verificationToken?: string; // Optional, for verification purposes
 }
 
 export interface SnackbarContextType {

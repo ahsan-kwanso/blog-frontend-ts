@@ -13,9 +13,11 @@ const useEditUserRole = (): UserEditRoleReturn => {
   const editUserRole = async (userId: number, role: string) => {
     setIsLoading(true);
     setError(null);
-
+    const roleId = role === "admin" ? 2 : 1;
     try {
-      await axiosInstance.patch(`${API_URL.users}/${userId}`, { role });
+      await axiosInstance.patch(`${API_URL.users}/${userId}`, {
+        RoleId: roleId,
+      });
     } catch (err: unknown) {
       if (err instanceof Error) {
         const axiosError = err as { response?: { data?: ErrorResponse } };

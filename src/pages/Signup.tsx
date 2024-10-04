@@ -55,7 +55,6 @@ const Signup = (): JSX.Element => {
   const { signup, loading } = useContext(AuthContext);
   const [error, setError] = useError();
   const { showSnackbar } = useSnackbar();
-  const { CodeVerificationPage } = useCustomNavigation();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -73,16 +72,8 @@ const Signup = (): JSX.Element => {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      const result = await signup(data.name, data.email, data.password);
-      if (
-        result.data.message === "Seems Like Email doesn't exist or not valid"
-      ) {
-        setError(result.data.message);
-      } else if (result.data.message) {
-        showSnackbar("A verification Email is sent to your account");
-      } else {
-        setError("An unexpected error occurred. Try Again Later");
-      }
+      await signup(data.name, data.email, data.password);
+      showSnackbar("A verification Email is sent to your account");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
