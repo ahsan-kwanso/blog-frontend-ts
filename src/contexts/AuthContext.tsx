@@ -7,6 +7,9 @@ import {
 } from "../GraphQL/mutations";
 import { CURRENT_USER_QUERY } from "../GraphQL/queries"; // Assume this is the query to get the current user
 import { AuthContextType, User } from "../types/Contexts.interfaces";
+import axiosInstanceAuth from "../axiosInstanceAuth";
+import { AxiosResponse } from "axios";
+import { API_URL } from "../utils/settings";
 
 const initialAuthContext: AuthContextType = {
   user: null,
@@ -21,6 +24,9 @@ const initialAuthContext: AuthContextType = {
   },
   signout: () => {
     throw new Error("signout function not implemented");
+  },
+  verifyEmail: async () => {
+    throw new Error("verifyEmail function not implemented");
   },
   loading: true,
 };
@@ -117,6 +123,28 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     }
   };
 
+  const verifyEmail = async (token: string): Promise<AxiosResponse> => {
+    try {
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // for testing the page
+      const response = await axiosInstanceAuth.post(API_URL.verifyEmail, {
+        token,
+      });
+      setLoading(false);
+      return response;
+    } catch (error: unknown) {
+      let errorMessage = "Verification failed!";
+      if (error instanceof Error) {
+        const axiosError = error as {
+          response?: { data?: { message?: string } };
+        };
+        errorMessage = axiosError.response?.data?.message ?? "Invalid format";
+      }
+      setLoading(false);
+      throw new Error(errorMessage);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -125,6 +153,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
         signup: handleSignup,
         signin: handleSignin,
         signout: handleSignout,
+        verifyEmail: verifyEmail,
         loading,
       }}
     >

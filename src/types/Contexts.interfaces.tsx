@@ -1,4 +1,5 @@
 import { ApolloError } from "@apollo/client"; // Import ApolloError for better error handling
+import { AxiosResponse } from "axios";
 
 export interface ThemeContextType {
   themeMode: string;
@@ -11,6 +12,7 @@ export interface AuthContextType {
   signup: (name: string, email: string, password: string) => void; // Return type updated to reflect GraphQL response
   signin: (email: string, password: string) => Promise<void>; // Return type changed to Promise<void>
   signout: () => Promise<void>; // Added Promise<void> return type for consistency
+  verifyEmail: (token: string) => Promise<AxiosResponse<any>>;
   loading: boolean;
 }
 
