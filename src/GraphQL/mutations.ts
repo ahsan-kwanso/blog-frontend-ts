@@ -26,3 +26,11 @@ export const SIGNOUT_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_POST_MUTATION = gql`
+  mutation CreatePost($createPostDto: CreatePostDto!) {
+    createPost(createPostDto: $createPostDto) {
+      message
+    }
+  }
+`;
